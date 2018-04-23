@@ -3,19 +3,22 @@
     <router-view/>
   </div>
 </template>
-
 <script>
 export default {
   name: 'App'
 }
 </script>
 
-<style lang="scss">
+<style>
 *{
   padding: 0;
   margin: 0;
 }
 body{
-  background: #eee;
+  width: 100%;
+  height: 635px;
+}
+#app{
+  height: 100%;
 }
 </style>

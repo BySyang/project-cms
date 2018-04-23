@@ -3,6 +3,9 @@
     <el-container>
       <el-header>
         <img src="../assets/logo.png" alt="">
+        <div class="search">
+        <el-input placeholder="搜索" suffix-icon="el-icon-search" size="mini"></el-input>
+        </div>
       </el-header>
       <el-container>
         <el-aside width="200px">
@@ -50,19 +53,21 @@
 export default {
   data() {
     return {
-      list: ["index", "userInfo", "goods", "orders","sales","comments"]
+      list: ["index", "userInfo", "goods", "orders", "sales", "comments"],
+      dialogImageUrl: '',
+      dialogVisible: false
     };
   },
   computed: {
     active() {
-      let i ;
+      let i;
       let path = this.$route.path;
-      this.list.forEach((val,index)=>{
-        if(path.indexOf(val)>-1){
-          i = (index+1).toString();
+      this.list.forEach((val, index) => {
+        if (path.indexOf(val) > -1) {
+          i = (index + 1).toString();
         }
-      })
-      return i?i:'1'
+      });
+      return i ? i : "1";
     }
   },
   created() {
@@ -79,12 +84,19 @@ export default {
 </script>
 <style lang="scss" scoped>
 .el-header {
-  background: #f1f1f1;
+  background: #72d0eb;
   img {
     height: 60px;
   }
 }
-
+.el-input--mini {
+  position: absolute;
+  top: 15px;
+  right: 100px;
+  outline: none;
+  width: 150px;
+  color: white;
+}
 .el-aside {
   background: #f2f2f2;
 }
