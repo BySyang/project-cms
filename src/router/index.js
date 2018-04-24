@@ -5,7 +5,7 @@ import home from '@/components/home'
 import children from './children'
 Vue.use(Router)
 const router = new Router({
-  mode: 'hash',
+  mode:'history',
   routes: [{
       path: '/login',
       name: 'login',
@@ -25,19 +25,21 @@ const router = new Router({
       }
     },
     {
-      path:'/',
-      redirect:'/login'
+      path: '/',
+      redirect: '/login'
     }
   ]
 })
 //路由全局守卫
 router.beforeEach(function (to, from, next) {
-  const isLog = true;
+  const isLog = window.sessionStorage.getItem('isLog')=='true'?true:false;
   if (to.matched.some(r => r.meta.isVerify)) {
     if (!isLog) {
       next({
         name: 'login',
-        query:{redirect:to.fullPath}
+        query: {
+          redirect: to.fullPath
+        }
       })
     } else {
       next()
