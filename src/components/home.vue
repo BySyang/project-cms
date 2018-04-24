@@ -136,12 +136,15 @@ export default {
 .el-aside {
   background: #f2f2f2;
 }
-.el-main {
-  height: 500px;
-}
 .el-footer {
   padding-top: 10px;
   background: #e1e1e1;
   text-align: center;
+}
+.el-submenu .el-menu-item {
+    min-width: 199px;
+}
+.el-main{
+  padding: 0;
 }
 </style>
