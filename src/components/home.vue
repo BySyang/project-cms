@@ -11,56 +11,50 @@
       <el-container>
         <el-aside width="200px">
           <el-row class="tac">
-            <el-menu router  :default-active="$route.path" unique-opened background-color="#2a3442" text-color="#a3bfb6" active-text-color="#fff">
+            <el-menu router  :default-active="$route.path" unique-opened background-color="#2a3442" text-color="#a3bfb6" active-text-color="#fff" @open="handleOpen">
               <el-menu-item index="/home/index">
                 <span slot="title"><i class="iconfont icon-fl-jia"></i>首页</span>
               </el-menu-item>
-              <el-submenu index="/home/userInfo">
+              <el-menu-item index="/home/userInfo">
                 <span slot="title"><i class="iconfont icon-erji-yonghuguanli"></i>会员信息</span>
-                <el-menu-item-group>
-                    <el-menu-item index="2-1">会员详情</el-menu-item>
-                 </el-menu-item-group>
-              </el-submenu>
+              </el-menu-item>
 
-              <el-submenu index="/home/goods">
+              <el-submenu index="/home/goodsClass">
                 <span slot="title"><i class="iconfont icon-shangpinguanli"></i>商品管理</span>
                 <el-menu-item-group>
-                    <el-menu-item index="3-1">添加商品</el-menu-item>
-                     <el-menu-item index="3-2">商品分类</el-menu-item>
+                     <el-menu-item index="/home/goodsClass">商品分类</el-menu-item>
+                    <el-menu-item index="/home/goodsAdd">添加商品</el-menu-item>
                  </el-menu-item-group>
               </el-submenu>
 
-              <el-submenu index="/home/sales">
+              <el-submenu index="/home/orders">
                 <span slot="title"><i class="iconfont icon-jiaoyi1"></i>交易管理</span>
                 <el-menu-item-group>
-                  <el-menu-item index="4-1">订单管理</el-menu-item>
-                  <el-menu-item index="4-2">售后服务</el-menu-item>
-                  <el-menu-item index="4-3">物流管理</el-menu-item>
+                  <el-menu-item index="/home/orders">订单管理</el-menu-item>
+                  <el-menu-item index="/home/afterSales">售后服务</el-menu-item>
+                  <el-menu-item index="/home/wuliu">物流管理</el-menu-item>
               </el-menu-item-group>
               </el-submenu>
 
-              <el-submenu index="">
+              <el-submenu index="/home/pays">
                 <span slot="title"><i class="iconfont icon-zhifu"></i>支付管理</span>
                 <el-menu-item-group>
-                  <el-menu-item index="5-1">支付管理</el-menu-item>
-                  <el-menu-item index="5-2">支付配置</el-menu-item>
+                  <el-menu-item index="/home/pays">支付管理</el-menu-item>
+                  <el-menu-item index="/home/payConfig">支付配置</el-menu-item>
                 </el-menu-item-group>
               </el-submenu>
 
-              <el-submenu index="/home/comments">
+              <el-menu-item index="/home/comments">
                 <span slot="title"><i class="iconfont icon-pinglun"></i>评论管理</span>
-                <el-menu-item-group>
-                  <el-menu-item index="6-1">评论详情</el-menu-item>
-                </el-menu-item-group>
-              </el-submenu>
+              </el-menu-item>
 
-              <el-submenu index="/home/">
+              <el-submenu index="/home/web">
                 <span slot="title"><i class="iconfont icon-qianduanyingyong"></i>前端管理</span>
                 <el-menu-item-group>
-                  <el-menu-item index="7-1">栏目管理</el-menu-item>
+                  <el-menu-item index="/home/web">栏目管理</el-menu-item>
                 </el-menu-item-group>
               </el-submenu>
-              <el-menu-item index="/home/logs">
+              <el-menu-item index="/home/log">
                 <span slot="title"><i class="iconfont icon-rizhiguanli"></i>系统日志</span>
               </el-menu-item>
             </el-menu>
@@ -81,46 +75,17 @@
 <script>
 export default {
   data() {
-    return {
-      list: [
-        "index",
-        "userInfo",
-        "goods",
-        "orders",
-        "pays",
-        "speek",
-        "web",
-        "log"
-      ],
-      opened:true
-    };
-  },
-  computed: {
-    active() {
-      let i;
-      let path = this.$route.path;
-      this.list.forEach((val, index) => {
-        if (path.indexOf(val) > -1) {
-          i = (index + 1).toString();
-        }
-      });
-      return i ? i : "1";
-    }
+    return {};
   },
   created() {
-    if (this.$route.path.endsWith("index")) {
-      this.lingTo("index");
+    console.log(this.$route);
+    if (this.$route.name == "home") {
+      this.$router.replace("/home/index");
     }
   },
   methods: {
-    lingTo(link) {
-      this.$router.push({ name: link });
-    },
     handleOpen(key, keyPath) {
-      // console.log(key, keyPath);
-    },
-    handleClose(key, keyPath) {
-      // console.log(key, keyPath);
+      this.$router.push(key);
     }
   }
 };

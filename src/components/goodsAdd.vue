@@ -1,6 +1,6 @@
 <template>
   <div>
-    商品管理
+    添加商品
   </div>
 </template>
 <script>

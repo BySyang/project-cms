@@ -4,12 +4,9 @@ const userInfo = () =>
 //首页
 const index = () =>
   import ( /* webpackChunkName: "body" */ '@/components/index')
-//商品管理
-const goods = () =>
-  import ( /* webpackChunkName: "body" */ '@/components/goods')
 //评论管理
 const comments = () =>
-  import ( /* webpackChunkName: "body" */  '@/components/comments.vue')
+  import ( /* webpackChunkName: "body" */ '@/components/comments.vue')
 //订单管理
 const orders = () =>
   import ( /* webpackChunkName: "body" */ '@/components/orders')
@@ -18,12 +15,25 @@ const pays = () =>
   import ( /* webpackChunkName: "body" */ '@/components/pays')
 //前段管理
 const web = () =>
-import ( /* webpackChunkName: "body" */ '@/components/web')
+  import ( /* webpackChunkName: "body" */ '@/components/web')
 //系统日志
 const log = () =>
-import ( /* webpackChunkName: "body" */ '@/components/log')
+  import ( /* webpackChunkName: "body" */ '@/components/log')
 
+const goodsClass = () =>
+  import ( /* webpackChunkName: "body" */ '@/components/goodsClass')
 
+const goodsAdd = () =>
+  import ( /* webpackChunkName: "body" */ '@/components/goodsAdd')
+
+const payConfig = () =>
+  import ( /* webpackChunkName: "body" */ '@/components/payConfig')
+
+const wuliu = () =>
+  import ( /* webpackChunkName: "body" */ '@/components/wuliu')
+
+const afterSales = () =>
+  import ( /* webpackChunkName: "body" */ '@/components/afterSales')
 
 export default [{
     path: 'index',
@@ -42,11 +52,19 @@ export default [{
     }
   },
   {
-    path: 'goods',
-    name: 'goods',
-    component: goods,
+    path: 'goodsClass',
+    name: 'goodsClass',
+    component: goodsClass,
     meta: {
-      title: '商品管理'
+      title: '商品分类'
+    },
+  },
+  {
+    path: 'goodsAdd',
+    name: 'goodsAdd',
+    component: goodsAdd,
+    meta:{
+      title:'商品添加'
     }
   },
   {
@@ -88,5 +106,35 @@ export default [{
     meta: {
       title: '系统日志'
     },
-  }
+  },
+  {
+    path: 'payConfig',
+    name: 'payConfig',
+    component: payConfig,
+    meta: {
+      title: '支付配置'
+    },
+  }, {
+    path: 'wuliu',
+    name: 'wuliu',
+    component: wuliu,
+    meta: {
+      title: '物流管理'
+    },
+  }, {
+    path: 'afterSales',
+    name: 'afterSales',
+    component: afterSales,
+    meta: {
+      title: '售后服务'
+    },
+  }, {
+    path: 'log',
+    name: 'log',
+    component: log,
+    meta: {
+      title: '系统日志'
+    },
+  },
+
 ]
