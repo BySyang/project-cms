@@ -13,9 +13,15 @@ const comments = () =>
 //订单管理
 const orders = () =>
   import ( /* webpackChunkName: "body" */ '@/components/orders')
-//销售管理
-const sales = () =>
-  import ( /* webpackChunkName: "body" */ '@/components/sales')
+//支付管理
+const pays = () =>
+  import ( /* webpackChunkName: "body" */ '@/components/pays')
+//前段管理
+const web = () =>
+import ( /* webpackChunkName: "body" */ '@/components/web')
+//系统日志
+const log = () =>
+import ( /* webpackChunkName: "body" */ '@/components/log')
 
 
 
@@ -60,12 +66,27 @@ export default [{
     }
   },
   {
-    path: 'sales',
-    name: 'sales',
-    component: sales,
+    path: 'pays',
+    name: 'pays',
+    component: pays,
     meta: {
-      title: '销售管理'
-    }
+      title: '支付管理'
+    },
+  },
+  {
+    path: 'web',
+    name: 'web',
+    component: web,
+    meta: {
+      title: '前端管理'
+    },
+  },
+  {
+    path: 'log',
+    name: 'log',
+    component: log,
+    meta: {
+      title: '系统日志'
+    },
   }
-
 ]

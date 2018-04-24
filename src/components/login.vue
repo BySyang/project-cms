@@ -138,7 +138,6 @@ h2 {
   width: 260px;
   margin-top: 20px;
   color: #4f5d80;
-  /* border: 1px solid red; */
 }
 .input > input {
   width: 250px;
@@ -161,7 +160,6 @@ h2 {
   margin-bottom: 35px;
 }
 .login_btn {
-  /* border:  1px solid red; */
   padding-left: 45px;
 }
 </style>
