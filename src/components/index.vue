@@ -1,15 +1,17 @@
 <template>
 <div id="index">
     <div id="main"></div>
+    <div>   </div>
 </div>
 </template>
+
 <script>
 var echarts = require('echarts');
 export default {
     naem: 'Bank',
     data() {
         return {
-
+ 
         }
     },
     mounted() {
@@ -71,7 +73,9 @@ export default {
             series: [{ //系列
                 name: '销售额', //这点显示名称
                 type: 'line', //图标类型：line:线装，bar：条形
-                areaStyle: {color:'rgba(0,0,0,0.1)'},   //图形面积背景
+                areaStyle: {
+                    color: 'rgba(0,0,0,0.1)'
+                }, //图形面积背景
                 data: ['120', '132', '101', '134', '90', '230', '210', '220', '330', '300', '310', '200'],
                 markPoint: {
                     data: [{
