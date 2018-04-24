@@ -32,7 +32,7 @@ const router = new Router({
 })
 //路由全局守卫
 router.beforeEach(function (to, from, next) {
-  const isLog = true;
+  const isLog = window.sessionStorage.getItem('isLog')=='true'?true:false;
   if (to.matched.some(r => r.meta.isVerify)) {
     if (!isLog) {
       next({

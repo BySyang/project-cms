@@ -14,9 +14,10 @@ export default {
   padding: 0;
   margin: 0;
 }
-body{
+body,html{
   width: 100%;
-  height: 635px;
+  height: 100%;
+  
 }
 #app{
   height: 100%;
