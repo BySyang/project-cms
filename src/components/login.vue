@@ -34,15 +34,17 @@ export default {
   name: "login",
   data() {
     return {
-      isRemeber: '',
+      isRemeber: "",
       username: "",
       password: ""
     };
   },
+  computed: {
+  },
   created() {
-    if( window.localStorage.getItem("isRemeber")=='true'){
+    if (window.localStorage.getItem("isRemeber") == "true") {
       this.isRemeber = true;
-    }else{
+    } else {
       this.isRemeber = false;
     }
     if (this.isRemeber) {
@@ -62,7 +64,7 @@ export default {
         )
         .then(res => {
           if (res.data == "ok") {
-            window.sessionStorage.setItem("isLog", true);
+            window.sessionStorage.setItem('isLog','true');
             this.remeberAdmin();
             if (this.$route.query.redirect) {
               this.$router.push(

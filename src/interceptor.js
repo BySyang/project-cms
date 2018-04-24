@@ -5,10 +5,10 @@
 import axios from 'axios'
 import { Loading, Message } from 'element-ui'
 // 超时时间
-axios.defaults.timeout = 5000
+axios.defaults.timeout = 5000;
 axios.defaults.baseURL = process.env.NODE_ROOT;
 // http请求拦截器
-var loadinginstace
+var loadinginstace;
 axios.interceptors.request.use(config => {
  // element ui Loading方法
  loadinginstace = Loading.service({ fullscreen: true })

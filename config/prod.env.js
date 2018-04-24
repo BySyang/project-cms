@@ -1,5 +1,5 @@
 'use strict'
 module.exports = {
   NODE_ENV: '"production"',
-  NODE_ROOT:"'localhost:8080/"
+  NODE_ROOT:"'http://localhost:8080/'"
 }
