@@ -11,58 +11,56 @@
       <el-container>
         <el-aside width="200px">
           <el-row class="tac">
-            <el-menu  :default-active="active"  background-color="#2a3442" text-color="#a3bfb6" active-text-color="#fff"  @open="handleOpen"
-      @close="handleClose">
-              <el-menu-item index="1" @click="lingTo('index')">
+            <el-menu router  :default-active="$route.path" unique-opened background-color="#2a3442" text-color="#a3bfb6" active-text-color="#fff">
+              <el-menu-item index="/home/index">
                 <span slot="title"><i class="iconfont icon-fl-jia"></i>首页</span>
               </el-menu-item>
-
-              <el-submenu index="2" @click="lingTo('userInfo')">
+              <el-submenu index="/home/userInfo">
                 <span slot="title"><i class="iconfont icon-erji-yonghuguanli"></i>会员信息</span>
                 <el-menu-item-group>
-                    <el-menu-item index="1-1">会员详情</el-menu-item>
+                    <el-menu-item index="2-1">会员详情</el-menu-item>
                  </el-menu-item-group>
               </el-submenu>
 
-              <el-submenu index="3" @click="lingTo('goods')">
+              <el-submenu index="/home/goods">
                 <span slot="title"><i class="iconfont icon-shangpinguanli"></i>商品管理</span>
                 <el-menu-item-group>
-                    <el-menu-item index="1-1">添加商品</el-menu-item>
-                     <el-menu-item index="1-2">商品分类</el-menu-item>
+                    <el-menu-item index="3-1">添加商品</el-menu-item>
+                     <el-menu-item index="3-2">商品分类</el-menu-item>
                  </el-menu-item-group>
               </el-submenu>
 
-              <el-submenu index="4" @click="lingTo('orders')">
+              <el-submenu index="/home/sales">
                 <span slot="title"><i class="iconfont icon-jiaoyi1"></i>交易管理</span>
                 <el-menu-item-group>
-                  <el-menu-item index="1-1">订单管理</el-menu-item>
-                  <el-menu-item index="1-2">售后服务</el-menu-item>
-                  <el-menu-item index="1-3">物流管理</el-menu-item>
+                  <el-menu-item index="4-1">订单管理</el-menu-item>
+                  <el-menu-item index="4-2">售后服务</el-menu-item>
+                  <el-menu-item index="4-3">物流管理</el-menu-item>
               </el-menu-item-group>
               </el-submenu>
 
-              <el-submenu index="5" @click="lingTo('pays')">
+              <el-submenu index="">
                 <span slot="title"><i class="iconfont icon-zhifu"></i>支付管理</span>
                 <el-menu-item-group>
-                  <el-menu-item index="1-1">支付管理</el-menu-item>
-                  <el-menu-item index="1-2">支付配置</el-menu-item>
+                  <el-menu-item index="5-1">支付管理</el-menu-item>
+                  <el-menu-item index="5-2">支付配置</el-menu-item>
                 </el-menu-item-group>
               </el-submenu>
 
-              <el-submenu index="6" @click="lingTo('comments')">
+              <el-submenu index="/home/comments">
                 <span slot="title"><i class="iconfont icon-pinglun"></i>评论管理</span>
                 <el-menu-item-group>
-                  <el-menu-item index="1-1">评论详情</el-menu-item>
+                  <el-menu-item index="6-1">评论详情</el-menu-item>
                 </el-menu-item-group>
               </el-submenu>
 
-              <el-submenu index="7" @click="lingTo('web')">
+              <el-submenu index="/home/">
                 <span slot="title"><i class="iconfont icon-qianduanyingyong"></i>前端管理</span>
                 <el-menu-item-group>
-                  <el-menu-item index="1-1">栏目管理</el-menu-item>
+                  <el-menu-item index="7-1">栏目管理</el-menu-item>
                 </el-menu-item-group>
               </el-submenu>
-              <el-menu-item index="8" @click="lingTo('log')">
+              <el-menu-item index="/home/logs">
                 <span slot="title"><i class="iconfont icon-rizhiguanli"></i>系统日志</span>
               </el-menu-item>
             </el-menu>
@@ -84,9 +82,17 @@
 export default {
   data() {
     return {
-      list: ["index", "userInfo", "goods", "orders", "pays", "speek","web","log"],
-      dialogImageUrl: "",
-      dialogVisible: false,
+      list: [
+        "index",
+        "userInfo",
+        "goods",
+        "orders",
+        "pays",
+        "speek",
+        "web",
+        "log"
+      ],
+      opened:true
     };
   },
   computed: {
@@ -110,17 +116,17 @@ export default {
     lingTo(link) {
       this.$router.push({ name: link });
     },
-     handleOpen(key, keyPath) {
-        // console.log(key, keyPath);
-      },
-      handleClose(key, keyPath) {
-        // console.log(key, keyPath);
-      }
+    handleOpen(key, keyPath) {
+      // console.log(key, keyPath);
     },
+    handleClose(key, keyPath) {
+      // console.log(key, keyPath);
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>
-.iconfont{
+.iconfont {
   padding-right: 25px;
   font-size: 18px;
 }
