@@ -3,7 +3,7 @@
     <div class="orders_main">
       <div class="main_top">
         <div>订单管理</div>
-        <el-button type="danger"><i class=""></i> 删除</el-button>
+        <el-button type="danger"><i class="iconfont icon-shanchu"></i> 删除</el-button>
       </div>
       
     </div>
@@ -29,8 +29,13 @@ export default {
     background-color: white;
     box-shadow: 0 -3px 0 0 #59ace2;
     .main_top {
+      position: relative;
+      height: 30px;
+      border-bottom: 1px solid #e5e6e6;
       div {
-        float: left;
+        position: absolute;
+        top: 0;
+        left: 40px;
         width: 100px;
         height: 30px;
         line-height: 30px;
@@ -38,8 +43,10 @@ export default {
         background-color: #59ace2;
       }
       .el-button {
-        float: left;
-        padding: 10px 20px;
+        position: absolute;
+        top: 1px;
+        right: 100px;
+        padding: 5px 15px;
         border-radius: 5px;
       }
     }
