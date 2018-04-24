@@ -5,7 +5,7 @@ import home from '@/components/home'
 import children from './children'
 Vue.use(Router)
 const router = new Router({
-  mode: 'hash',
+  mode:'history',
   routes: [{
       path: '/login',
       name: 'login',
@@ -25,8 +25,8 @@ const router = new Router({
       }
     },
     {
-      path:'/',
-      redirect:'/login'
+      path: '/',
+      redirect: '/login'
     }
   ]
 })
@@ -37,7 +37,9 @@ router.beforeEach(function (to, from, next) {
     if (!isLog) {
       next({
         name: 'login',
-        query:{redirect:to.fullPath}
+        query: {
+          redirect: to.fullPath
+        }
       })
     } else {
       next()
