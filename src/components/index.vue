@@ -1,17 +1,42 @@
 <template>
 <div id="index">
+    <ul>
+        <li>
+            <span>成交金额</span>
+            <i class="iconfont "></i>
+            <span>4000W</span>
+        </li>
+        <li>
+            <span>留言</span>
+            <i class="iconfont"></i>
+            <span>8000条</span>
+        </li>
+        <li>
+            <span>订单</span>
+            <i class="iconfont"></i>
+            <span>10000条</span>
+        </li>
+        <li>
+            <span>通知</span>
+            <i class="iconfont"></i>
+            <span>456条</span>
+        </li>
+        <li>
+            <span>待处理</span>
+            <i class="iconfont"></i>
+            <span>15条</span>
+        </li>
+    </ul>
     <div id="main"></div>
-    <div>   </div>
 </div>
 </template>
 
 <script>
 var echarts = require('echarts');
 export default {
-    naem: 'Bank',
     data() {
         return {
- 
+
         }
     },
     mounted() {
@@ -97,9 +122,9 @@ export default {
 <style>
 #main {
     position: absolute;
-    top: 100px;
+    top: 60%;
     height: 350px;
     width: 600px;
-    background: lavender
+    background: #f0f0f0
 }
 </style>
