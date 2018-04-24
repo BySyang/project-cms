@@ -136,7 +136,6 @@ h2 {
   width: 260px;
   margin-top: 20px;
   color: #4f5d80;
-  /* border: 1px solid red; */
 }
 .input > input {
   width: 250px;
@@ -159,53 +158,6 @@ h2 {
   margin-bottom: 35px;
 }
 .login_btn {
-  /* border:  1px solid red; */
   padding-left: 45px;
 }
-<<<<<<< HEAD
-  h2 {
-    position: absolute;
-    top: 80px;
-    left: 0px;
-    right: 0px;
-    margin: auto;
-    text-align: center;
-    margin-bottom: 15px;
-    font-size: 26px;
-    color:lightblue;
-    font-family:'Courier New', Courier, monospace;
-  }
-  .input{
-    margin: 0 auto;
-    width: 260px;
-    margin-top: 20px;
-    color: #4f5d80;
-  }
-  .input>input{
-    width: 250px;
-    height: 35px;
-    border-radius: 5px;
-    padding-left: 5px;
-    margin-bottom: 15px;
-    color: #4f5d80;
-     margin: 0 auto;
-    border: 1px solid #cad2db;
-  }
-  .input>p{
-    font-size: 16px;
-    margin-bottom: 15px;
-  }
-  .remeber{
-    height: 40px;
-    padding-left: 40px;
-    margin-top: 10px;
-    margin-bottom: 35px;
-  }
-  .login_btn{
-    padding-left: 45px;
-
-  }
-
-=======
->>>>>>> 5107dd27f13560405b255b59aaf7cd07f9c97c63
 </style>
