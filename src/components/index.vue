@@ -1,17 +1,15 @@
 <template>
 <div id="index">
     <div id="main"></div>
-    <div>   </div>
 </div>
 </template>
 
 <script>
 var echarts = require('echarts');
 export default {
-    naem: 'Bank',
     data() {
         return {
- 
+
         }
     },
     mounted() {
@@ -95,11 +93,18 @@ export default {
 </script>
 
 <style>
+#index{
+    background: white;
+    width: 96%;
+    height: 90%;
+    margin:25px auto;
+    box-shadow: -1px -1px -1px -1px lightgray
+}
 #main {
     position: absolute;
-    top: 100px;
+    top: 30%;
     height: 350px;
     width: 600px;
-    background: lavender
+    background: #f7f7f7
 }
 </style>
