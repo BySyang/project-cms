@@ -328,7 +328,7 @@ export default {
       }
     }
     .table{
-      width: 98%;
+      width: 96%;
       margin: 10px auto;
     }
   }
