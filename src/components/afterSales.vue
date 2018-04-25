@@ -21,9 +21,7 @@
 <script>
 export default {
   data() {
-    return {
-      
-    };
+    return {};
   }
 };
 </script>
@@ -54,20 +52,24 @@ export default {
         text-align: center;
         background-color: #59ace2;
       }
-      .demo-input-suffix{
+      .demo-input-suffix {
         margin-left: 100px;
         width: 150px;
         height: 30px;
-        .el-input{
+        .el-input {
           width: 100%;
           height: 100%;
-          span{
-             height: 100%;
-          }
-          .el-input__inner{
-             height: 100%;
+          .el-input__suffix {
+            height: 100%;
           }
         }
+      }
+      .el-input__inner {
+        height: 30px;
+        line-height: 30px;
+      }
+      .el-input__icon {
+        line-height: 30px;
       }
     }
   }
