@@ -54,7 +54,7 @@
                   <el-menu-item index="/home/web">栏目管理</el-menu-item>
                 </el-menu-item-group>
               </el-submenu>
-              <el-menu-item index="/home/log">
+              <el-menu-item index="/home/logs">
                 <span slot="title"><i class="iconfont icon-rizhiguanli"></i>系统日志</span>
               </el-menu-item>
             </el-menu>
