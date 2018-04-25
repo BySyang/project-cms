@@ -17,8 +17,8 @@ const pays = () =>
 const web = () =>
   import ( /* webpackChunkName: "body" */ '@/components/web')
 //系统日志
-const log = () =>
-  import ( /* webpackChunkName: "body" */ '@/components/log')
+const logs = () =>
+  import ( /* webpackChunkName: "body" */ '@/components/logs')
 
 const goodsClass = () =>
   import ( /* webpackChunkName: "body" */ '@/components/goodsClass')
@@ -63,8 +63,8 @@ export default [{
     path: 'goodsAdd',
     name: 'goodsAdd',
     component: goodsAdd,
-    meta:{
-      title:'商品添加'
+    meta: {
+      title: '商品添加'
     }
   },
   {
@@ -100,9 +100,9 @@ export default [{
     },
   },
   {
-    path: 'log',
-    name: 'log',
-    component: log,
+    path: 'logs',
+    name: 'logs',
+    component: logs,
     meta: {
       title: '系统日志'
     },
@@ -128,13 +128,6 @@ export default [{
     meta: {
       title: '售后服务'
     },
-  }, {
-    path: 'log',
-    name: 'log',
-    component: log,
-    meta: {
-      title: '系统日志'
-    },
-  },
+  }
 
 ]
