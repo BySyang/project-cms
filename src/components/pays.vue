@@ -96,6 +96,7 @@ export default {
         span {
           line-height: 30px;
         }
+
       }
       .centerContent {
         padding: 10px 22px 0;
