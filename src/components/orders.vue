@@ -208,11 +208,10 @@ export default {
       var that = this;
       this.$http.get("ordersList").then(
         resp => {
-          // console.log(resp.data.data);
           if (resp.data.data) {
             resp.data.data.forEach(item => {
               item.newTime = that.formatDate(item.createTime);
-              console.log(item.orderStatus);
+              // console.log(item.orderStatus);
               item.newstatus = that.ordersStatus(item.orderStatus);
             });
             this.orsersTable = resp.data.data;
