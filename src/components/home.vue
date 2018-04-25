@@ -5,9 +5,14 @@
         <el-header>
             <div class="log"><i class="iconfont icon-lifangtilitiduomiantifangkuai2"></i> <span>后台管理系统</span></div>
             <!-- 头像 -->
-            <img :src='img'>
-              <el-badge :value="200" :max="99" class="item iconfont icon-tongzhi4">
-              </el-badge>
+            <div class="log_item">
+              <img :src='img'>
+              <span>管理员</span>
+              <i class="iconfont icon-guanliyuan"></i>
+            </div>
+            
+            
+            <el-badge :value="200" :max="99" class="item iconfont icon-tongzhi4"></el-badge>
         </el-header>
         <!-- 页面导航 -->
         <el-container class="section2">
@@ -123,9 +128,9 @@ export default {
     box-shadow: 3px 0px 3px 3px lightgrey;
     width: 100%;
     z-index: 9;
-    img{
+    .log_item>img{
       position: absolute;
-      right: 100px;
+      right: 210px;
       top: 0px;
       bottom: 0px;
       margin: auto 0px;
@@ -134,7 +139,23 @@ export default {
       height: 40px;
       border-radius: 20px 20px;
     }
-    .log {
+    .log_item>span{
+      position: absolute;
+      right: 150px;
+      top: 17px;
+      bottom: 0px;
+      z-index: 999;
+      font-size: 16px;
+    }
+    .log_item>i{
+      position: absolute;
+      right: 100px;
+      top: 17px;
+      bottom: 0px;
+      z-index: 999;
+      color: #777777;
+    }
+    .log_item>.log {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -147,7 +168,7 @@ export default {
         color: white;
         z-index: 99;
     }
-    .log span {
+    span {
         font-size: 20px;
         color: #000;
     }
