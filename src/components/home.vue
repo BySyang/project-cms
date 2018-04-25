@@ -78,7 +78,7 @@ export default {
     return {};
   },
   created() {
-    console.log(this.$route);
+    // console.log(this.$route);
     if (this.$route.name == "home") {
       this.$router.replace("/home/index");
     }
