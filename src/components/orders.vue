@@ -240,7 +240,7 @@ export default {
       return newst;
     },
     jiaoyistatuMethod(){
-      console.log(item.value)
+      // console.log(item.value)
     }
   }
 };
