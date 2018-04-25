@@ -6,7 +6,8 @@ import children from './children'
 Vue.use(Router)
 const router = new Router({
   mode:'history',
-  routes: [{
+  routes: [
+    {
       path: '/login',
       name: 'login',
       component: login,
