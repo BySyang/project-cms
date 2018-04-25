@@ -28,7 +28,7 @@
               </el-submenu>
 
               <el-submenu index="/home/orders">
-                <span slot="title"><i class="iconfont icon-jiaoyi1"></i>交易管理</span>
+                <span slot="title"><i class="iconfont icon-jiaoyi"></i>交易管理</span>
                 <el-menu-item-group>
                   <el-menu-item index="/home/orders">订单管理</el-menu-item>
                   <el-menu-item index="/home/afterSales">售后服务</el-menu-item>
@@ -54,7 +54,7 @@
                   <el-menu-item index="/home/web">栏目管理</el-menu-item>
                 </el-menu-item-group>
               </el-submenu>
-              <el-menu-item index="/home/log">
+              <el-menu-item index="/home/logs">
                 <span slot="title"><i class="iconfont icon-rizhiguanli"></i>系统日志</span>
               </el-menu-item>
             </el-menu>
@@ -65,10 +65,10 @@
         </el-main>
       </el-container>
       <!-- 底部 -->
-      <el-footer>
+      <!-- <el-footer>
         <p>Copyright © 2010-2017</p>
         <p>FASHION WEB</p>
-      </el-footer>
+      </el-footer> -->
     </el-container>
   </div>
 </template>
@@ -118,9 +118,16 @@ export default {
   text-align: center;
 }
 .el-submenu .el-menu-item {
-    min-width: 199px;
+  min-width: 199px;
 }
-.el-main{
+.el-main {
+  overflow: hidden;
+  background-color: #f0f0f0;
   padding: 0;
+}
+.el-menu-item-group {
+  ul li {
+    padding-left: 64px !important;
+  }
 }
 </style>
