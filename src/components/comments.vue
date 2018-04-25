@@ -7,7 +7,7 @@
       <div class="search">
         <div>
           评论时间:
-          <el-date-picker v-model="xiadandata" type="daterange" align="right" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions2">
+          <el-date-picker v-model="xiadandata" type="daterange" align="left" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions2">
           </el-date-picker>
         </div>
 
@@ -140,7 +140,6 @@ export default {
     .main_top {
       position: relative;
       height: 30px;
-
       border-bottom: 1px solid #e5e6e6;
       div {
         position: absolute;
@@ -155,12 +154,12 @@ export default {
     }
     .search {
       padding: 10px 0 0 10px;
-      margin-left: 12px;
+      
       > div {
         width: 28%;
         display: inline-block;
         .el-range-editor.el-input__inner {
-          width: 72%;
+          width: 70%;
         }
         .el-input {
           width: 70%;
