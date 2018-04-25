@@ -10,11 +10,17 @@
         </div>
         <div class="centerContent">
           <el-table :data="tableData" border style="width: 100%">
-            <el-table-column prop="date" label="日期" width="180">
+            <el-table-column prop="date" label="支付名称" width="180">
             </el-table-column>
-            <el-table-column prop="name" label="姓名" width="180">
+            <el-table-column prop="name" label="状态" width="180" align="center">
+              <!-- <template scope="scope">
+                <el-radio-group v-model="radio3">
+                  <el-radio v-model="radio" :label="scope.$index">备选项</el-radio>
+                  <el-radio v-model="radio2" :label="scope.$index">备选项</el-radio>
+                </el-radio-group>
+              </template> -->
             </el-table-column>
-            <el-table-column prop="address" label="地址">
+            <el-table-column prop="address" label="描述">
             </el-table-column>
           </el-table>
         </div>
@@ -30,25 +36,29 @@
 export default {
   data() {
     return {
+      // radio: "",
+      // radio2: "",
+      // radio3: "",
       tableData: [
         {
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
+          date: "支付宝支付",
+          name: "",
+          address:
+            "在线支付是指卖方与买方通过因特网上的电子商务网站进行交易时，银行为其提供网上资金结算服务的一种业务。它为企业和个人提供了一个安全、快捷、方便的电子商务应用环境和网上资金结算工具。在线支付不仅帮助企业实现了销售款项的快速归集，缩短收款周期，同时也为个人网上银行客户提供了网上消费支付结算方式，使客户真正做到足不出户，网上购物。"
         },
         {
           date: "2016-05-04",
-          name: "王小虎",
+          name: "",
           address: "上海市普陀区金沙江路 1517 弄"
         },
         {
           date: "2016-05-01",
-          name: "王小虎",
+          name: "",
           address: "上海市普陀区金沙江路 1519 弄"
         },
         {
           date: "2016-05-03",
-          name: "王小虎",
+          name: "",
           address: "上海市普陀区金沙江路 1516 弄"
         }
       ]
@@ -102,6 +112,9 @@ export default {
     }
     .centerContent {
       padding: 10px 22px;
+      .el-radio + .el-radio {
+        margin-left: 0;
+      }
     }
   }
 }
