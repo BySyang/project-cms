@@ -1,32 +1,5 @@
 <template>
 <div id="index">
-    <ul>
-        <li>
-            <span>成交金额</span>
-            <i class="iconfont "></i>
-            <span>4000W</span>
-        </li>
-        <li>
-            <span>留言</span>
-            <i class="iconfont"></i>
-            <span>8000条</span>
-        </li>
-        <li>
-            <span>订单</span>
-            <i class="iconfont"></i>
-            <span>10000条</span>
-        </li>
-        <li>
-            <span>通知</span>
-            <i class="iconfont"></i>
-            <span>456条</span>
-        </li>
-        <li>
-            <span>待处理</span>
-            <i class="iconfont"></i>
-            <span>15条</span>
-        </li>
-    </ul>
     <div id="main"></div>
 </div>
 </template>
@@ -120,11 +93,18 @@ export default {
 </script>
 
 <style>
+#index{
+    background: white;
+    width: 96%;
+    height: 90%;
+    margin:25px auto;
+    box-shadow: -1px -1px -1px -1px lightgray
+}
 #main {
     position: absolute;
-    top: 60%;
+    top: 30%;
     height: 350px;
     width: 600px;
-    background: #f0f0f0
+    background: #f7f7f7
 }
 </style>
