@@ -22,7 +22,7 @@
             </el-table-column>
             <el-table-column prop="address" label="描述">
             </el-table-column>
-          </el-table>
+          </el-table>   
         </div>
         <div class="centerTop">
           <span>其他配置信息</span>

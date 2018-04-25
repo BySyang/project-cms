@@ -6,22 +6,9 @@
             <div class="log"><i class="iconfont icon-lifangtilitiduomiantifangkuai2"></i> <span>后台管理系统</span></div>
             <!-- 头像 -->
             <img :src='img'>
-            <!-- <el-dropdown @command="handleCommand">
-              <span class="el-dropdown-link">
-                设置<i class="el-icon-arrow-down el-icon--right"></i>
-              </span>
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item command="a">黄金糕</el-dropdown-item>
-                <el-dropdown-item command="b">狮子头</el-dropdown-item>
-                <el-dropdown-item command="c">螺蛳粉</el-dropdown-item>
-                <el-dropdown-item command="d" disabled>双皮奶</el-dropdown-item>
-                <el-dropdown-item command="e" divided>蚵仔煎</el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown> -->
               <el-badge :value="200" :max="99" class="item iconfont icon-tongzhi4">
               </el-badge>
         </el-header>
-        <!-- 头部栏目 -->
         <!-- 页面导航 -->
         <el-container class="section2">
             <el-aside width="200px">
@@ -91,7 +78,6 @@ export default {
         };
     },
     created() {
-        console.log(this.$route);
         if (this.$route.name == "home") {
             this.$router.replace("/home/index");
         }
@@ -131,9 +117,11 @@ export default {
 }
 
 .el-header {
-    position: relative;
+    position: fixed;
+    z-index: 10000;
     background: white;
-    box-shadow: 1px 0px 1px 0px lightgrey;
+    box-shadow: 3px 0px 3px 3px lightgrey;
+    width: 100%;
     z-index: 9;
     img{
       position: absolute;
@@ -154,17 +142,19 @@ export default {
         text-align: center;
         line-height: 60px;
         width: 199px;
-        background: #002140;
+        // background: #002140;
         height: 60px;
         color: white;
         z-index: 99;
     }
     .log span {
         font-size: 20px;
+        color: #000;
     }
     .log i {
-        color: #1890ff;
+        color: #000;
         font-size: 24px;
+        padding-left: 20px;
     }
 }
 
@@ -178,9 +168,11 @@ export default {
 }
 
 .section2 {
-    // border: 1px solid red;
     height: 700px;
     .el-aside {
+        position: fixed;
+        top: 9%;
+        z-index: 1;
         height: 100%;
         background: #f2f2f2;
         .tac {
@@ -195,12 +187,16 @@ export default {
 .el-submenu .el-menu-item {
     min-width: 199px;
 }
-
 .el-main {
-    height: 100%;
-    overflow: hidden;
+    position:absolute;
+    top: 9%;
+    left: 15%;
+    width: 85%;
+    height: 300%;
     background-color: #f0f0f0;
     padding: 0;
+    overflow:scroll;
+    overflow-y:hidden
 }
 
 .el-menu-item-group {

@@ -7,117 +7,48 @@
       <div class="search">
         <div>
           下单时间:
-          <el-date-picker
-            v-model="xiadandata"
-            type="daterange"
-            align="right"
-            unlink-panels
-            range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-            :picker-options="pickerOptions2">
+          <el-date-picker v-model="xiadandata" type="daterange" align="left" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions2">
           </el-date-picker>
         </div>
         <div>
           交易状态:
-          <el-select v-model="jiaoyistats" filterable placeholder="请选择">
-            <el-option
-              v-for="item in jiaoyilist"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
+          <el-select v-model="jiaoyistats" filterable placeholder="请选择" @change="jiaoyistatuMethod">
+            <el-option v-for="item in jiaoyilist" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
         </div>
         <div>
           商品名:
-          <el-input
-            placeholder="请输入商品名"
-            prefix-icon="el-icon-search"
-            v-model="goodsName">
+          <el-input placeholder="请输入商品名" prefix-icon="el-icon-search" v-model="goodsName">
           </el-input>
         </div>
         <div>
           订单号:
-          <el-input
-            placeholder="请输入订单号"
-            prefix-icon="el-icon-search"
-            v-model="ordersId">
+          <el-input placeholder="请输入订单号" prefix-icon="el-icon-search" v-model="ordersId">
           </el-input>
         </div>
       </div>
       <div class="table">
-        <el-table
-        border
-        ref="multipleTable"
-        :data="orsersTable"
-        tooltip-effect="dark"
-        style="width: 100%"
-        @selection-change="handleSelectionChange">
-          <el-table-column
-            prop="orderunique"
-            header-align="center"
-            align="center"
-            label="订单号"
-            width="150">
+        <el-table border ref="multipleTable" :data="orsersTable" tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange">
+          <el-table-column prop="orderunique" header-align="center" align="center" label="订单号" width="150">
           </el-table-column>
-          <el-table-column
-            prop="userId"
-            align="center"
-            header-align="center"
-            label="用户ID"
-            width="65"
-            show-overflow-tooltip>
+          <el-table-column prop="userId" align="center" header-align="center" label="用户ID" width="100" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column
-            prop="totalMoney"
-            align="center"
-            header-align="center"
-            label="订单总价"
-            show-overflow-tooltip>
+          <el-table-column prop="totalMoney" align="center" header-align="center" label="订单总价" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column
-            prop="orderRemarks"
-            align="center"
-            header-align="center"
-            label="用户备注"
-            show-overflow-tooltip>
+          <el-table-column prop="orderRemarks" align="center" header-align="center" label="用户备注" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column
-            prop="adminRemarks"
-            align="center"
-            header-align="center"
-            label="修改备注"
-            show-overflow-tooltip>
+          <el-table-column prop="adminRemarks" align="center" header-align="center" label="修改备注" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column
-            prop="newstatus"
-            align="center"
-            header-align="center"
-            label="订单状态"
-            show-overflow-tooltip>
+          <el-table-column prop="newstatus" align="center" header-align="center" label="订单状态" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column
-            prop="orderScore"
-            align="center"
-            header-align="center"
-            label="获得积分"
-            show-overflow-tooltip>
+          <el-table-column prop="orderScore" align="center" header-align="center" label="获得积分" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column
-            prop="newTime"
-            label="下单日期"
-            align="center"
-            header-align="center"
-            width="120"
-            show-overflow-tooltip>
+          <el-table-column prop="newTime" label="下单日期" align="center" header-align="center" width="120" show-overflow-tooltip>
           </el-table-column>
           <el-table-column label="操作" header-align="center" align="center">
             <template slot-scope="scope">
-              <el-button
-                type="primary"
-                size="mini"
-                @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+              <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -190,12 +121,13 @@ export default {
         }
       ],
       //表格数据
-      orsersTable: []
+      orsersTable: [],
+      //username
+      userNameList: []
     };
   },
   created() {
     this.orsersTableList();
-    this.orsersTable;
   },
   methods: {
     handleSelectionChange(val) {
@@ -208,12 +140,36 @@ export default {
       var that = this;
       this.$http.get("ordersList").then(
         resp => {
-          // console.log(resp.data.data);
           if (resp.data.data) {
             resp.data.data.forEach(item => {
               item.newTime = that.formatDate(item.createTime);
-              console.log(item.orderStatus);
+              // console.log(item.orderStatus);
               item.newstatus = that.ordersStatus(item.orderStatus);
+              /* for (let i = 0; i < resp.data.data.length; i++) {
+                // var that = this;
+                this.$http
+                  .get("userInfo", {
+                    params: {
+                      userId: resp.data.data[i].userId
+                    }
+                  })
+                  .then(
+                    resp => {
+                      console.log(resp.data.data[i].userId)
+                      if (resp.data.data) {
+                        resp.data.data.forEach(item => {
+                          item.newname = item.userName;
+                        });
+                        // console.log(item.newname)
+                        this.orsersTable.push(item.userName)
+                        // console.log(this.orsersTable[0].userName);
+                      }
+                    },
+                    err => {
+                      consolo.log(err);
+                    }
+                  );
+              } */
             });
             this.orsersTable = resp.data.data;
           }
@@ -222,6 +178,29 @@ export default {
           consolo.log(err);
         }
       );
+    },
+    orsersTableListName(userId) {
+      var that = this;
+      this.$http
+        .get("userInfo", {
+          params: {
+            userId: 1
+          }
+        })
+        .then(
+          resp => {
+            if (resp.data.data) {
+              resp.data.data.forEach(item => {
+                item.newname = item.userName;
+              });
+              this.userNameList = resp.data.data;
+              console.log(this.userNameList[0].newname);
+            }
+          },
+          err => {
+            consolo.log(err);
+          }
+        );
     },
     formatDate(dateStr) {
       var iDate = new Date(dateStr);
@@ -241,7 +220,7 @@ export default {
       var newst = "";
       switch (status) {
         case 0:
-          newst = "待付款"
+          newst = "待付款";
           break;
         case 1:
           newst = "待发货";
@@ -259,6 +238,9 @@ export default {
           break;
       }
       return newst;
+    },
+    jiaoyistatuMethod(){
+      // console.log(item.value)
     }
   }
 };
