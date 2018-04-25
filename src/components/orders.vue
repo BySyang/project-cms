@@ -69,31 +69,10 @@
             show-overflow-tooltip>
           </el-table-column>
           <el-table-column
-            prop="goodsSize"
-            align="center"
-            header-align="center"
-            label="商品尺码"
-            show-overflow-tooltip>
-          </el-table-column>
-          <el-table-column
             prop="goodsPrice"
             align="center"
             header-align="center"
             label="商品价格"
-            show-overflow-tooltip>
-          </el-table-column>
-          <el-table-column
-            prop="goodsColor"
-            align="center"
-            header-align="center"
-            label="商品颜色"
-            show-overflow-tooltip>
-          </el-table-column>
-          <el-table-column
-            prop="goodsNumber"
-            align="center"
-            header-align="center"
-            label="商品数量"
             show-overflow-tooltip>
           </el-table-column>
           <el-table-column
@@ -255,9 +234,6 @@ export default {
     handleEdit(index, row) {
       console.log(index, row);
     },
-    handleDelete(index, row) {
-      console.log(index, row);
-    }
   }
 };
 </script>
