@@ -6,9 +6,10 @@ import router from './router'
 import axios from './interceptor'
 import elementui from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css';
+import avatar from 'vue-avatar'
 
 Vue.config.productionTip = false
-
+Vue.use(avatar)
 Vue.use(elementui);
 Vue.prototype.$http = axios;
 
