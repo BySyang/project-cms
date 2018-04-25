@@ -22,4 +22,7 @@ body,html{
 #app{
   height: 100%;
 }
+.el-alert--error .el-alert__description{
+  display: inline
+}
 </style>

@@ -6,35 +6,39 @@
       </div>
       <div class="pays_centerBox">
         <div class="centerTop">
-          <span>在线支付方式</span> 
-          
+          <span>在线支付方式</span>
+
         </div>
         <div class="centerContent">
-            <el-alert  title="提示：该支付方式启用并不能正常使用，需要开通支付功能才能使用相应的支付方式。"  type="error"></el-alert>
-            <div class="paymentBox">
-              <div class="payment">
+          <el-alert title="提示：" description="该支付方式启用并不能正常使用，需要开通支付功能才能使用相应的支付方式。" type="error"></el-alert>
+          <div class="paymentBox">
+            <div class="payment">
               <div>支付宝</div>
               <div></div>
-              </div>
-              <div class="payment">
-
-              </div>
-              <div class="payment">
-
-              </div>
-              <div class="payment">
-
-              </div>
-              <div class="payment">
-
-              </div>
             </div>
-            
+            <div class="payment">
+              <div>微信支付</div>
+
+            </div>
+            <div class="payment">
+              <div>银联支付</div>
+
+            </div>
+            <div class="payment">
+              <div>微信支付</div>
+
+            </div>
+            <div class="payment">
+              <div>银联支付</div>
+
+            </div>
           </div>
+
+        </div>
       </div>
     </div>
   </div>
-  
+
 </template>
 <script>
 export default {
@@ -95,12 +99,20 @@ export default {
           display: flex;
           flex-direction: row;
           flex-wrap: wrap;
-          justify-content: space-between;
+          justify-content: flex-start;
           .payment {
             width: 240px;
             height: 320px;
             margin-top: 22px;
+            margin-left: 23px;
             border: 1px solid #e5e6e6;
+            div:nth-of-type(1){
+              background-color: #59ace2;
+              height: 35px;
+              line-height: 35px;
+              color: white;
+              text-align: center;
+            }
           }
         }
       }
