@@ -85,25 +85,10 @@
 
 <script>
 export default {
-<<<<<<< HEAD
     data() {
         return {
           img:require('../assets/personal.jpeg'),
         };
-=======
-  data() {
-    return {};
-  },
-  created() {
-    // console.log(this.$route);
-    if (this.$route.name == "home") {
-      this.$router.replace("/home/index");
-    }
-  },
-  methods: {
-    handleOpen(key, keyPath) {
-      this.$router.push(key);
->>>>>>> 5e424a73361344a1cff430b74f2b042a38e16025
     },
     created() {
         console.log(this.$route);
