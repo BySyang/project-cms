@@ -1,17 +1,20 @@
 <template>
   <div id="home">
-    <el-container>
+    <el-container class="section1">
+      <!-- 头部 -->
       <el-header>
-        <img src="../assets/logo.png" alt="">
+        <div class="log"><i class="iconfont icon-lifangtilitiduomiantifangkuai2"></i> <span>后台管理系统</span></div>
         <div class="search">
         <el-input placeholder="搜索" suffix-icon="el-icon-search" size="mini"></el-input>
         </div>
       </el-header>
+        <!-- 头部栏目 -->
       <!-- 页面导航 -->
-      <el-container>
+      <el-container class="section2">
         <el-aside width="200px">
           <el-row class="tac">
-            <el-menu router  :default-active="$route.path" unique-opened background-color="#2a3442" text-color="#a3bfb6" active-text-color="#fff" @open="handleOpen">
+            <el-menu router  :default-active="$route.path" unique-opened background-color="#001529
+" text-color="#fff" active-text-color="#20a0ff" @open="handleOpen" @close="handleClose">
               <el-menu-item index="/home/index">
                 <span slot="title"><i class="iconfont icon-fl-jia"></i>首页</span>
               </el-menu-item>
@@ -64,11 +67,6 @@
             <router-view/>
         </el-main>
       </el-container>
-      <!-- 底部 -->
-      <!-- <el-footer>
-        <p>Copyright © 2010-2017</p>
-        <p>FASHION WEB</p>
-      </el-footer> -->
     </el-container>
   </div>
 </template>
@@ -78,13 +76,16 @@ export default {
     return {};
   },
   created() {
-    console.log(this.$route);
+    // console.log(this.$route);
     if (this.$route.name == "home") {
       this.$router.replace("/home/index");
     }
   },
   methods: {
     handleOpen(key, keyPath) {
+      this.$router.push(key);
+    },
+    handleClose(key, keyPath) {
       this.$router.push(key);
     }
   }
@@ -95,10 +96,39 @@ export default {
   padding-right: 25px;
   font-size: 18px;
 }
+.el-breadcrumb{
+  position: absolute;
+  line-height: 34px;
+  width: 85.3%;
+  height: 5%;
+  background: white;
+  margin-left: 14.8%;
+  margin-top: 4.5%;
+  color: white;
+}
 .el-header {
-  background: #72d0eb;
-  img {
+  background: white;
+  box-shadow: 1px 0px 1px 0px lightgrey;
+  z-index: 9;
+  .log {
+    display: flex;
+    align-items: center;
+    justify-content:center;
+    margin-left:-20px;
+    text-align: center;
+    line-height: 60px;
+    width: 199px;
+    background: #002140;
     height: 60px;
+    color: white;
+    z-index: 99;
+  }
+  .log span{
+    font-size: 20px;
+  }
+  .log i{
+    color: #1890ff;
+    font-size: 24px;
   }
 }
 .el-input--mini {
@@ -109,18 +139,28 @@ export default {
   width: 150px;
   color: white;
 }
-.el-aside {
+.section2{
+  // border: 1px solid red;
+  height: 700px;
+  .el-aside {
+  height: 100%;
   background: #f2f2f2;
+  .tac{
+    height: 100%;
+    }
+    .el-menu{
+      height: 100%;  
+    }
+  }
 }
-.el-footer {
-  padding-top: 10px;
-  background: #e1e1e1;
-  text-align: center;
-}
+
+
+
 .el-submenu .el-menu-item {
   min-width: 199px;
 }
 .el-main {
+  height: 100%;
   overflow: hidden;
   background-color: #f0f0f0;
   padding: 0;

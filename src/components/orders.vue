@@ -55,66 +55,69 @@
         style="width: 100%"
         @selection-change="handleSelectionChange">
           <el-table-column
-            prop="ordersId"
+            prop="orderunique"
             header-align="center"
             align="center"
             label="订单号"
-            width="100">
+            width="150">
           </el-table-column>
           <el-table-column
             prop="userId"
             align="center"
             header-align="center"
             label="用户ID"
+            width="65"
             show-overflow-tooltip>
           </el-table-column>
           <el-table-column
-            prop="goodsPrice"
+            prop="totalMoney"
             align="center"
             header-align="center"
-            label="商品价格"
+            label="订单总价"
             show-overflow-tooltip>
           </el-table-column>
           <el-table-column
-            prop="userNote"
+            prop="orderRemarks"
             align="center"
             header-align="center"
             label="用户备注"
             show-overflow-tooltip>
           </el-table-column>
           <el-table-column
-            prop="editNote"
+            prop="adminRemarks"
             align="center"
             header-align="center"
             label="修改备注"
             show-overflow-tooltip>
           </el-table-column>
           <el-table-column
-            prop="ordersState"
+            prop="newstatus"
             align="center"
             header-align="center"
             label="订单状态"
             show-overflow-tooltip>
           </el-table-column>
           <el-table-column
-            prop="gitintegral"
+            prop="orderScore"
             align="center"
             header-align="center"
             label="获得积分"
             show-overflow-tooltip>
           </el-table-column>
           <el-table-column
+            prop="newTime"
             label="下单日期"
             align="center"
             header-align="center"
-            width="120">
-            <template slot-scope="scope">{{ scope.row.date }}</template>
+            width="120"
+            show-overflow-tooltip>
           </el-table-column>
           <el-table-column label="操作" header-align="center" align="center">
             <template slot-scope="scope">
               <el-button
                 type="primary"
                 size="mini"
+                type="primary"
                 @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
             </template>
           </el-table-column>
@@ -188,52 +191,76 @@ export default {
         }
       ],
       //表格数据
-      orsersTable: [
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          date: "2016-05-04",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          date: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          date: "2016-05-08",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          date: "2016-05-06",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          date: "2016-05-07",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
-        }
-      ]
+      orsersTable: []
     };
+  },
+  created() {
+    this.orsersTableList();
+    this.orsersTable;
   },
   methods: {
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
     handleEdit(index, row) {
-      console.log(index, row);
+      // console.log(index, row);
     },
+    orsersTableList() {
+      var that = this;
+      this.$http.get("ordersList").then(
+        resp => {
+          // console.log(resp.data.data);
+          if (resp.data.data) {
+            resp.data.data.forEach(item => {
+              item.newTime = that.formatDate(item.createTime);
+              console.log(item.orderStatus);
+              item.newstatus = that.ordersStatus(item.orderStatus);
+            });
+            this.orsersTable = resp.data.data;
+          }
+        },
+        err => {
+          consolo.log(err);
+        }
+      );
+    },
+    formatDate(dateStr) {
+      var iDate = new Date(dateStr);
+
+      function addZreo(num) {
+        return num < 10 ? "0" + num : num;
+      }
+      return (
+        iDate.getFullYear() +
+        "-" +
+        addZreo(iDate.getMonth() + 1) +
+        "-" +
+        addZreo(iDate.getDate())
+      );
+    },
+    ordersStatus(status) {
+      var newst = "";
+      switch (status) {
+        case 0:
+          newst = "待付款"
+          break;
+        case 1:
+          newst = "待发货";
+          break;
+        case 2:
+          newst = "已发货";
+          break;
+        case 3:
+          newst = "已取消";
+          break;
+        case 4:
+          newst = "已完成";
+          break;
+        default:
+          break;
+      }
+      return newst;
+    }
   }
 };
 </script>
@@ -254,16 +281,17 @@ export default {
       div {
         position: absolute;
         top: 0;
-        left: 40px;
+        left: 22px;
         width: 100px;
         height: 30px;
         line-height: 30px;
         text-align: center;
+        color: white;
         background-color: #59ace2;
       }
     }
     .search {
-      padding: 10px 0 0 10px;
+      padding: 10px 0 0 22px;
       > div {
         width: 28%;
         display: inline-block;
@@ -279,7 +307,7 @@ export default {
         width: 20%;
       }
     }
-    .table{
+    .table {
       width: 96%;
       margin: 10px auto;
     }
