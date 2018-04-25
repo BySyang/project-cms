@@ -12,7 +12,7 @@
         </div>
         <div>
           交易状态:
-          <el-select v-model="jiaoyistats" filterable placeholder="请选择" @change="jiaoyistatuMethod">
+          <el-select v-model="jiaoyistats" filterable placeholder="请选择">
             <el-option v-for="item in jiaoyilist" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
@@ -125,6 +125,11 @@ export default {
       //username
       userNameList: []
     };
+  },
+  watch: {
+    jiaoyistats: function(val, oldVal) {
+      this.orsersTable = this.otableData.filter(item => ~item.orderStatus.indexOf(val));
+    }
   },
   created() {
     this.orsersTableList();
@@ -239,8 +244,17 @@ export default {
       }
       return newst;
     },
-    jiaoyistatuMethod(){
-      // console.log(item.value)
+    jiaoyistatuMethod(value) {
+      var newordersTable = [];
+      // console.log(value)
+      // console.log(this.orsersTable)
+      this.orsersTable.forEach(item => {
+        if (item.orderStatus == value) {
+          newordersTable = this.orsersTable;
+          newordersTable.splice(item.ordersStatus);
+        }
+        // console.log(item.orderStatus);
+      });
     }
   }
 };
