@@ -117,7 +117,6 @@
               <el-button
                 type="primary"
                 size="mini"
-                type="primary"
                 @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
             </template>
           </el-table-column>

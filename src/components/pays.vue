@@ -7,13 +7,30 @@
       <div class="pays_centerBox">
         <div class="centerTop">
           <span>在线支付方式</span> 
-          <div class="centerContent">
-            <div>
-              
-            </div>
-          </div>
+          
         </div>
-        
+        <div class="centerContent">
+            <el-alert  title="提示：该支付方式启用并不能正常使用，需要开通支付功能才能使用相应的支付方式。"  type="error"></el-alert>
+            <div class="paymentBox">
+              <div class="payment">
+              <div>支付宝</div>
+              <div></div>
+              </div>
+              <div class="payment">
+
+              </div>
+              <div class="payment">
+
+              </div>
+              <div class="payment">
+
+              </div>
+              <div class="payment">
+
+              </div>
+            </div>
+            
+          </div>
       </div>
     </div>
   </div>
@@ -22,9 +39,7 @@
 <script>
 export default {
   data() {
-    return {
-
-    };
+    return {};
   }
 };
 </script>
@@ -59,16 +74,34 @@ export default {
         background-color: #59ace2;
       }
     }
-    .pays_centerBox{
-      margin-top:1%;
+    .pays_centerBox {
+      margin-top: 1%;
       height: 92%;
       // border:1px solid #e5e6e6;
-      .centerTop{
+      .centerTop {
         height: 30px;
-        padding-left:22px;
-        background:linear-gradient(#fefefe,#f1f1f1) ;
-        span{
+        padding-left: 22px;
+        background: linear-gradient(#fefefe, #f1f1f1);
+        span {
           line-height: 30px;
+        }
+      }
+      .centerContent {
+        padding: 10px 22px 0;
+        .el-alert {
+          padding: 8px 0px;
+        }
+        .paymentBox {
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+          justify-content: space-between;
+          .payment {
+            width: 240px;
+            height: 320px;
+            margin-top: 22px;
+            border: 1px solid #e5e6e6;
+          }
         }
       }
     }
