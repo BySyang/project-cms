@@ -3,7 +3,6 @@
     <div class="orders_main">
       <div class="main_top">
         <div>订单管理</div>
-        <el-button type="danger"><i class="iconfont icon-shanchu"></i> 删除</el-button>
       </div>
       <div class="search">
         <div>
@@ -56,30 +55,17 @@
         style="width: 100%"
         @selection-change="handleSelectionChange">
           <el-table-column
-            type="selection"
-            header-align="center"
-            align="center"
-            width="55">
-          </el-table-column>
-          <el-table-column
             prop="ordersId"
             header-align="center"
             align="center"
             label="订单号"
-            width="120">
+            width="100">
           </el-table-column>
           <el-table-column
             prop="userId"
             align="center"
             header-align="center"
             label="用户ID"
-            show-overflow-tooltip>
-          </el-table-column>
-          <el-table-column
-            prop="goodsName"
-            align="center"
-            header-align="center"
-            label="商品名称"
             show-overflow-tooltip>
           </el-table-column>
           <el-table-column
@@ -148,12 +134,9 @@
           <el-table-column label="操作" header-align="center" align="center">
             <template slot-scope="scope">
               <el-button
+                type="primary"
                 size="mini"
                 @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-              <el-button
-                size="mini"
-                type="danger"
-                @click="handleDelete(scope.$index, scope.row)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -302,13 +285,6 @@ export default {
         text-align: center;
         background-color: #59ace2;
       }
-      .el-button {
-        position: absolute;
-        top: 1px;
-        right: 100px;
-        padding: 5px 15px;
-        border-radius: 5px;
-      }
     }
     .search {
       padding: 10px 0 0 10px;
@@ -328,7 +304,7 @@ export default {
       }
     }
     .table{
-      width: 98%;
+      width: 96%;
       margin: 10px auto;
     }
   }
