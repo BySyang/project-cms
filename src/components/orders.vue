@@ -61,21 +61,21 @@
 
     <!-- 编辑弹出框 -->
     <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
-      <el-form ref="form" :model="form" label-width="50px">
-        <el-form-item label="下单日期" width="200">
+      <el-form ref="form" :model="form" label-width="100px">
+        <el-form-item label="下单日期">
           <el-date-picker type="date" placeholder="选择日期" v-model="form.newTime" value-format="yyyy-MM-dd" style="width: 100%;"></el-date-picker>
         </el-form-item>
-        <el-form-item label="修改备注" width="100">
+        <el-form-item label="修改备注">
           <el-input v-model="form.adminRemarks"></el-input>
         </el-form-item>
-        <el-form-item label="订单状态" width="100">
+        <el-form-item label="订单状态">
           <!-- <el-input v-model="form.newstatus"></el-input> -->
           <el-select v-model="jiaoyistats" filterable placeholder="请选择">
             <el-option v-for="item in jiaoyilist" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="获得积分" width="100">
+        <el-form-item label="获得积分">
           <el-input v-model="form.orderScore"></el-input>
         </el-form-item>
 
