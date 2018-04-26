@@ -1,20 +1,23 @@
 <template>
   <div id="goodsClass">
-    <el-row>
-      <el-col :span="4">
-        <el-input size="small" placeholder="请输入商品分类名"></el-input>
-      </el-col>
-      <el-col :span="10">
-        <div class="block">
-          <el-date-picker type="datetimerange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" align="right" size="small"></el-date-picker>
-        </div>
-      </el-col>
-      <el-col :span="6" :push="2">
-        <el-button size="small">
-          <i class="el-icon-search"></i>
-        </el-button>
-      </el-col>
-    </el-row>
+    <div class="search">
+      <div class="main_top">
+        <div>评论管理</div>
+      </div>
+      <div>
+        评论时间:
+        <el-date-picker v-model="xiadandata" type="daterange" align="left" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions2">
+        </el-date-picker>
+      </div>
+      <div>
+        评论人:
+        <el-input v-model="select_word" placeholder="请输入姓名" prefix-icon="el-icon-search">
+        </el-input>
+      </div>
+      <div>
+        <el-button type="primary" @click="searchpl" icon="el-icon-search">搜索</el-button>
+      </div>
+    </div>
     <el-table :data="data1" border style="width: 100%" stripe show-header tooltip-effect="dark">
       <el-table-column prop="goodsId" sortable label="商品ID" show-overflow-tooltip> </el-table-column>
       <el-table-column prop="goodsName" label="商品名" show-overflow-tooltip> </el-table-column>
@@ -67,13 +70,15 @@ export default {
     }
   },
   created() {
-    new Promise((a,b )=> {
+    new Promise((a, b) => {
       this.getData(a, b);
-    }).then(() => {
-      this.getTypes();
-    }).catch((err)=>{
-      console.log(err)
     })
+      .then(() => {
+        this.getTypes();
+      })
+      .catch(err => {
+        console.log(err);
+      });
   },
   methods: {
     setCurrent(val) {
@@ -105,6 +110,7 @@ export default {
 <style lang="scss" scoped>
 #goodsClass {
   padding: 10px;
+  
 }
 .el-row {
   padding: 20px 0;
