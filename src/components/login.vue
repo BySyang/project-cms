@@ -1,5 +1,6 @@
 <template>
   <div id="login">
+     <video id="myvideo" src="/static/27288790_12.mp4"  muted="muted" autoplay="autoplay" loop="loop" ></video>
     <h2>管理员登录系统</h2>
     <div class="wrap">
     <el-form ref="ruleForm" label-width="70px">
@@ -34,9 +35,10 @@ export default {
   name: "login",
   data() {
     return {
+      _dom:"",
       isRemeber: "",
       username: "",
-      password: ""
+      password: "",
     };
   },
   computed: {
@@ -52,9 +54,20 @@ export default {
       this.password = window.localStorage.getItem("logPwd");
     }
   },
+  
   methods: {
     submitForm() {
-       window.sessionStorage.setItem('isLog','true');
+      this.$http
+        .post(
+          "adminLog",
+          qs.stringify({
+            logName: this.username,
+            logPwd: this.password
+          })
+        )
+        .then(res => {
+          if (res.data == "ok") {
+            window.sessionStorage.setItem('isLog','true');
             this.remeberAdmin();
             if (this.$route.query.redirect) {
               this.$router.push(
@@ -63,31 +76,12 @@ export default {
             } else {
               this.$router.push("/home");
             }
-      // this.$http
-      //   .post(
-      //     "adminLog",
-      //     qs.stringify({ 
-      //       logName: this.username,
-      //       logPwd: this.password
-      //     })
-      //   )
-      //   .then(res => {
-      //     if (res.data == "ok") {
-      //       window.sessionStorage.setItem('isLog','true');
-      //       this.remeberAdmin();
-      //       if (this.$route.query.redirect) {
-      //         this.$router.push(
-      //           this.$route.query.redirect.replace(/%2F/g, "/")
-      //         );
-      //       } else {
-      //         this.$router.push("/home");
-      //       }
-      //     } else {
-      //     }
-      //   })
-      //   .catch(err => {
-      //     console.log(err);
-      //   });
+          } else {
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
     resetForm() {
       this.username = "";
@@ -108,11 +102,16 @@ export default {
 };
 </script>
 <style scoped>
+#myvideo{
+   position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: initial;
+}
 #login {
   position: relative;
   width: 100%;
   height: 100%;
-  background: url("../assets/bk.jpg");
   background-size: 100% 100%;
   background-repeat: no-repeat;
 }
@@ -125,10 +124,9 @@ export default {
   margin: auto;
   width: 350px;
   height: 350px;
-  background: white;
   border-radius: 5px;
-  box-shadow: 0px 0px 8px 3px lightsteelblue;
-  background: rgba(255, 255, 255, 0.5);
+  box-shadow: 1px 1px 4px 1px black;
+  background: rgba(0, 0, 0, 0.2);
 }
 h2 {
   position: absolute;
@@ -139,14 +137,14 @@ h2 {
   text-align: center;
   margin-bottom: 15px;
   font-size: 26px;
-  color: lightblue;
+  color: white;
   font-family: "Courier New", Courier, monospace;
 }
 .input {
   margin: 0 auto;
   width: 260px;
   margin-top: 20px;
-  color: #4f5d80;
+  color: white;
 }
 .input > input {
   width: 250px;
@@ -154,7 +152,6 @@ h2 {
   border-radius: 5px;
   padding-left: 5px;
   margin-bottom: 15px;
-  color: #4f5d80;
   margin: 0 auto;
   border: 1px solid #cad2db;
 }
@@ -167,6 +164,7 @@ h2 {
   padding-left: 40px;
   margin-top: 10px;
   margin-bottom: 35px;
+  color: white;
 }
 .login_btn {
   padding-left: 45px;

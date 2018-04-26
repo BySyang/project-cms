@@ -51,11 +51,9 @@
         </div>
         <div class="menu">
             <ul>
-                <router-link to="/wuliu">
                 <li class="iconfont icon-fahuotixing"></li>
                 <li>待发货</li>
                 <li>906</li>
-                </router-link>
             </ul>
              <ul>
                 <li class="iconfont icon-daifukuan"></li>
@@ -90,7 +88,7 @@ export default {
 
         }
     },
-    mounted() {
+    mounted() { 
         /*ECharts图表*/
         var myChart1 = echarts.init(document.getElementById('Echars_1')); //初始化图标到相应的div中
         var myChart2 = echarts.init(document.getElementById('Echars_2'));

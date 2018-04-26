@@ -21,15 +21,16 @@
         </div>
       </div>
     </div>
-  </div>
 
+  </div>
 </template>
+
 <script>
 export default {
   data() {
     return {
-       value1: true,
-        value2: true,
+      value1: true,
+      value2: true,
       tableData: [
         {
           name: "发票",
@@ -53,6 +54,7 @@ export default {
   }
 };
 </script>
+
 <style lang="scss" scoped>
 .pays_section {
   overflow: hidden;
@@ -64,8 +66,7 @@ export default {
     width: 98%;
     height: 96%;
     background-color: white;
-    box-shadow: 0 -3px 0 0 #59ace2;
-    // outline: 1px solid red;
+    box-shadow: 0 -3px 0 0 #59ace2; // outline: 1px solid red;
     .topBox {
       position: relative;
       height: 30px;
