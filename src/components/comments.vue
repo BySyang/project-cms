@@ -13,22 +13,26 @@
 
         <div>
           评论人:
-          <el-input placeholder="请输入姓名" prefix-icon="el-icon-search" v-model="goodsName">
+          <el-input v-model="select_word" placeholder="请输入姓名" prefix-icon="el-icon-search">
           </el-input>
         </div>
 
         <div>
-          <el-button type="primary" icon="el-icon-search">搜索</el-button>
+          <el-button type="primary" @click="searchpl" icon="el-icon-search">搜索</el-button>
         </div>
 
       </div>
       <div class="table">
-        <el-table border ref="multipleTable" :data="data1" tooltip-effect="dark" style="width: 100%">
-          <el-table-column prop="userId" header-align="center" align="center" label="用户名" width="100">
+        <el-table border ref="multipleTable" :data="tables" tooltip-effect="dark" style="width: 100%">
+          <!-- <el-table-column prop="userId" header-align="center" align="center" label="用户名" width="100">
+          </el-table-column> -->
+
+          <el-table-column prop="username" header-align="center" align="center" label="用户名" width="100">
           </el-table-column>
-          <el-table-column prop="scoreText" align="center" header-align="center" label="留言内容" show-overflow-tooltip>
+
+          <el-table-column prop="scoreText" align="center" header-align="center" label="评论内容" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column align="center" header-align="center" label="留言时间" show-overflow-tooltip>
+          <el-table-column align="center" header-align="center" label="评论时间" show-overflow-tooltip>
             <template slot-scope="scope">
               <span style="margin-left: 10px">{{ scope.row.createTime.substr(0,10) }}</span>
             </template>
@@ -57,10 +61,13 @@ export default {
       multipleSelection: [],
       jiaoyistats: "",
       goodsName: "",
+      select_word: "",
       ordersId: "",
+      // userId: "",
       xiadandata: "",
       current: 1,
       size: 5,
+       is_search: false,
       //时间选择插件
       pickerOptions2: {
         shortcuts: [
@@ -96,6 +103,7 @@ export default {
       data: []
     };
   },
+  //分页
   computed: {
     data1() {
       var arr = [];
@@ -106,24 +114,59 @@ export default {
       }
       return arr;
     },
+    //搜索
+     tables:function(){
+        if(this.select_word==""){
+          return this.data1
+        }else{
+          var newArr=[];
+          for(var i=0;i<this.data1.length;i++){
+            if(this.data1[i].username.indexOf(this.select_word)>-1){
+              newArr.push(this.data1[i])
+            }
+          }
+          return newArr;
+        }
+      },
     total() {
       return this.data.length;
     }
   },
   created() {
-   this.getData();
+    new Promise((a, b) => {
+      this.getData(a);
+    }).then(() => {
+      this.getName();
+    });
   },
+  //获取数据
   methods: {
-    getData() {
+    getData(a) {
       this.$http.get("/goodScoreList").then(res => {
         this.data = res.data.data;
+        a("");
       });
     },
     setCurrent(val) {
       this.current = val;
-    }
-  }
-};
+    },
+    getName() {
+      this.data.forEach(item => {
+        this.$http.get("/userInfo?" + "userId=" + item.userId).then(res => {
+          this.$set(item, "username", res.data.data[0].userName);
+        });
+      });
+    },
+    // searchpl() {
+    //   this.$http.get("/goodScoreList").then(res => {
+    //     this.data = res.data.data;
+    //   })
+    // }
+},
+
+//
+}
+
 </script>
 
 
@@ -154,7 +197,7 @@ export default {
     }
     .search {
       padding: 10px 0 0 10px;
-      
+
       > div {
         width: 28%;
         display: inline-block;

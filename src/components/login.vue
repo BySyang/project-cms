@@ -28,7 +28,7 @@
 
 </template>
 
-<script>
+ <script>
 import qs from "qs";
 export default {
   name: "login",
@@ -54,17 +54,7 @@ export default {
   },
   methods: {
     submitForm() {
-      this.$http
-        .post(
-          "adminLog",
-          qs.stringify({
-            logName: this.username,
-            logPwd: this.password
-          })
-        )
-        .then(res => {
-          if (res.data == "ok") {
-            window.sessionStorage.setItem('isLog','true');
+       window.sessionStorage.setItem('isLog','true');
             this.remeberAdmin();
             if (this.$route.query.redirect) {
               this.$router.push(
@@ -73,12 +63,31 @@ export default {
             } else {
               this.$router.push("/home");
             }
-          } else {
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        });
+      // this.$http
+      //   .post(
+      //     "adminLog",
+      //     qs.stringify({ 
+      //       logName: this.username,
+      //       logPwd: this.password
+      //     })
+      //   )
+      //   .then(res => {
+      //     if (res.data == "ok") {
+      //       window.sessionStorage.setItem('isLog','true');
+      //       this.remeberAdmin();
+      //       if (this.$route.query.redirect) {
+      //         this.$router.push(
+      //           this.$route.query.redirect.replace(/%2F/g, "/")
+      //         );
+      //       } else {
+      //         this.$router.push("/home");
+      //       }
+      //     } else {
+      //     }
+      //   })
+      //   .catch(err => {
+      //     console.log(err);
+      //   });
     },
     resetForm() {
       this.username = "";
