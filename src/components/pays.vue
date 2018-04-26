@@ -38,7 +38,7 @@
                 <el-button type="danger">禁用</el-button>
               </div>
             </div>
-
+              
           </div>
 
         </div>
@@ -96,6 +96,7 @@ export default {
         span {
           line-height: 30px;
         }
+
       }
       .centerContent {
         padding: 10px 22px 0;

@@ -4,15 +4,17 @@
       <div class="main_top">
         <div class="afterSales_text">售后服务</div>
       </div>
+      <!-- 搜索 -->
       <div class="search">
         <div>
           下单时间:
           <el-date-picker v-model="xiadandata" type="daterange" align="left" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions2">
           </el-date-picker>
         </div>
+
         <div>
           订单号:
-          <el-input placeholder="请输入订单号" suffix-icon="el-icon-search" v-model="ordersId">
+          <el-input placeholder="请输入订单号" suffix-icon="el-icon-search" v-model="ordersId" >
           </el-input>
         </div>
         <div>
@@ -21,26 +23,29 @@
           </el-input>
         </div>
       </div>
+
+      <!-- 表格 -->
       <div class="tableData">
-        <el-table border ref="multipleTable" :data="tableData" tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange">
-          <el-table-column type="selection" header-align="center" align="center" width="55">
-          </el-table-column>
+        <el-table border ref="multipleTable" :data="data1" tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange">
           <el-table-column prop="orderId" header-align="center" align="center" label="订单id" width="100">
           </el-table-column>
           </el-table-column>
-          <el-table-column prop="orderunique" header-align="center" align="center" label="订单号" width="100">
+          <el-table-column prop="orderunique" header-align="center" align="center" label="订单号" width="200">
           </el-table-column>
           <el-table-column prop="goodsInfo[0].goodsName" align="center" header-align="center" label="商品名称" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column prop="deliverMoney" align="center" header-align="center" label="商品价格" show-overflow-tooltip>
+          <!-- </el-table-column>
+          <el-table-column prop="goodsInfo[0].goodsImg" align="center" header-align="center" label="商品图片" show-overflow-tooltip>
+          </el-table-column> -->
+          <el-table-column prop="goodsInfo[0].goodsPrice" align="center" header-align="center" label="商品价格" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column prop="deliverMoney" align="center" header-align="center" label="退款金额" show-overflow-tooltip>
+          <el-table-column prop="goodsInfo[0].goodsPrice" align="center" header-align="center" label="退款金额" show-overflow-tooltip>
           </el-table-column>
           <el-table-column prop="goodsInfo[0].goodsNum" align="center" header-align="center" label="数量" show-overflow-tooltip>
           </el-table-column>
           <el-table-column prop="refunInstruction" align="center" header-align="center" label="退款说明" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column prop="State" align="center" header-align="center" label="订单状态" show-overflow-tooltip>
+          <el-table-column prop="orderStatus" align="center" header-align="center" label="订单状态" show-overflow-tooltip>
           </el-table-column>
           <el-table-column prop="refunState" align="center" header-align="center" label="退款状态" show-overflow-tooltip>
         
@@ -55,6 +60,12 @@
             </template>
           </el-table-column>
         </el-table>
+      
+      <!-- 分页 -->
+      <div class="pages">
+          <el-pagination ref="pages" layout="prev, pager, next" :total="total" :page-size="size" @current-change="setCurrent">
+          </el-pagination>
+        </div>
       </div>
     </div>
 
@@ -69,6 +80,9 @@ export default {
       tableData: [],
       goodsName: "",
       ordersId: "",
+      current: 1,//当前页
+      size:3,
+      // data: [],
       //时间插件
       pickerOptions2: {
         shortcuts: [
@@ -101,7 +115,6 @@ export default {
           }
         ]
       },
-      refund:"未付款"
     };
   },
   created() {
@@ -115,6 +128,7 @@ export default {
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
+    // 订单表表格数据
     TableDataList(resolve) {
       var that = this;
       this.$http.get("ordersList").then(
@@ -122,10 +136,13 @@ export default {
           if (resp.data.data) {
             resp.data.data.forEach(item => {
               item.newTime = that.formatDate(item.createTime);
-              // item.refunState = that.refunStates(item.orderStatus);
+              this.tableData = resp.data.data;
+              item.orderStatus = that.orderStatus(item.orderStatus);
+              // console.log(that.orderStatus(item.orderStatus))
             });
             this.tableData = resp.data.data;
             resolve("ok");
+            console.log(resp.data.data)
           }
         },
         err => {
@@ -133,6 +150,32 @@ export default {
         }
       );
     },
+    orderStatus(){
+      var newst = "";
+      switch (status) {
+        case 0:
+          newst = "待付款";
+          break;
+        case 1:
+          newst = "待发货";
+          break;
+        case 2:
+          newst = "已发货";
+          break;
+        case 3:
+          newst = "已取消";
+          break;
+        case 4:
+          newst = "已完成";
+          break;
+        default:
+          break;
+      }
+      return newst;
+    },
+
+
+    //拼接年月日
     formatDate(dateStr) {
       var iDate = new Date(dateStr);
 
@@ -147,34 +190,43 @@ export default {
         addZreo(iDate.getDate())
       );
     },
-    refunStates(status) {
-      var newst = "";
-      switch (status) {
-        case 0:
-          newst = "未退款";
-          break;
-        case 1:
-          newst = "已退款";
-          break;
-        default:
-          break;
-      }
-      return newst;
-    },
+    //goods-order表请求的数据
     getOrderGoods() {
       this.tableData.forEach(item => {
         this.$http
           .get(`/orderGoods?orderId=${item.orderId}`)
           .then(res => {
-            this.$set(item,'goodsInfo',res.data.data)
+            this.$set(item,'goodsInfo',res.data.data);
           })
           .catch(err => {
             console.log(err);
           });
       });
-      console.log(this.tableData)
+      // console.log(this.tableData)
+    },
+    
+    setCurrent(val) {
+      this.current = val;
+      console.log(this.current)
     }
-  }
+  },
+  //分页
+   computed: {
+    data1() {
+      var arr = [];
+      var current = this.current;
+      var size = this.size;
+      for (var i = (current - 1) * size; i < (current - 1) * size + size; i++) {
+        if (this.tableData[i]) arr.push(this.tableData[i]);
+      }
+      return arr;
+      
+    },
+    total() {
+      // console.log(this.tableData.length)
+      return this.tableData.length;
+    }
+  },
 };
 </script>
 <style lang="less" scoped>
@@ -217,10 +269,6 @@ export default {
           width: 70%;
         }
       }
-      // div:nth-of-type(3),
-      // div:nth-of-type(4) {
-      //   width: 28%;
-      // }
     }
     .tableData {
       padding-left: 22px;

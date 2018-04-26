@@ -28,7 +28,7 @@
 
 </template>
 
-<script>
+ <script>
 import qs from "qs";
 export default {
   name: "login",
