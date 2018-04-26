@@ -40,11 +40,11 @@
           </el-table-column>
           <el-table-column prop="adminRemarks" align="center" header-align="center" label="修改备注" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column prop="newstatus" align="center" header-align="center" label="订单状态"  show-overflow-tooltip>
+          <el-table-column prop="newstatus" align="center" header-align="center" label="订单状态" show-overflow-tooltip>
           </el-table-column>
           <el-table-column prop="orderScore" align="center" header-align="center" label="获得积分" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column prop="newTime" label="下单日期" align="center" header-align="center" width="120" show-overflow-tooltip >
+          <el-table-column prop="newTime" label="下单日期" align="center" header-align="center" width="120" show-overflow-tooltip>
           </el-table-column>
           <el-table-column label="操作" header-align="center" align="center">
             <template slot-scope="scope">
@@ -100,11 +100,11 @@ export default {
       userName: "",
       ordersId: "",
       xiadandata: "",
-      form:{
-        adminRemarks:'',
+      form: {
+        adminRemarks: "",
         // newstatus:'',
-        orderScore:'',
-        newTime:''
+        orderScore: "",
+        newTime: ""
       },
       //交易状态
       jiaoyilist: [
@@ -151,6 +151,20 @@ export default {
     total() {
       return this.orsersTable.length;
     }
+    // 搜索
+    /*     orsersTable1: function() {
+      if (this.ordersId == "") {
+        return this.orsersTable1;
+      } else {
+        var newArr = [];
+        for (var i = 0; i < this.orsersTable1.length; i++) {
+          if (this.orsersTable1[i].orderunique.indexOf(this.ordersId) > -1) {
+            newArr.push(this.orsersTable1[i]);
+          }
+        }
+        return newArr;
+      }
+    } */
   },
   methods: {
     handleSelectionChange(val) {

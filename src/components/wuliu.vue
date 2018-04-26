@@ -7,7 +7,7 @@
       <div class="search">
         <div>
           下单时间:
-          <el-date-picker v-model="xiadandata" type="daterange" align="left" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" >
+          <el-date-picker v-model="xiadandata" type="daterange" align="left" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
           </el-date-picker>
         </div>
         <div>
@@ -22,49 +22,46 @@
         </div>
       </div>
       <div class="table">
-        <el-table
-    :data="tableData5"
-    style="width: 100%">
-    <el-table-column type="expand">
-      <template slot-scope="props">
-        <el-form label-position="left" inline class="demo-table-expand">
-          <el-form-item label="商品名称">
-            <span>{{ props.row.name }}</span>
-          </el-form-item>
-          <el-form-item label="所属店铺">
-            <span>{{ props.row.shop }}</span>
-          </el-form-item>
-          <el-form-item label="商品 ID">
-            <span>{{ props.row.id }}</span>
-          </el-form-item>
-          <el-form-item label="店铺 ID">
-            <span>{{ props.row.shopId }}</span>
-          </el-form-item>
-          <el-form-item label="商品分类">
-            <span>{{ props.row.category }}</span>
-          </el-form-item>
-          <el-form-item label="店铺地址">
-            <span>{{ props.row.address }}</span>
-          </el-form-item>
-          <el-form-item label="商品描述">
-            <span>{{ props.row.desc }}</span>
-          </el-form-item>
-        </el-form>
-      </template>
-    </el-table-column>
-    <el-table-column
-      label="商品 ID"
-      prop="id">
-    </el-table-column>
-    <el-table-column
-      label="商品名称"
-      prop="name">
-    </el-table-column>
-    <el-table-column
-      label="描述"
-      prop="desc">
-    </el-table-column>
-  </el-table>
+        <el-table :data="wuliuTable" style="width: 100%">
+          <el-table-column type="expand">
+            <template slot-scope="props">
+              <el-form label-position="left" inline class="demo-table-expand">
+                <el-form-item label="订单号">
+                  <span>{{ props.row.orderunique }}</span>
+                </el-form-item>
+                <el-form-item label="用户ID">
+                  <span>{{ props.row.userId }}</span>
+                </el-form-item>
+                <el-form-item label="订单总价">
+                  <span>{{ props.row.totalMoney }}</span>
+                </el-form-item>
+                <el-form-item label="用户备注">
+                  <span>{{ props.row.orderRemarks }}</span>
+                </el-form-item>
+                <el-form-item label="修改备注">
+                  <span>{{ props.row.adminRemarks }}</span>
+                </el-form-item>
+                <el-form-item label="获得积分">
+                  <span>{{ props.row.orderScore }}</span>
+                </el-form-item>
+                <el-form-item label="下单日期">
+                  <span>{{ props.row.newTime }}</span>
+                </el-form-item>
+              </el-form>
+            </template>
+          </el-table-column>
+          <el-table-column label="订单号" prop="orderunique">
+          </el-table-column>
+          <el-table-column label="用户ID" prop="userId">
+          </el-table-column>
+          <el-table-column label="下单日期" prop="newTime">
+          </el-table-column>
+          <el-table-column label="操作">
+            <template slot-scope="scope">
+              <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">发货</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
       </div>
     </div>
   </div>
@@ -73,10 +70,47 @@
 export default {
   data() {
     return {
-      xiadandata:'',
-      userName:'',
-      ordersId:'',
+      xiadandata: "",
+      userName: "",
+      ordersId: "",
+      wuliuTable: []
     };
+  },
+  created() {
+    this.wuliuTableList();
+  },
+  computed: {},
+  methods: {
+    wuliuTableList() {
+      var that = this;
+      this.$http.get("ordersList").then(
+        resp => {
+          if (resp.data.data) {
+            resp.data.data.forEach(item => {
+              item.newTime = that.formatDate(item.createTime);
+            });
+            this.wuliuTable = resp.data.data;
+          }
+        },
+        err => {
+          consolo.log(err);
+        }
+      );
+    },
+    formatDate(dateStr) {
+      var iDate = new Date(dateStr);
+
+      function addZreo(num) {
+        return num < 10 ? "0" + num : num;
+      }
+      return (
+        iDate.getFullYear() +
+        "-" +
+        addZreo(iDate.getMonth() + 1) +
+        "-" +
+        addZreo(iDate.getDate())
+      );
+    }
   }
 };
 </script>
@@ -126,6 +160,18 @@ export default {
     .table {
       width: 96%;
       margin: 10px auto;
+      .demo-table-expand {
+        font-size: 0;
+      }
+      .demo-table-expand label {
+        width: 90px;
+        color: #99a9bf;
+      }
+      .demo-table-expand .el-form-item {
+        margin-right: 0;
+        margin-bottom: 0;
+        width: 50%;
+      }
     }
   }
 }
