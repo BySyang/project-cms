@@ -29,7 +29,7 @@
         </div>
       </div>
       <div class="table">
-        <el-table border ref="multipleTable" :data="orsersTable" tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange">
+        <el-table border ref="multipleTable" :data="orsersTable1" tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange">
           <el-table-column prop="orderunique" header-align="center" align="center" label="订单号" width="150">
           </el-table-column>
           <el-table-column prop="userId" align="center" header-align="center" label="用户ID" width="100" show-overflow-tooltip>
@@ -53,7 +53,7 @@
           </el-table-column>
         </el-table>
         <div class="pagination">
-          <el-pagination @current-change="handleCurrentChange" layout="prev, pager, next" :total="1000">
+          <el-pagination ref="pages" layout="prev, pager, next" :total="total" :page-size="size" @current-change="setCurrent">
           </el-pagination>
         </div>
       </div>
@@ -66,7 +66,8 @@ export default {
     return {
       multipleSelection: [],
       jiaoyistats: "",
-      cur_page: 1,
+      current: 1,
+      size: 5,
       goodsName: "",
       ordersId: "",
       xiadandata: "",
@@ -131,27 +132,31 @@ export default {
       userNameList: []
     };
   },
-  watch: {
-    jiaoyistats: function(val, oldVal) {
-      this.orsersTable = this.otableData.filter(
-        item => ~item.orderStatus.indexOf(val)
-      );
-    }
-  },
+  // watch: {
+  //   jiaoyistats: function(val, oldVal) {
+  //     this.orsersTable = this.otableData.filter(
+  //       item => ~item.orderStatus.indexOf(val)
+  //     );
+  //   }
+  // },
   created() {
     this.orsersTableList();
   },
+  computed: {
+    orsersTable1() {
+      var arr = [];
+      var current = this.current;
+      var size = this.size;
+      for (var i = (current - 1) * size; i < (current - 1) * size + size; i++) {
+        if (this.orsersTable[i]) arr.push(this.orsersTable[i]);
+      }
+      return arr;
+    },
+    total() {
+      return this.orsersTable.length;
+    }
+  },
   methods: {
-    handleCurrentChange(val) {
-      this.cur_page = val;
-      this.orsersTableList();
-    },
-    formatter(row, column) {
-      return row.address;
-    },
-    filterTag(value, row) {
-      return row.tag === value;
-    },
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
@@ -200,6 +205,9 @@ export default {
           consolo.log(err);
         }
       );
+    },
+    setCurrent(val) {
+      this.current = val;
     },
     orsersTableListName(userId) {
       var that = this;
