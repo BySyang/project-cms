@@ -13,7 +13,7 @@
             </el-table-column>
             <el-table-column prop="judge" label="状态" width='140'>
               <template slot-scope="scope">
-                <el-switch v-model="value1" active-text="启用" inactive-text="禁用">
+                <el-switch v-model="scope.row.judge" active-text="启用" inactive-text="禁用">
                 </el-switch>
               </template>
             </el-table-column>

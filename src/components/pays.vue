@@ -15,12 +15,15 @@
               <el-table-column prop="name" label="支付方式" width="180" align="center">
               </el-table-column>
               <el-table-column prop="image" label="图片" width="180" align="center">
+                <template scope="scope">
+                  <image :src="scope.row.image" width="160" />
+                </template>
               </el-table-column>
               <el-table-column prop="introduce" label="简介" align="center">
               </el-table-column>
               <el-table-column prop="judge" label="状态" width='140' align="center">
                 <template slot-scope="scope">
-                  <el-switch v-model="value1" active-text="启用" inactive-text="禁用">
+                  <el-switch v-model="scope.row.judge" active-text="启用" inactive-text="禁用">
                   </el-switch>
                 </template>
               </el-table-column>
@@ -39,28 +42,30 @@ export default {
       value2: true,
       tableData: [
         {
-          name: "发票",
+          name: "支付宝",
           image: "",
           introduce:
-            "发票是指一切单位和个人在购销商品、提供或接受服务以及从事其他经营活动中，所开具和收取的业务凭证，是会计核算的原始依据，也是审计机关、税务机关执法检查的重要依据。收据才是收付款凭证，发票只能证明业务发生了，不能证明款项是否收付。",
+            "支付宝（中国）网络技术有限公司是国内领先的第三方支付平台，致力于提供“简单、安全、快速”的支付解决方案。",
           judge: ""
         },
         {
-          name: "优惠券",
+          name: "微信支付",
           image: "",
           introduce:
-            "优惠券可降低产品的价格，是一种常见的消费者营业推广工具。优惠券可以印在杂志的插页上、或夹在报纸中随报附送、或附在产品的包装上、或放置在商店中让人索取，有时甚至可以派人在街上分送。",
+            "微信支付是集成在微信客户端的支付功能，用户可以通过手机完成快速的支付流程。",
           judge: ""
         },
         {
-          name: "代收人",
+          name: "银联支付",
           image: "",
-          introduce: "不是用户自己收货,委托别人替为代收。该人就称为“代收人”",
+          introduce:
+            "中国银联是通过银联跨行交易清算系统实现商业银行系统间的互联互通和资源共享，保证银行卡跨行、跨地区和跨境使用。",
           judge: ""
         }
       ]
     };
-  }
+  },
+  method: {}
 };
 </script>
 <style lang="scss" scoped>
