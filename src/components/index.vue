@@ -51,11 +51,9 @@
         </div>
         <div class="menu">
             <ul>
-                <router-link to="/wuliu">
                 <li class="iconfont icon-fahuotixing"></li>
                 <li>待发货</li>
                 <li>906</li>
-                </router-link>
             </ul>
              <ul>
                 <li class="iconfont icon-daifukuan"></li>

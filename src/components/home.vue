@@ -99,7 +99,7 @@ export default {
     data() {
         return {
           el:'#home',
-          show:'false',
+          show:false,
           img:require('../assets/personal.jpeg'),
             ruleForm: {
                 name: '',
