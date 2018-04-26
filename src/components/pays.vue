@@ -11,34 +11,20 @@
         <div class="centerContent">
           <el-alert title="提示：" description="该支付方式启用并不能正常使用，需要开通支付功能才能使用相应的支付方式。" type="error"></el-alert>
           <div class="paymentBox">
-            <div class="payment">
-              <div>支付宝</div>
-              <div><img src="../assets/zhifb.jpg" alt=""></div>
-              <div>支付宝（中国）网络技术有限公司是国内领先的第三方支付平台，致力于提供“简单、安全、快速”的支付解决方案</div>
-              <div>
-                <el-button type="primary" @click="open1">{{message}}</el-button>
-                <el-button class="disable" type="primary" disabled>主要按钮</el-button>
-                <el-button type="danger" @click="open2">{{message1}}</el-button>
-              </div>
-            </div>
-            <div class="payment">
-              <div>微信支付</div>
-              <div><img src="../assets/weixin.jpg" alt=""></div>
-              <div>微信支付是集成在微信客户端的支付功能，用户可以通过手机完成快速的支付流程。</div>
-              <div>
-                <el-button type="primary" @click="open1();Count()">{{message}}</el-button>
-                <el-button type="danger" @click="open2();Count2()">{{message1}}</el-button>
-              </div>
-            </div>
-            <div class="payment">
-              <div>银联支付</div>
-              <div><img src="../assets/yinlian.jpg" alt=""></div>
-              <div>中国银联是通过银联跨行交易清算系统实现商业银行系统间的互联互通和资源共享，保证银行卡跨行、跨地区和跨境使用。</div>
-              <div>
-                <el-button type="primary" @click="open1">{{message}}</el-button>
-                <el-button type="danger" @click="open2">{{message1}}</el-button>
-              </div>
-            </div>
+            <el-table :data="tableData" border style="width: 100%">
+              <el-table-column prop="name" label="支付方式" width="180" align="center">
+              </el-table-column>
+              <el-table-column prop="image" label="图片" width="180" align="center">
+              </el-table-column>
+              <el-table-column prop="introduce" label="简介" align="center">
+              </el-table-column>
+              <el-table-column prop="judge" label="状态" width='140' align="center">
+                <template slot-scope="scope">
+                  <el-switch v-model="value1" active-text="启用" inactive-text="禁用">
+                  </el-switch>
+                </template>
+              </el-table-column>
+            </el-table>
           </div>
         </div>
       </div>
@@ -47,72 +33,33 @@
 </template>
 <script>
 export default {
-  data: function() {
+  data() {
     return {
-      message: "启用",
-      totalCount: 0,
-      message1: "禁用",
-      totalCnt: 1
+      value1: true,
+      value2: true,
+      tableData: [
+        {
+          name: "发票",
+          image: "",
+          introduce:
+            "发票是指一切单位和个人在购销商品、提供或接受服务以及从事其他经营活动中，所开具和收取的业务凭证，是会计核算的原始依据，也是审计机关、税务机关执法检查的重要依据。收据才是收付款凭证，发票只能证明业务发生了，不能证明款项是否收付。",
+          judge: ""
+        },
+        {
+          name: "优惠券",
+          image: "",
+          introduce:
+            "优惠券可降低产品的价格，是一种常见的消费者营业推广工具。优惠券可以印在杂志的插页上、或夹在报纸中随报附送、或附在产品的包装上、或放置在商店中让人索取，有时甚至可以派人在街上分送。",
+          judge: ""
+        },
+        {
+          name: "代收人",
+          image: "",
+          introduce: "不是用户自己收货,委托别人替为代收。该人就称为“代收人”",
+          judge: ""
+        }
+      ]
     };
-  },
-  methods: {
-    Count: function() {
-      var count = this.totalCount;
-      if (count < 1) {
-        count++;
-        return;
-        console.log(count);
-      } else if (count >= 1) {
-        count = 1;
-      }
-    },
-    Count2: function() {
-      var count1 = this.totalCnt;
-      if (count1 > 0) {
-        count1--;
-        console.log(count1);
-      } else if (count1 < 1) {
-        count1 = 0;
-      }
-    },
-    open1() {
-      this.$confirm("是否启用该项？", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          this.$message({
-            type: "success",
-            message: "启用成功!"
-          });
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消启用"
-          });
-        });
-    },
-    open2() {
-      this.$confirm("禁用后将不能进行与此相关操作，是否禁用该项？", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          this.$message({
-            type: "success",
-            message: "禁用成功!"
-          });
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消禁用"
-          });
-        });
-    }
   }
 };
 </script>
@@ -161,54 +108,8 @@ export default {
       }
       .centerContent {
         padding: 10px 22px 0;
-        .el-alert {
-          padding: 8px 0px;
-        }
         .paymentBox {
-          display: flex;
-          flex-direction: row;
-          flex-wrap: wrap;
-          justify-content: flex-start;
-          .payment {
-            width: 240px;
-            height: 320px;
-            margin-top: 22px;
-            margin-left: 23px;
-            border: 1px solid #e5e6e6;
-            div:nth-of-type(1) {
-              background-color: #59ace2;
-              height: 35px;
-              line-height: 35px;
-              color: white;
-              text-align: center;
-            }
-            div:nth-of-type(2) {
-              border-bottom: 1px solid #e5e6e6;
-              img {
-                width: 240px;
-              }
-            }
-            div:nth-of-type(3) {
-              padding: 0 6px;
-              font-size: 12px;
-              line-height: 20px;
-              margin-top: 15px;
-              height: 80px;
-              color: #999999;
-              border-bottom: 1px solid #e5e6e6;
-            }
-            div:nth-of-type(4) {
-              height: 74px;
-              display: flex;
-              flex-direction: row;
-              justify-content: space-around;
-              flex-wrap: wrap;
-              align-items: center;
-              .disable{
-                display: none;
-              }
-            }
-          }
+          margin-top: 20px;
         }
       }
     }
