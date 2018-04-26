@@ -15,8 +15,8 @@
               <el-table-column prop="name" label="支付方式" width="180" align="center">
               </el-table-column>
               <el-table-column prop="image" label="图片" width="180" align="center">
-                <template scope="scope">
-                  <image :src="scope.row.image" width="160" />
+                <template slot-scope="scope">
+                  <img :src="scope.row.image" height="60" />
                 </template>
               </el-table-column>
               <el-table-column prop="introduce" label="简介" align="center">
@@ -43,21 +43,21 @@ export default {
       tableData: [
         {
           name: "支付宝",
-          image: "",
+          image: require('../assets/zhifb.jpg'),
           introduce:
             "支付宝（中国）网络技术有限公司是国内领先的第三方支付平台，致力于提供“简单、安全、快速”的支付解决方案。",
           judge: ""
         },
         {
           name: "微信支付",
-          image: "",
+          image: require('../assets/weixin.jpg'),
           introduce:
             "微信支付是集成在微信客户端的支付功能，用户可以通过手机完成快速的支付流程。",
           judge: ""
         },
         {
           name: "银联支付",
-          image: "",
+          image: require('../assets/yinlian.jpg'),
           introduce:
             "中国银联是通过银联跨行交易清算系统实现商业银行系统间的互联互通和资源共享，保证银行卡跨行、跨地区和跨境使用。",
           judge: ""
