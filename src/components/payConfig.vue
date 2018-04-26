@@ -7,11 +7,11 @@
       <div class="other_pays">
         <div class="otherInfo">
           <el-table :data="tableData" border style="width: 100%">
-            <el-table-column prop="name" label="配置其他" width="180">
+            <el-table-column prop="name" label="配置其他" width="180"  align="center">
             </el-table-column>
-            <el-table-column prop="introduce" label="介绍">
+            <el-table-column prop="introduce" label="介绍"  align="center">
             </el-table-column>
-            <el-table-column prop="judge" label="状态" width='140'>
+            <el-table-column prop="judge" label="状态" width='140'  align="center">
               <template slot-scope="scope">
                 <el-switch v-model="scope.row.judge" active-text="启用" inactive-text="禁用">
                 </el-switch>
