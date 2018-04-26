@@ -52,6 +52,10 @@
             </template>
           </el-table-column>
         </el-table>
+        <div class="pagination">
+          <el-pagination @current-change="handleCurrentChange" layout="prev, pager, next" :total="1000">
+          </el-pagination>
+        </div>
       </div>
     </div>
   </div>
@@ -62,6 +66,7 @@ export default {
     return {
       multipleSelection: [],
       jiaoyistats: "",
+      cur_page: 1,
       goodsName: "",
       ordersId: "",
       xiadandata: "",
@@ -128,13 +133,25 @@ export default {
   },
   watch: {
     jiaoyistats: function(val, oldVal) {
-      this.orsersTable = this.otableData.filter(item => ~item.orderStatus.indexOf(val));
+      this.orsersTable = this.otableData.filter(
+        item => ~item.orderStatus.indexOf(val)
+      );
     }
   },
   created() {
     this.orsersTableList();
   },
   methods: {
+    handleCurrentChange(val) {
+      this.cur_page = val;
+      this.orsersTableList();
+    },
+    formatter(row, column) {
+      return row.address;
+    },
+    filterTag(value, row) {
+      return row.tag === value;
+    },
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
