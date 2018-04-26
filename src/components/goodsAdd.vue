@@ -44,12 +44,12 @@
         </el-table-column>
         <el-table-column prop="isSale" label="是否上架" show-overflow-tooltip align="center">
           <template slot-scope="scope">
-            <el-switch v-model="scope.row.isSale" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+            <el-switch v-model="scope.row.isSale" active-color="#409eff" inactive-color="#dcdfe6" active-text="启用" inactive-text="禁用"></el-switch>
           </template>
         </el-table-column>
         <el-table-column prop="isHot" label="是否热销" show-overflow-tooltip align="center">
           <template slot-scope="scope">
-            <el-switch v-model="scope.row.isHot" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+            <el-switch v-model="scope.row.isHot" active-color="#409eff" inactive-color="#dcdfe6" active-text="启用" inactive-text="禁用"></el-switch>
           </template>
         </el-table-column>
         </el-table-column>
@@ -119,11 +119,11 @@ export default {
       this.$http
         .get("/goodsList")
         .then(res => {
-          res.data.data.forEach(item=>{
-            item.isSale = item.isSale==1?true:false;
-            item.isHot = item.isHot==1?true:false;
-            item.isNew = item.isNew==1?true:false;
-          })
+          res.data.data.forEach(item => {
+            item.isSale = item.isSale == 1 ? true : false;
+            item.isHot = item.isHot == 1 ? true : false;
+            item.isNew = item.isNew == 1 ? true : false;
+          });
           this.data = res.data.data;
           a();
         })
