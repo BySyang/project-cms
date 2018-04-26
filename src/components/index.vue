@@ -378,7 +378,7 @@ export default {
         background: #fec92b;
     }
     .list_item:nth-child(3) {
-        background: #19a885;
+        background: #ffaf8e;
     }
     .list_item:nth-child(4) {
         background: #2da3fb;
@@ -428,14 +428,13 @@ export default {
     position: absolute;
     height: 18.5%;
     width: 46.5%;
-    background: #f0f0f0;
+    background: #e6e6fa;
     box-shadow: 1px 0px 1px 0px lightgrey;
 }
 
 #Echars_1 {
     top: 6.8%;
     margin-left: 13px;
-    background: #f0f0f0;
 }
 
 #Echars_2 {
@@ -465,7 +464,7 @@ export default {
     width: 96%;
     padding: 10px 0px 10px 20px;
     border-bottom: 1px solid white;
-    background: #84b9ef;
+    background: #2da3fb;
     color: white;
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     font-size: 15px;
@@ -485,11 +484,11 @@ export default {
     }
     li:nth-child(1){
         font-size: 30px;
-        color: #c0d9ec;
+        color: #3399ff;
     }
     li:nth-child(2){
         font-size: 14px;
-        color: #bbbbb0;
+        color: #6897bb;
     }
     li:nth-child(3){
         font-size: 17px;

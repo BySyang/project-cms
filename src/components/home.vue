@@ -3,7 +3,7 @@
     <el-container class="section1">
         <!-- 头部 -->
         <el-header>
-            <div class="log" ><i class="iconfont icon-lifangtilitiduomiantifangkuai2"></i> <span>后台管理系统</span></div>
+            <div class="log" ><i class="iconfont icon-lifangtilitiduomiantifangkuai2"></i> <span>内衣管理系统</span></div>
             <!-- 头像 -->
             <div class="log_item">
               <img :src='img'>
@@ -278,26 +278,34 @@ export default {
     }
 
     .log {
+        position: absolute;
+        left: 0px;
         display: flex;
+        flex-direction: row;
         align-items: center;
         justify-content: center;
-        margin-left: -20px;
-        text-align: center;
-        line-height: 60px;
         width: 199px;
         height: 60px;
         color: white;
         z-index: 99;
         cursor: pointer;
+
     }
+
     span {
         font-size: 20px;
         color: #000;
     }
+    .log:hover span{
+        color: #20a0ff;
+    }
     .log i {
         color: #000;
         font-size: 24px;
-        padding-left: 20px;
+        // padding-left: 20px;
+    }
+    .log:hover i{
+        color: #20a0ff;
     }
     .log_item>span{
         position: absolute;
