@@ -12,7 +12,6 @@
             </div>
             <label for="">30</label>
         </div>
-
         <div class="list_item">
             <div>
                 <i class="iconfont icon-05_kucunguanli"></i>
@@ -43,6 +42,41 @@
                 <span>总利润</span>
             </div>
             <label for="">$521314</label>
+        </div>
+    </div>
+    
+    <div id="treated">
+        <div class="title">
+            <h4>待处理</h4>
+        </div>
+        <div class="menu">
+            <ul>
+                <router-link to="/wuliu">
+                <li class="iconfont icon-fahuotixing"></li>
+                <li>待发货</li>
+                <li>906</li>
+                </router-link>
+            </ul>
+             <ul>
+                <li class="iconfont icon-daifukuan"></li>
+                <li>待付款</li>
+                <li>928</li>
+            </ul>
+            <ul>
+                <li class="iconfont icon-tuikuan1"></li>
+                <li>退货/退款</li>
+                <li>11</li>
+            </ul>
+            <ul>
+                <li class="iconfont icon-stock"></li>
+                <li>库存预警</li>
+                <li>0</li>
+            </ul>
+            <ul>
+                <li class="iconfont icon-guanbi"></li>
+                <li>商品咨询</li>
+                <li>63</li>
+            </ul>
         </div>
     </div>
 </div>
@@ -421,4 +455,48 @@ export default {
     margin-right: 38px;
     right: 0px;
 }
+#treated{
+    position: absolute;
+    top: 44.8%;
+    width: 46.7%;
+    margin-left:13px;
+    background: #f0f0f0;
+    // border: 1px solid red;
+}
+.title{
+    width: 96%;
+    padding: 10px 0px 10px 20px;
+    border-bottom: 1px solid white;
+    background: #84b9ef;
+    color: white;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-size: 15px;
+    }
+.menu{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    ul{
+    float: left;
+    margin: 25px 10px 20px 25px;
+    li{
+        list-style: none;
+        margin: 10px 0px;
+        text-align: center;
+    }
+    li:nth-child(1){
+        font-size: 30px;
+        color: #c0d9ec;
+    }
+    li:nth-child(2){
+        font-size: 14px;
+        color: #bbbbb0;
+    }
+    li:nth-child(3){
+        font-size: 17px;
+    }
+}
+}
+
 </style>
