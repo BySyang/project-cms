@@ -33,4 +33,7 @@ html {
 .el-dialog__body>div {
     display: inline-block;
 }
+.el-rate__icon{
+    font-size: 14px;
+  }
 </style>
