@@ -14,7 +14,7 @@
 
         <div>
           订单号:
-          <el-input placeholder="请输入订单号" suffix-icon="el-icon-search" v-model="ordersId" >
+          <el-input placeholder="请输入订单号" suffix-icon="el-icon-search" v-model="ordersId">
           </el-input>
         </div>
         <div>
@@ -47,8 +47,8 @@
           </el-table-column>
           <el-table-column prop="orderStatus" align="center" header-align="center" label="订单状态" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column prop="refunState" align="center" header-align="center" label="退款状态" show-overflow-tooltip>
-        
+          <el-table-column prop="refunState1" align="center" header-align="center" label="退款状态" show-overflow-tooltip>
+
           </el-table-column>
           <el-table-column prop="newTime" label="下单日期" align="center" header-align="center" width="120">
           </el-table-column>
@@ -60,13 +60,17 @@
             </template>
           </el-table-column>
         </el-table>
-      
-      <!-- 分页 -->
-      <div class="pages">
+
+        <!-- 分页 -->
+        <div class="pages">
           <el-pagination ref="pages" layout="prev, pager, next" :total="total" :page-size="size" @current-change="setCurrent">
           </el-pagination>
         </div>
+        <div class="modal">
       </div>
+      </div>
+
+      
     </div>
 
   </div>
@@ -80,9 +84,9 @@ export default {
       tableData: [],
       goodsName: "",
       ordersId: "",
-      current: 1,//当前页
-      size:3,
-      // data: [],
+      refst:false,
+      current: 1, //当前页
+      size: 3,
       //时间插件
       pickerOptions2: {
         shortcuts: [
@@ -114,7 +118,7 @@ export default {
             }
           }
         ]
-      },
+      }
     };
   },
   created() {
@@ -123,6 +127,18 @@ export default {
     }).then(() => {
       this.getOrderGoods();
     });
+  },
+  watch:{
+    refst:function(refst){
+      if(refst){
+        this.refunState(refst);
+        console.log(this.refunState(refst))
+      }
+      else{
+         this.refunState(refst);
+         console.log(this.refunState(refst))
+      }
+    }
   },
   methods: {
     handleSelectionChange(val) {
@@ -138,11 +154,12 @@ export default {
               item.newTime = that.formatDate(item.createTime);
               this.tableData = resp.data.data;
               item.orderStatus = that.orderStatus(item.orderStatus);
+              item.refunState1 = that.refunState();
               // console.log(that.orderStatus(item.orderStatus))
             });
             this.tableData = resp.data.data;
             resolve("ok");
-            console.log(resp.data.data)
+            // console.log(resp.data.data);
           }
         },
         err => {
@@ -150,7 +167,19 @@ export default {
         }
       );
     },
-    orderStatus(){
+    refunState(refst) {
+      var refunStatetext = " ";
+      if(refst){
+        refunStatetext = "已退款";
+        
+      }
+      else{
+        refunStatetext = "未退款";
+      }
+      return refunStatetext;
+    },
+
+    orderStatus(status) {
       var newst = "";
       switch (status) {
         case 0:
@@ -172,8 +201,11 @@ export default {
           break;
       }
       return newst;
+      function filterStatus() {
+        // if(){
+        // }
+      }
     },
-
 
     //拼接年月日
     formatDate(dateStr) {
@@ -196,7 +228,7 @@ export default {
         this.$http
           .get(`/orderGoods?orderId=${item.orderId}`)
           .then(res => {
-            this.$set(item,'goodsInfo',res.data.data);
+            this.$set(item, "goodsInfo", res.data.data);
           })
           .catch(err => {
             console.log(err);
@@ -204,14 +236,54 @@ export default {
       });
       // console.log(this.tableData)
     },
-    
+
     setCurrent(val) {
       this.current = val;
-      console.log(this.current)
-    }
+      console.log(this.current);
+    },
+    refund(){
+      this.open4();
+    },
+
+
+        // 模态框
+    open4() {
+        const h = this.$createElement;
+        this.$msgbox({
+          title: '退款确认',
+          message: h('p', null, [
+            h('span', null, '是否确认'),
+            h('i', { style: 'color: teal' }, '退款')
+          ]),
+          showCancelButton: true,
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          beforeClose: (action, instance, done) => {
+            if (action === 'confirm') {
+              instance.confirmButtonLoading = true;
+              // instance.confirmButtonText = '执行中...';
+              setTimeout(() => {
+                done();
+                setTimeout(() => {
+                  instance.confirmButtonLoading = false;
+                }, 200);
+              }, 1000);
+            } else {
+              done();
+            }
+          }
+        }).then(action => {
+          this.$message({
+            type: 'success',
+            message: '退款成功',
+          });
+          this.refst=true;
+        });
+      }
+    
   },
   //分页
-   computed: {
+  computed: {
     data1() {
       var arr = [];
       var current = this.current;
@@ -220,13 +292,12 @@ export default {
         if (this.tableData[i]) arr.push(this.tableData[i]);
       }
       return arr;
-      
     },
     total() {
       // console.log(this.tableData.length)
       return this.tableData.length;
     }
-  },
+  }
 };
 </script>
 <style lang="less" scoped>

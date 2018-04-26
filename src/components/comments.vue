@@ -10,7 +10,6 @@
           <el-date-picker v-model="xiadandata" type="daterange" align="left" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions2">
           </el-date-picker>
         </div>
-
         <div>
           评论人:
           <el-input v-model="select_word" placeholder="请输入姓名" prefix-icon="el-icon-search">
@@ -20,7 +19,6 @@
         <div>
           <el-button type="primary" @click="searchpl" icon="el-icon-search">搜索</el-button>
         </div>
-
       </div>
       <div class="table">
         <el-table border ref="multipleTable" :data="tables" tooltip-effect="dark" style="width: 100%">
