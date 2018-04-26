@@ -1,74 +1,86 @@
 <template>
-  <div id="goodsClass">
-    <el-row>
-      <el-col :span="4">
-        <el-input size="small" v-model="chooseData.name" placeholder="请输入商品分类名"></el-input>
-      </el-col>
-      <el-col :span="10">
-        <div class="block">
-          <el-date-picker type="datetimerange" v-model="chooseData.time" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" align="right" size="small"></el-date-picker>
-        </div>
-      </el-col>
-      <el-col :span="6" :push="2">
-        <el-button size="small">
-          <i class="el-icon-search"></i>
-        </el-button>
-      </el-col>
-    </el-row>
-    <el-table :data="data1" border style="width: 100%" stripe show-header @row-click="getImg">
-      <el-table-column prop="typeId" sortable label="分类ID"> </el-table-column>
-      <el-table-column prop="typeName" label="分类名"> </el-table-column>
-      <el-table-column prop="newDesc" label="分类描述">
-        <template slot-scope="scope">
-          <el-popover trigger="hover" placement="top">
-            <p>第一句: {{ scope.row.newDesc[0] }}</p>
-            <p>第二句: {{ scope.row.newDesc[1] }}</p>
-            <p>第三句: {{ scope.row.newDesc[2] }}</p>
-            <div slot="reference" class="name-wrapper">
-              <el-tag size="medium">{{ scope.row.newDesc.name}}</el-tag>
-            </div>
-          </el-popover>
-        </template>
-      </el-table-column>
-      <el-table-column label="分类轮播图">
-        <template slot-scope="scope">
-          <el-button type="text" @click="dialogVisible = true">点击查看</el-button>
-        </template>
-      </el-table-column>
-      <el-table-column prop="typeBannerImg"  label="分类小图">
-        <template slot-scope="scope">
-          <el-button type="text" @click="dialogVisible = true">点击查看</el-button>
-        </template>
-      </el-table-column>
-      <el-table-column prop="idShow" sortable label="是否显示"></el-table-column>
-      <el-table-column prop="newTime" sortable label="创建时间"></el-table-column>
-    </el-table>
-    <el-row class="page">
-      <el-col :span="3" :push="18">
-        <div class="block">
-          <el-pagination ref="pages" layout="prev, pager, next" :total="total" :page-size="size" @current-change="setCurrent">
-          </el-pagination>
-        </div>
-      </el-col>
-    </el-row>
-    <el-dialog :title="title" :visible.sync="dialogVisible" width="50%" :lock-scroll="false">
-      <el-upload list-type="picture" ref="upload0" action="/uploadImg" :auto-upload="false" :on-change="imgChange" :show-file-list="false">
-        <img :src="imgSrc[0]" :class="[className?'largImg':'smallImg']">
-      </el-upload>
-      <el-upload ref="upload1" action="" v-if="imgSrc[1]" :on-change="imgChange" :auto-upload="false" :show-file-list="false">
-        <img :src="imgSrc[1]" :class="[className?'largImg':'smallImg']">
-      </el-upload>
-      <el-upload ref="upload2" v-if="imgSrc[2]" action="" :on-change="imgChange" :auto-upload="false" :show-file-list="false">
-        <img :src="imgSrc[2]" :class="[className?'largImg':'smallImg']">
-      </el-upload>
-      <el-upload ref="upload3" v-if="imgSrc[3]" action="" :on-change="imgChange" :auto-upload="false" :show-file-list="false">
-        <img :src="imgSrc[3]" :class="[className?'largImg':'smallImg']">
-      </el-upload>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false" size="small">取 消</el-button>
-        <el-button type="primary" @click="uploadImg" size="small">确 定</el-button>
-      </span>
-    </el-dialog>
+  <div id="goods">
+    <div class="main">
+      <div class="main_top">
+        <div>商品分类</div>
+      </div>
+      <div class="search">
+        <el-row>
+          <el-col :span="2" class="span1">上架时间:</el-col>
+          <el-col :span="4">
+            <el-date-picker size="small" v-model="time" type="daterange" align="left" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
+          </el-col>
+          <el-col :span="2" class="span1">商品名称:</el-col>
+          <el-col :span="3">
+            <el-input size="small" v-model="goodsName" placeholder="请输入商品名" prefix-icon="el-icon-search"></el-input>
+          </el-col>
+          <el-col :span="2" class="span1">商品类型:</el-col>
+          <el-col :span="3">
+            <el-select size="small" v-model="value" placeholder="请选择">
+              <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+            </el-select>
+          </el-col>
+          <el-col :span="2" class="span1">商品价格:</el-col>
+          <el-col :span="3">
+            <el-input size="small" v-model="goodSvg" placeholder="请输入商品价格" prefix-icon="el-icon-search"></el-input>
+          </el-col>
+        </el-row>
+      </div>
+      <el-table :data="data1" border style="width: 100%" stripe show-header @row-click="getImg">
+        <el-table-column prop="typeId" sortable label="分类ID"> </el-table-column>
+        <el-table-column prop="typeName" label="分类名"> </el-table-column>
+        <el-table-column prop="newDesc" label="分类描述">
+          <template slot-scope="scope">
+            <el-popover trigger="hover" placement="top">
+              <p>第一句: {{ scope.row.newDesc[0] }}</p>
+              <p>第二句: {{ scope.row.newDesc[1] }}</p>
+              <p>第三句: {{ scope.row.newDesc[2] }}</p>
+              <div slot="reference" class="name-wrapper">
+                <el-tag size="medium">{{ scope.row.newDesc.name}}</el-tag>
+              </div>
+            </el-popover>
+          </template>
+        </el-table-column>
+        <el-table-column label="分类轮播图">
+          <template slot-scope="scope">
+            <el-button type="text" @click="dialogVisible = true">点击查看</el-button>
+          </template>
+        </el-table-column>
+        <el-table-column prop="typeBannerImg" label="分类小图">
+          <template slot-scope="scope">
+            <el-button type="text" @click="dialogVisible = true">点击查看</el-button>
+          </template>
+        </el-table-column>
+        <el-table-column prop="idShow" sortable label="是否显示"></el-table-column>
+        <el-table-column prop="newTime" sortable label="创建时间"></el-table-column>
+      </el-table>
+      <el-row class="page">
+        <el-col :span="3" :push="18">
+          <div class="block">
+            <el-pagination layout="prev, pager, next" :total="total" :page-size="size" @current-change="setCurrent">
+            </el-pagination>
+          </div>
+        </el-col>
+      </el-row>
+      <el-dialog :title="title" :visible.sync="dialogVisible" width="50%" :lock-scroll="false">
+        <el-upload list-type="picture" ref="upload0" action="/uploadImg" :auto-upload="false" :on-change="imgChange" :show-file-list="false">
+          <img :src="imgSrc[0]" :class="[className?'largImg':'smallImg']">
+        </el-upload>
+        <el-upload ref="upload1" action="" v-if="imgSrc[1]" :on-change="imgChange" :auto-upload="false" :show-file-list="false">
+          <img :src="imgSrc[1]" :class="[className?'largImg':'smallImg']">
+        </el-upload>
+        <el-upload ref="upload2" v-if="imgSrc[2]" action="" :on-change="imgChange" :auto-upload="false" :show-file-list="false">
+          <img :src="imgSrc[2]" :class="[className?'largImg':'smallImg']">
+        </el-upload>
+        <el-upload ref="upload3" v-if="imgSrc[3]" action="" :on-change="imgChange" :auto-upload="false" :show-file-list="false">
+          <img :src="imgSrc[3]" :class="[className?'largImg':'smallImg']">
+        </el-upload>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="dialogVisible = false" size="small">取 消</el-button>
+          <el-button type="primary" @click="uploadImg" size="small">确 定</el-button>
+        </span>
+      </el-dialog>
+    </div>
   </div>
 </template>
 <script>
@@ -160,11 +172,7 @@ export default {
             this.index = item.charAt(6);
           }
         }
-        console.log(file);
-        reader.readAsDataURL(file);
-        reader.onload = function(e) {
-          that.imgSrc.splice(this.index, 1, this.result);
-        };
+        that.imgSrc.splice(this.index, 1, file.url);
         if (this.$refs["upload0"]) this.$refs["upload0"].clearFiles();
         if (this.$refs["upload1"]) this.$refs["upload1"].clearFiles();
         if (this.$refs["upload2"]) this.$refs["upload2"].clearFiles();
@@ -197,8 +205,38 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-#goodsClass {
-  padding: 10px;
+#goods {
+  width: 100%;
+  height: 100%;
+  .main {
+    background: #fff;
+    width: 98%;
+    margin: 1% auto;
+  }
+  .el-range-editor.el-input__inner {
+    width: 100%;
+  }
+  .main_top {
+    padding-left: 2%;
+    border-top: 3px solid #59ace2;
+    color: #fff;
+    border-bottom: 1px solid #eee;
+    div {
+      height: 30px;
+      width: 100px;
+      line-height: 30px;
+      text-align: center;
+      background: #59ace2;
+    }
+  }
+  .search {
+    .span1 {
+      margin-left: 20px;
+      height: 32px;
+      width: 80px;
+      line-height: 32px;
+    }
+  }
 }
 .el-row {
   padding: 20px 0;
