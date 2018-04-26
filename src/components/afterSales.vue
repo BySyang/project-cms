@@ -4,129 +4,71 @@
       <div class="main_top">
         <div class="afterSales_text">售后服务</div>
       </div>
+      <!-- 搜索 -->
       <div class="search">
         <div>
           下单时间:
-          <el-date-picker
-            v-model="xiadandata"
-            type="daterange"
-            align="right"
-            unlink-panels
-            range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-            :picker-options="pickerOptions2">
+          <el-date-picker v-model="xiadandata" type="daterange" align="left" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions2">
           </el-date-picker>
         </div>
+
         <div>
           订单号:
-          <el-input
-            placeholder="请输入订单号"
-            suffix-icon="el-icon-search"
-            v-model="ordersId">
+          <el-input placeholder="请输入订单号" suffix-icon="el-icon-search" v-model="ordersId" >
           </el-input>
         </div>
         <div>
           商品名称:
-          <el-input
-            placeholder="请输入商品名"
-            suffix-icon="el-icon-search"
-            v-model="goodsName">
+          <el-input placeholder="请输入商品名" suffix-icon="el-icon-search" v-model="goodsName">
           </el-input>
         </div>
       </div>
+
+      <!-- 表格 -->
       <div class="tableData">
-        <el-table
-        border
-        ref="multipleTable"
-        :data="tableData"
-        tooltip-effect="dark"
-        style="width: 100%"
-        @selection-change="handleSelectionChange">
-          <el-table-column
-            type="selection"
-            header-align="center"
-            align="center"
-            width="55">
+        <el-table border ref="multipleTable" :data="data1" tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange">
+          <el-table-column prop="orderId" header-align="center" align="center" label="订单id" width="100">
           </el-table-column>
-          <el-table-column
-            prop="ordersId"
-            header-align="center"
-            align="center"
-            label="订单号"
-            width="120">
           </el-table-column>
-          <el-table-column
-            prop="goosdName"
-            align="center"
-            header-align="center"
-            label="商品名称"
-            show-overflow-tooltip>
+          <el-table-column prop="orderunique" header-align="center" align="center" label="订单号" width="200">
           </el-table-column>
-          <el-table-column
-            prop="goodsPrice"
-            align="center"
-            header-align="center"
-            label="商品价格"
-            show-overflow-tooltip>
+          <el-table-column prop="goodsInfo[0].goodsName" align="center" header-align="center" label="商品名称" show-overflow-tooltip>
           </el-table-column>
-         
-          <el-table-column
-            prop="refundPrice"
-            align="center"
-            header-align="center"
-            label="退款金额"
-            show-overflow-tooltip>
+          <!-- </el-table-column>
+          <el-table-column prop="goodsInfo[0].goodsImg" align="center" header-align="center" label="商品图片" show-overflow-tooltip>
+          </el-table-column> -->
+          <el-table-column prop="goodsInfo[0].goodsPrice" align="center" header-align="center" label="商品价格" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column
-            prop="goodsCount"
-            align="center"
-            header-align="center"
-            label="数量"
-            show-overflow-tooltip>
+          <el-table-column prop="goodsInfo[0].goodsPrice" align="center" header-align="center" label="退款金额" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column
-            prop="refunInstruction"
-            align="center"
-            header-align="center"
-            label="退款说明"
-            show-overflow-tooltip>
+          <el-table-column prop="goodsInfo[0].goodsNum" align="center" header-align="center" label="数量" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column
-            prop="ordersState"
-            align="center"
-            header-align="center"
-            label="订单状态"
-            show-overflow-tooltip>
+          <el-table-column prop="refunInstruction" align="center" header-align="center" label="退款说明" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column
-            prop="refunState"
-            align="center"
-            header-align="center"
-            label="退款状态"
-            show-overflow-tooltip>
+          <el-table-column prop="orderStatus" align="center" header-align="center" label="订单状态" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column
-            label="下单日期"
-            align="center"
-            header-align="center"
-            width="120">
-            <template slot-scope="scope">{{ scope.row.date }}</template>
+          <el-table-column prop="refunState" align="center" header-align="center" label="退款状态" show-overflow-tooltip>
+        
+          </el-table-column>
+          <el-table-column prop="newTime" label="下单日期" align="center" header-align="center" width="120">
           </el-table-column>
           <el-table-column label="操作" header-align="center" align="center">
             <template slot-scope="scope">
               <el-row>
-                    
                 <el-button size="mini" type="primary" @click="refund(scope.$index, scope.row)">退款</el-button>
               </el-row>
-             
-              
             </template>
           </el-table-column>
         </el-table>
+      
+      <!-- 分页 -->
+      <div class="pages">
+          <el-pagination ref="pages" layout="prev, pager, next" :total="total" :page-size="size" @current-change="setCurrent">
+          </el-pagination>
+        </div>
       </div>
     </div>
-    
+
   </div>
 </template>
 <script>
@@ -134,17 +76,157 @@ export default {
   data() {
     return {
       multipleSelection: [],
-      tableData:[
-        {date:"2016.3.9"},
-        {data:"2017.5.8"},
-        {data:"2017.5.9"}
-      ]
-
-
-
-
+      xiadandata: "",
+      tableData: [],
+      goodsName: "",
+      ordersId: "",
+      current: 1,//当前页
+      size:3,
+      // data: [],
+      //时间插件
+      pickerOptions2: {
+        shortcuts: [
+          {
+            text: "最近一周",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit("pick", [start, end]);
+            }
+          },
+          {
+            text: "最近一个月",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+              picker.$emit("pick", [start, end]);
+            }
+          },
+          {
+            text: "最近三个月",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+              picker.$emit("pick", [start, end]);
+            }
+          }
+        ]
+      },
     };
-  }
+  },
+  created() {
+    new Promise((resolve, reject) => {
+      this.TableDataList(resolve);
+    }).then(() => {
+      this.getOrderGoods();
+    });
+  },
+  methods: {
+    handleSelectionChange(val) {
+      this.multipleSelection = val;
+    },
+    // 订单表表格数据
+    TableDataList(resolve) {
+      var that = this;
+      this.$http.get("ordersList").then(
+        resp => {
+          if (resp.data.data) {
+            resp.data.data.forEach(item => {
+              item.newTime = that.formatDate(item.createTime);
+              this.tableData = resp.data.data;
+              item.orderStatus = that.orderStatus(item.orderStatus);
+              // console.log(that.orderStatus(item.orderStatus))
+            });
+            this.tableData = resp.data.data;
+            resolve("ok");
+            console.log(resp.data.data)
+          }
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    },
+    orderStatus(){
+      var newst = "";
+      switch (status) {
+        case 0:
+          newst = "待付款";
+          break;
+        case 1:
+          newst = "待发货";
+          break;
+        case 2:
+          newst = "已发货";
+          break;
+        case 3:
+          newst = "已取消";
+          break;
+        case 4:
+          newst = "已完成";
+          break;
+        default:
+          break;
+      }
+      return newst;
+    },
+
+
+    //拼接年月日
+    formatDate(dateStr) {
+      var iDate = new Date(dateStr);
+
+      function addZreo(num) {
+        return num < 10 ? "0" + num : num;
+      }
+      return (
+        iDate.getFullYear() +
+        "-" +
+        addZreo(iDate.getMonth() + 1) +
+        "-" +
+        addZreo(iDate.getDate())
+      );
+    },
+    //goods-order表请求的数据
+    getOrderGoods() {
+      this.tableData.forEach(item => {
+        this.$http
+          .get(`/orderGoods?orderId=${item.orderId}`)
+          .then(res => {
+            this.$set(item,'goodsInfo',res.data.data);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      });
+      // console.log(this.tableData)
+    },
+    
+    setCurrent(val) {
+      this.current = val;
+      console.log(this.current)
+    }
+  },
+  //分页
+   computed: {
+    data1() {
+      var arr = [];
+      var current = this.current;
+      var size = this.size;
+      for (var i = (current - 1) * size; i < (current - 1) * size + size; i++) {
+        if (this.tableData[i]) arr.push(this.tableData[i]);
+      }
+      return arr;
+      
+    },
+    total() {
+      // console.log(this.tableData.length)
+      return this.tableData.length;
+    }
+  },
 };
 </script>
 <style lang="less" scoped>
@@ -167,7 +249,7 @@ export default {
       .afterSales_text {
         position: absolute;
         top: 0;
-        left: 22px;
+        left: 2 2px;
         width: 100px;
         height: 30px;
         line-height: 30px;
@@ -175,8 +257,8 @@ export default {
         background-color: #59ace2;
       }
     }
-    .search{
-       padding: 10px 0 0 22px;
+    .search {
+      padding: 10px 0 0 22px;
       > div {
         width: 28%;
         display: inline-block;
@@ -187,14 +269,15 @@ export default {
           width: 70%;
         }
       }
-      // div:nth-of-type(3),
-      // div:nth-of-type(4) {
-      //   width: 28%;
-      // }
     }
-    .tableData{
+    .tableData {
       padding-left: 22px;
-      margin-top: 10px
+      margin-top: 10px;
+    }
+    // el-picker-panel el-date-range-picker el-popper has-sidebar
+    .el-date-range-picker {
+      position: absolute !important;
+      top: 200px;
     }
   }
 }

@@ -4,28 +4,37 @@
       <div class="topBox">
         <div>支付配置</div>
       </div>
-      <div class="pays_centerBox">
-        <div class="centerTop">
-          <span>商城用户支付配置</span>
-        </div>
-        <div class="centerContent">
-          <el-table :data="tableData" border style="width: 100%">
-            <el-table-column prop="date" label="支付名称" width="180">
-            </el-table-column>
-            <el-table-column prop="name" label="状态" width="180" align="center">
-              <!-- <template scope="scope">
-                <el-radio-group v-model="radio3">
-                  <el-radio v-model="radio" :label="scope.$index">备选项</el-radio>
-                  <el-radio v-model="radio2" :label="scope.$index">备选项</el-radio>
-                </el-radio-group>
-              </template> -->
-            </el-table-column>
-            <el-table-column prop="address" label="描述">
-            </el-table-column>
-          </el-table>   
-        </div>
+      <div class="other_pays">
         <div class="centerTop">
           <span>其他配置信息</span>
+        </div>
+        <div class="otherInfo">
+          <div class="infoBox">
+            <div class="information">
+              <div>发票</div>
+              <div>发票是指一切单位和个人在购销商品、提供或接受服务以及从事其他经营活动中，所开具和收取的业务凭证，是会计核算的原始依据，也是审计机关、税务机关执法检查的重要依据。收据才是收付款凭证，发票只能证明业务发生了，不能证明款项是否收付。</div>
+              <div>
+                <el-button type="primary">已启用</el-button>
+                <el-button type="danger">禁用</el-button>
+              </div>
+            </div>
+            <div class="information">
+              <div>优惠券</div>
+              <div>优惠券可降低产品的价格，是一种常见的消费者营业推广工具。优惠券可以印在杂志的插页上、或夹在报纸中随报附送、或附在产品的包装上、或放置在商店中让人索取，有时甚至可以派人在街上分送。</div>
+              <div>
+                <el-button type="primary">启用</el-button>
+                <el-button type="danger">已禁用</el-button>
+              </div>
+            </div>
+            <div class="information">
+              <div>代收</div>
+              <div>不是用户自己收货,委托别人替为代收。该人就称为“代收人”</div>
+              <div>
+                <el-button type="primary">已启用</el-button>
+                <el-button type="danger">禁用</el-button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -35,34 +44,7 @@
 <script>
 export default {
   data() {
-    return {
-      // radio: "",
-      // radio2: "",
-      // radio3: "",
-      tableData: [
-        {
-          date: "支付宝支付",
-          name: "",
-          address:
-            "在线支付是指卖方与买方通过因特网上的电子商务网站进行交易时，银行为其提供网上资金结算服务的一种业务。它为企业和个人提供了一个安全、快捷、方便的电子商务应用环境和网上资金结算工具。在线支付不仅帮助企业实现了销售款项的快速归集，缩短收款周期，同时也为个人网上银行客户提供了网上消费支付结算方式，使客户真正做到足不出户，网上购物。"
-        },
-        {
-          date: "2016-05-04",
-          name: "",
-          address: "上海市普陀区金沙江路 1517 弄"
-        },
-        {
-          date: "2016-05-01",
-          name: "",
-          address: "上海市普陀区金沙江路 1519 弄"
-        },
-        {
-          date: "2016-05-03",
-          name: "",
-          address: "上海市普陀区金沙江路 1516 弄"
-        }
-      ]
-    };
+    return {};
   }
 };
 </script>
@@ -97,7 +79,7 @@ export default {
         background-color: #59ace2;
       }
     }
-    .pays_centerBox {
+    .other_pays {
       margin-top: 1%;
       height: 92%;
       // border:1px solid #e5e6e6;
@@ -110,10 +92,44 @@ export default {
         }
       }
     }
-    .centerContent {
-      padding: 10px 22px;
-      .el-radio + .el-radio {
-        margin-left: 0;
+    .otherInfo {
+      padding: 10px 22px 0;
+      .infoBox {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        .information {
+          width: 240px;
+          height: 320px;
+          margin-top: 22px;
+          margin-left: 23px;
+          border: 1px solid #e5e6e6;
+          div:nth-of-type(1) {
+            background-color: #59ace2;
+            height: 35px;
+            line-height: 35px;
+            color: white;
+            text-align: center;
+          }
+          div:nth-of-type(2) {
+            padding: 0 10px;
+            font-size: 12px;
+            line-height: 24px;
+            margin-top: 15px;
+            height: 175px;
+            color: #999999;
+            border-bottom: 1px solid #e5e6e6;
+          }
+          div:nth-of-type(3) {
+            height: 74px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            align-items: center;
+          }
+        }
       }
     }
   }
