@@ -25,4 +25,7 @@ body,html{
 .el-alert--error .el-alert__description{
   display: inline
 }
+.el-dialog__body>div{
+  display: inline-block;
+}
 </style>
