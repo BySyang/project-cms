@@ -3,33 +3,33 @@
     <el-container class="section1">
         <!-- 头部 -->
         <el-header>
-            <div class="log" ><i class="iconfont icon-lifangtilitiduomiantifangkuai2"></i> <span>内衣管理系统</span></div>
+            <div class="log"><i class="iconfont icon-lifangtilitiduomiantifangkuai2"></i> <span>内衣管理系统</span></div>
             <!-- 头像 -->
             <div class="log_item">
-              <img :src='img'>
-              <span>管理员</span>
-              <i class="iconfont icon-xiugai" @click="show = !show"></i>
-              <a class="iconfont icon-liulanqi-IE" href="http://172.16.13.7:8080"></a>
-              <i class="iconfont icon-swticontuichu1" @click="exit()"></i>
-            </div>   
+                <img :src='img'>
+                <span>管理员</span>
+                <i class="iconfont icon-xiugai" @click="show = !show"></i>
+                <a class="iconfont icon-liulanqi-IE" href="http://localhost:8080"></a>
+                <i class="iconfont icon-swticontuichu1" @click="exit()"></i>
+            </div>
         </el-header>
         <!-- 密码修改 -->
-         <transition name="slide-fade">
-        <el-form :model="ruleForm" :rules="rules" ref="ruleForm"  class="demo-ruleForm"  v-if="show">
-            <el-form-item prop="name">
-                <el-input v-model="ruleForm.name" placeholder="原密码" size="small"></el-input>
-            </el-form-item>
-              <el-form-item prop="name2">
-                <el-input v-model="ruleForm.name2" placeholder="新密码" size="small"></el-input>
-            </el-form-item>
-            <el-form-item prop="name3">
-                <el-input v-model="ruleForm.name3" placeholder="重复新密码" size="small"></el-input>
-            </el-form-item>
-            <el-form-item>
-                <el-button type="primary" @click="submitForm('ruleForm')" size="small">修改密码</el-button>
-                <el-button type="info" @click="resetForm('ruleForm')" size="small">取消</el-button>
-            </el-form-item>
-        </el-form>
+        <transition name="slide-fade">
+            <el-form :model="ruleForm" :rules="rules" ref="ruleForm" class="demo-ruleForm" v-if="show">
+                <el-form-item prop="name">
+                    <el-input v-model="ruleForm.name" placeholder="原密码" size="small"></el-input>
+                </el-form-item>
+                <el-form-item prop="name2">
+                    <el-input v-model="ruleForm.name2" placeholder="新密码" size="small"></el-input>
+                </el-form-item>
+                <el-form-item prop="name3">
+                    <el-input v-model="ruleForm.name3" placeholder="重复新密码" size="small"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" @click="submitForm('ruleForm')" size="small">修改密码</el-button>
+                    <el-button type="info" @click="resetForm('ruleForm')" size="small">取消</el-button>
+                </el-form-item>
+            </el-form>
         </transition>
         <!-- 页面导航 -->
         <el-container class="section2">
@@ -93,33 +93,55 @@
 </template>
 
 <script>
-
-
 export default {
     data() {
         return {
-          el:'#home',
-          show:false,
-          img:require('../assets/personal.jpeg'),
+            el: '#home',
+            show: false,
+            img: require('../assets/personal.jpeg'),
             ruleForm: {
                 name: '',
-          },
-           rules: {
-            name: [
-            { required: true, message: '请输入原密码', trigger: 'blur' },
-            { min: 3, max: 7, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+            },
+            rules: {
+                name: [{
+                        required: true,
+                        message: '请输入原密码',
+                        trigger: 'blur'
+                    },
+                    {
+                        min: 3,
+                        max: 7,
+                        message: '长度在 3 到 5 个字符',
+                        trigger: 'blur'
+                    }
                 ],
-            name2: [
-            { required: true, message: '请输入新密码', trigger: 'blur' },
-            { min: 3, max: 7, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+                name2: [{
+                        required: true,
+                        message: '请输入新密码',
+                        trigger: 'blur'
+                    },
+                    {
+                        min: 3,
+                        max: 7,
+                        message: '长度在 3 到 5 个字符',
+                        trigger: 'blur'
+                    }
                 ],
-            name3: [
-            { required: true, message: '请确认密码', trigger: 'blur' },
-            { min: 3, max: 7, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+                name3: [{
+                        required: true,
+                        message: '请确认密码',
+                        trigger: 'blur'
+                    },
+                    {
+                        min: 3,
+                        max: 7,
+                        message: '长度在 3 到 5 个字符',
+                        trigger: 'blur'
+                    }
                 ],
             }
         }
-           
+
     },
     created() {
         if (this.$route.name == "home") {
@@ -127,11 +149,11 @@ export default {
         }
     },
     methods: {
-        exit(){
-           window.sessionStorage.removeItem("isLog")
+        exit() {
+            window.sessionStorage.removeItem("isLog")
             this.$router.push("/login")
         },
-        toggle(){
+        toggle() {
             this.isshow = !this.isshow;
         },
         handleOpen(key, keyPath) {
@@ -141,49 +163,55 @@ export default {
             this.$router.push(key);
         },
         handleCommand(command) {
-        this.$message('click on item ' + command);
-      },
-       submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-              const h = this.$createElement;
-              var $el=this.$parent
-                this.$message({
-                    message: h('p', null, [
-                        h('span', null, '修改成功 ')
-                    ])
-                });
-            } 
-          else {
-            console.log('error submit!!');
-            return false;
-          }
-        });
-      },
-      resetForm(formName) {
-        this.$refs[formName].resetFields();
-      },
+            this.$message('click on item ' + command);
+        },
+        submitForm(formName) {
+            this.$refs[formName].validate((valid) => {
+                if (valid) {
+                    const h = this.$createElement;
+                    var $el = this.$parent
+                    this.$message({
+                        message: h('p', null, [
+                            h('span', null, '修改成功 ')
+                        ])
+                    });
+                } else {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
+        },
+        resetForm(formName) {
+            this.$refs[formName].resetFields();
+        },
     }
-    
+
 };
 </script>
 
 <style lang="scss" scoped>
-.slide-fade-enter{
+.slide-fade-enter {
     opacity: 1;
 }
+
 .slide-fade-enter-active {
-  transition: all .3s ease;
+    transition: all .3s ease;
 }
+
 .slide-fade-leave-active {
-  transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+    transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
 }
-.slide-fade-enter, .slide-fade-leave-to
-/* .slide-fade-leave-active for below version 2.1.8 */ {
-  transform: translateX(10px);
-  opacity: 0;
+
+.slide-fade-enter,
+.slide-fade-leave-to
+/* .slide-fade-leave-active for below version 2.1.8 */
+
+    {
+    transform: translateX(10px);
+    opacity: 0;
 }
-.demo-ruleForm{
+
+.demo-ruleForm {
     position: fixed;
     top: 9.9%;
     right: 0px;
@@ -193,18 +221,17 @@ export default {
     width: 200px;
     height: 100%;
     z-index: 999;
-    .el-form-item{
+    .el-form-item {
         display: flex;
         flex-direction: row;
         align-items: center;
         justify-content: center;
     }
-    .el-input{
+    .el-input {
         width: 160px;
     }
-    .el-button{
+    .el-button {
         width: 80px;
-
     }
 }
 
@@ -231,52 +258,52 @@ export default {
     box-shadow: 3px 0px 3px 3px lightgrey;
     width: 100%;
     z-index: 9;
-    .log_item>img{
-      position: absolute;
-      right: 230px;
-      top: 0px;
-      bottom: 0px;
-      margin: auto 0px;
-      z-index: 999;
-      width: 40px;
-      height: 40px;
-      border-radius: 20px 20px;
+    .log_item>img {
+        position: absolute;
+        right: 230px;
+        top: 0px;
+        bottom: 0px;
+        margin: auto 0px;
+        z-index: 999;
+        width: 40px;
+        height: 40px;
+        border-radius: 20px 20px;
     }
-    .log_item>i:nth-child(3){
-      position: absolute;
-      right: 100px;
-      top: 17px;
-      bottom: 0px;
-      z-index: 999;
-      color: black;
+    .log_item>i:nth-child(3) {
+        position: absolute;
+        right: 100px;
+        top: 17px;
+        bottom: 0px;
+        z-index: 999;
+        color: black;
     }
-    .log_item>i:nth-child(3):hover,{
-          color: #20a0ff;
-      }
-    .log_item>a:hover{
-          color: #20a0ff;
+    .log_item>i:nth-child(3):hover,
+        {
+        color: #20a0ff;
     }
-    .log_item>a{
-      position: absolute;
-      right: 60px;
-      top: 17px;
-      bottom: 0px;
-      z-index: 999;
-      color: black;
-      text-decoration: none;
+    .log_item>a:hover {
+        color: #20a0ff;
     }
-    .log_item>i:nth-child(5){
-    position: absolute;
-      right: 15px;
-      top: 17px;
-      bottom: 0px;
-      z-index: 999;
-      color: black;
+    .log_item>a {
+        position: absolute;
+        right: 60px;
+        top: 17px;
+        bottom: 0px;
+        z-index: 999;
+        color: black;
+        text-decoration: none;
     }
-    .log_item>i:nth-child(5):hover{
-         color: #20a0ff;
+    .log_item>i:nth-child(5) {
+        position: absolute;
+        right: 15px;
+        top: 17px;
+        bottom: 0px;
+        z-index: 999;
+        color: black;
     }
-
+    .log_item>i:nth-child(5):hover {
+        color: #20a0ff;
+    }
     .log {
         position: absolute;
         left: 0px;
@@ -289,33 +316,29 @@ export default {
         color: white;
         z-index: 99;
         cursor: pointer;
-
     }
-
     span {
         font-size: 20px;
         color: #000;
     }
-    .log:hover span{
+    .log:hover span {
         color: #20a0ff;
     }
     .log i {
         color: #000;
-        font-size: 24px;
-        // padding-left: 20px;
+        font-size: 24px; // padding-left: 20px;
     }
-    .log:hover i{
+    .log:hover i {
         color: #20a0ff;
     }
-    .log_item>span{
+    .log_item>span {
         position: absolute;
         right: 180px;
         top: 20px;
         bottom: 0px;
         z-index: 999;
         font-size: 14px;
-}
-
+    }
 }
 
 .el-input--mini {
@@ -347,16 +370,17 @@ export default {
 .el-submenu .el-menu-item {
     min-width: 199px;
 }
+
 .el-main {
-    position:absolute;
+    position: absolute;
     top: 9%;
     left: 15%;
     width: 85%;
     height: 300%;
     background-color: #f0f0f0;
     padding: 0;
-    overflow:scroll;
-    overflow-y:hidden
+    overflow: scroll;
+    overflow-y: hidden
 }
 
 .el-menu-item-group {
@@ -364,12 +388,13 @@ export default {
         padding-left: 64px !important;
     }
 }
+
 .el-badge {
-  position: absolute;
-  top: 15px;
-  bottom: 0px;
-  right: 5px;
-  font-size: 26px;
-  color: lightgray
+    position: absolute;
+    top: 15px;
+    bottom: 0px;
+    right: 5px;
+    font-size: 26px;
+    color: lightgray
 }
 </style>
