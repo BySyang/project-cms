@@ -11,47 +11,61 @@
         <div class="centerContent">
           <el-alert title="提示：" description="该支付方式启用并不能正常使用，需要开通支付功能才能使用相应的支付方式。" type="error"></el-alert>
           <div class="paymentBox">
-            <div class="payment">
-              <div>支付宝</div>
-              <div><img src="../assets/zhifb.jpg" alt=""></div>
-              <div>支付宝（中国）网络技术有限公司是国内领先的第三方支付平台，致力于提供“简单、安全、快速”的支付解决方案</div>
-              <div>
-                <el-button type="primary">已启用</el-button>
-                <el-button type="danger">禁用</el-button>
-              </div>
-            </div>
-            <div class="payment">
-              <div>微信支付</div>
-              <div><img src="../assets/weixin.jpg" alt=""></div>
-              <div>微信支付是集成在微信客户端的支付功能，用户可以通过手机完成快速的支付流程。</div>
-              <div>
-                <el-button type="primary">已启用</el-button>
-                <el-button type="danger">禁用</el-button>
-              </div>
-            </div>
-            <div class="payment">
-              <div>银联支付</div>
-              <div><img src="../assets/yinlian.jpg" alt=""></div>
-              <div>中国银联是通过银联跨行交易清算系统实现商业银行系统间的互联互通和资源共享，保证银行卡跨行、跨地区和跨境使用。</div>
-              <div>
-                <el-button type="primary">已启用</el-button>
-                <el-button type="danger">禁用</el-button>
-              </div>
-            </div>
-              
+            <el-table :data="tableData" border style="width: 100%">
+              <el-table-column prop="name" label="支付方式" width="180" align="center">
+              </el-table-column>
+              <el-table-column prop="image" label="图片" width="180" align="center">
+                <template slot-scope="scope">
+                  <img :src="scope.row.image" height="60" />
+                </template>
+              </el-table-column>
+              <el-table-column prop="introduce" label="简介" align="center">
+              </el-table-column>
+              <el-table-column prop="judge" label="状态" width='140' align="center">
+                <template slot-scope="scope">
+                  <el-switch v-model="scope.row.judge" active-text="启用" inactive-text="禁用">
+                  </el-switch>
+                </template>
+              </el-table-column>
+            </el-table>
           </div>
-
         </div>
       </div>
     </div>
   </div>
-
 </template>
 <script>
 export default {
   data() {
-    return {};
-  }
+    return {
+      value1: true,
+      value2: true,
+      tableData: [
+        {
+          name: "支付宝",
+          image: require('../assets/zhifb.jpg'),
+          introduce:
+            "支付宝（中国）网络技术有限公司是国内领先的第三方支付平台，致力于提供“简单、安全、快速”的支付解决方案。",
+          judge: ""
+        },
+        {
+          name: "微信支付",
+          image: require('../assets/weixin.jpg'),
+          introduce:
+            "微信支付是集成在微信客户端的支付功能，用户可以通过手机完成快速的支付流程。",
+          judge: ""
+        },
+        {
+          name: "银联支付",
+          image: require('../assets/yinlian.jpg'),
+          introduce:
+            "中国银联是通过银联跨行交易清算系统实现商业银行系统间的互联互通和资源共享，保证银行卡跨行、跨地区和跨境使用。",
+          judge: ""
+        }
+      ]
+    };
+  },
+  method: {}
 };
 </script>
 <style lang="scss" scoped>
@@ -96,55 +110,11 @@ export default {
         span {
           line-height: 30px;
         }
-
       }
       .centerContent {
         padding: 10px 22px 0;
-        .el-alert {
-          padding: 8px 0px;
-        }
         .paymentBox {
-          display: flex;
-          flex-direction: row;
-          flex-wrap: wrap;
-          justify-content: flex-start;
-          .payment {
-            width: 240px;
-            height: 320px;
-            margin-top: 22px;
-            margin-left: 23px;
-            border: 1px solid #e5e6e6;
-            div:nth-of-type(1) {
-              background-color: #59ace2;
-              height: 35px;
-              line-height: 35px;
-              color: white;
-              text-align: center;
-            }
-            div:nth-of-type(2) {
-              border-bottom: 1px solid #e5e6e6;
-              img {
-                width: 240px;
-              }
-            }
-            div:nth-of-type(3) {
-              padding: 0 6px;
-              font-size: 12px;
-              line-height: 20px;
-              margin-top: 15px;
-              height: 80px;
-              color: #999999;
-              border-bottom: 1px solid #e5e6e6;
-            }
-            div:nth-of-type(4) {
-              height: 74px;
-              display: flex;
-              flex-direction: row;
-              justify-content: space-around;
-              flex-wrap: wrap;
-              align-items: center;
-            }
-          }
+          margin-top: 20px;
         }
       }
     }

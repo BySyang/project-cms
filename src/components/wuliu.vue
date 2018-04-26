@@ -56,6 +56,8 @@
           </el-table-column>
           <el-table-column label="下单日期" prop="newTime">
           </el-table-column>
+          <el-table-column label="付款方式" prop="">
+          </el-table-column>
           <el-table-column label="操作">
             <template slot-scope="scope">
               <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">发货</el-button>
@@ -64,16 +66,81 @@
         </el-table>
       </div>
     </div>
+
+    <!-- 编辑弹出框 -->
+    <el-dialog title="发货" :visible.sync="editVisible" width="30%">
+      <el-form ref="form" :model="form" label-width="100px">
+        <el-form-item label="快递单号">
+          <el-input v-model="kuaididanhao"></el-input>
+        </el-form-item>
+        <el-form-item label="选择快递">
+          <!-- <el-input v-model="form.newstatus"></el-input> -->
+          <el-select v-model="fahuos" filterable placeholder="请选择快递">
+            <el-option v-for="item in fahuo" :key="item.value" :label="item.label" :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="editVisible = false">取 消</el-button>
+        <el-button type="primary" @click="saveEdit">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
 export default {
   data() {
     return {
+      editVisible: false,
+      fahuos: "",
       xiadandata: "",
       userName: "",
       ordersId: "",
-      wuliuTable: []
+      wuliuTable: [],
+      fahuo: [
+        {
+          value: "0",
+          label: "邮政EMS"
+        },
+        {
+          value: "1",
+          label: "邮政小包"
+        },
+        {
+          value: "2",
+          label: "申通快递"
+        },
+        {
+          value: "3",
+          label: "圆通快递"
+        },
+        {
+          value: "4",
+          label: "中通快递"
+        },
+        {
+          value: "5",
+          label: "韵达快递"
+        },
+        {
+          value: "6",
+          label: "天天快递"
+        },
+        {
+          value: "7",
+          label: "顺丰快递"
+        },
+        {
+          value: "8",
+          label: "百世汇通快递"
+        },
+        {
+          value: "9",
+          label: "德邦快递"
+        }
+      ]
     };
   },
   created() {
@@ -110,6 +177,13 @@ export default {
         "-" +
         addZreo(iDate.getDate())
       );
+    },
+    handleEdit(index, row) {
+      this.editVisible = true;
+    },
+    saveEdit() { 
+    this.editVisible = false;
+    this.$message.success(`保存快递信息成功`);
     }
   }
 };
