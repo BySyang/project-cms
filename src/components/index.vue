@@ -88,7 +88,7 @@ export default {
 
         }
     },
-    mounted() {
+    mounted() { 
         /*ECharts图表*/
         var myChart1 = echarts.init(document.getElementById('Echars_1')); //初始化图标到相应的div中
         var myChart2 = echarts.init(document.getElementById('Echars_2'));

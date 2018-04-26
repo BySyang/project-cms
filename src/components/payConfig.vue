@@ -1,46 +1,46 @@
 <template>
-  <div class="pays_section">
+<div class="pays_section">
     <div class="pays_content">
-      <div class="topBox">
-        <div>支付配置</div>
-      </div>
-      <div class="other_pays">
-        <div class="centerTop">
-          <span>其他配置信息</span>
+        <div class="topBox">
+            <div>支付配置</div>
         </div>
-        <div class="otherInfo">
-          <div class="infoBox">
-            <div class="information">
-              <div>发票</div>
-              <div>发票是指一切单位和个人在购销商品、提供或接受服务以及从事其他经营活动中，所开具和收取的业务凭证，是会计核算的原始依据，也是审计机关、税务机关执法检查的重要依据。收据才是收付款凭证，发票只能证明业务发生了，不能证明款项是否收付。</div>
-              <div>
-                <el-button type="primary">已启用</el-button>
-                <el-button type="danger">禁用</el-button>
-              </div>
+        <div class="other_pays">
+            <div class="centerTop">
+                <span>其他配置信息</span>
             </div>
-            <div class="information">
-              <div>优惠券</div>
-              <div>优惠券可降低产品的价格，是一种常见的消费者营业推广工具。优惠券可以印在杂志的插页上、或夹在报纸中随报附送、或附在产品的包装上、或放置在商店中让人索取，有时甚至可以派人在街上分送。</div>
-              <div>
-                <el-button type="primary">启用</el-button>
-                <el-button type="danger">已禁用</el-button>
-              </div>
+            <div class="otherInfo">
+                <div class="infoBox">
+                    <div class="information">
+                        <div>发票</div>
+                        <div>发票是指一切单位和个人在购销商品、提供或接受服务以及从事其他经营活动中，所开具和收取的业务凭证，是会计核算的原始依据，也是审计机关、税务机关执法检查的重要依据。收据才是收付款凭证，发票只能证明业务发生了，不能证明款项是否收付。</div>
+                        <div>
+                            <el-button type="primary">已启用</el-button>
+                            <el-button type="danger">禁用</el-button>
+                        </div>
+                    </div>
+                    <div class="information">
+                        <div>优惠券</div>
+                        <div>优惠券可降低产品的价格，是一种常见的消费者营业推广工具。优惠券可以印在杂志的插页上、或夹在报纸中随报附送、或附在产品的包装上、或放置在商店中让人索取，有时甚至可以派人在街上分送。</div>
+                        <div>
+                            <el-button type="primary">启用</el-button>
+                            <el-button type="danger">已禁用</el-button>
+                        </div>
+                    </div>
+                    <div class="information">
+                        <div>代收</div>
+                        <div>不是用户自己收货,委托别人替为代收。该人就称为“代收人”</div>
+                        <div>
+                            <el-button type="primary">已启用</el-button>
+                            <el-button type="danger">禁用</el-button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="information">
-              <div>代收</div>
-              <div>不是用户自己收货,委托别人替为代收。该人就称为“代收人”</div>
-              <div>
-                <el-button type="primary">已启用</el-button>
-                <el-button type="danger">禁用</el-button>
-              </div>
-            </div>
-          </div>
         </div>
-      </div>
     </div>
-  </div>
-
+</div>
 </template>
+
 <script>
 export default {
   data() {
@@ -48,6 +48,7 @@ export default {
   }
 };
 </script>
+
 <style lang="scss" scoped>
 .pays_section {
   overflow: hidden;
@@ -59,8 +60,7 @@ export default {
     width: 98%;
     height: 96%;
     background-color: white;
-    box-shadow: 0 -3px 0 0 #59ace2;
-    // outline: 1px solid red;
+    box-shadow: 0 -3px 0 0 #59ace2; // outline: 1px solid red;
     .topBox {
       position: relative;
       height: 30px;
@@ -81,8 +81,7 @@ export default {
     }
     .other_pays {
       margin-top: 1%;
-      height: 92%;
-      // border:1px solid #e5e6e6;
+      height: 92%; // border:1px solid #e5e6e6;
       .centerTop {
         height: 30px;
         padding-left: 22px;
