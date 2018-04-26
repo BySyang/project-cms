@@ -18,8 +18,8 @@
           </el-select>
         </div>
         <div>
-          商品名:
-          <el-input placeholder="请输入商品名" prefix-icon="el-icon-search" v-model="goodsName">
+          用户名:
+          <el-input placeholder="请输入用户名" prefix-icon="el-icon-search" v-model="userName">
           </el-input>
         </div>
         <div>
@@ -40,7 +40,7 @@
           </el-table-column>
           <el-table-column prop="adminRemarks" align="center" header-align="center" label="修改备注" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column prop="newstatus" align="center" header-align="center" label="订单状态" show-overflow-tooltip>
+          <el-table-column prop="newstatus" align="center" header-align="center" label="订单状态" :formatter="formatter" show-overflow-tooltip>
           </el-table-column>
           <el-table-column prop="orderScore" align="center" header-align="center" label="获得积分" show-overflow-tooltip>
           </el-table-column>
@@ -58,6 +58,34 @@
         </div>
       </div>
     </div>
+
+    <!-- 编辑弹出框 -->
+    <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
+      <el-form ref="form" :model="form" label-width="50px">
+        <el-form-item label="下单日期" width="200">
+          <el-date-picker type="date" placeholder="选择日期" v-model="form.newTime" value-format="yyyy-MM-dd" style="width: 100%;"></el-date-picker>
+        </el-form-item>
+        <el-form-item label="修改备注" width="100">
+          <el-input v-model="form.adminRemarks"></el-input>
+        </el-form-item>
+        <el-form-item label="订单状态" width="100">
+          <!-- <el-input v-model="form.newstatus"></el-input> -->
+          <el-select v-model="jiaoyistats" filterable placeholder="请选择">
+            <el-option v-for="item in jiaoyilist" :key="item.value" :label="item.label" :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="获得积分" width="100">
+          <el-input v-model="form.orderScore"></el-input>
+        </el-form-item>
+
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="editVisible = false">取 消</el-button>
+        <el-button type="primary" @click="saveEdit">确 定</el-button>
+      </span>
+    </el-dialog>
+
   </div>
 </template>
 <script>
@@ -66,11 +94,18 @@ export default {
     return {
       multipleSelection: [],
       jiaoyistats: "",
+      editVisible: false,
       current: 1,
       size: 5,
-      goodsName: "",
+      userName: "",
       ordersId: "",
       xiadandata: "",
+      form:{
+        adminRemarks:'',
+        // newstatus:'',
+        orderScore:'',
+        newTime:''
+      },
       //时间选择插件
       pickerOptions2: {
         shortcuts: [
@@ -132,13 +167,7 @@ export default {
       userNameList: []
     };
   },
-  // watch: {
-  //   jiaoyistats: function(val, oldVal) {
-  //     this.orsersTable = this.otableData.filter(
-  //       item => ~item.orderStatus.indexOf(val)
-  //     );
-  //   }
-  // },
+
   created() {
     this.orsersTableList();
   },
@@ -161,7 +190,21 @@ export default {
       this.multipleSelection = val;
     },
     handleEdit(index, row) {
-      // console.log(index, row);
+      this.idx = index;
+      const item = this.orsersTable[index];
+      this.form = {
+        adminRemarks: item.adminRemarks,
+        newTime: item.newTime,
+        // newstatus: item.newstatus,
+        orderScore: item.orderScore
+      };
+      this.editVisible = true;
+    },
+    // 保存编辑
+    saveEdit() {
+      this.$set(this.orsersTable, this.idx, this.form);
+      this.editVisible = false;
+      this.$message.success(`修改第 ${this.idx + 1} 行成功`);
     },
     orsersTableList() {
       var that = this;
