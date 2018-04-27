@@ -381,7 +381,9 @@ export default {
     background-color: #f0f0f0;
     padding: 0;
     overflow: scroll;
-    overflow-y: hidden
+    overflow-y: hidden;
+    overflow-x: hidden
+
 }
 
 .el-menu-item-group {
