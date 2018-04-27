@@ -13,6 +13,7 @@ Vue.use(avatar)
 Vue.use(elementui);
 Vue.prototype.$http = axios;
 
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
