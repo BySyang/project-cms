@@ -169,23 +169,21 @@ export default {
         },
         submitForm(formName) {
             this.$refs[formName].validate((valid) => {
+                var oldPassword = window.localStorage.getItem('logPwd');
                 if (valid) {
-                    const h = this.$createElement;
-                    this.$message({
-                        message: h('p', null, [
-                            h('span', null, '修改成功 ')
-                        ]).then({
-                            // 密码修改成功后执行的函数
-                        })
-                    });
+                    oldPassword = this.ruleForm.name
+                    console.log(this.ruleForm.name);
+
                 } else {
-                    console.log('error submit!!');
+                    alert('error 修改失败!!');
                     return false;
                 }
             });
         },
         resetForm(formName) {
             this.$refs[formName].resetFields();
+            console.log('密码被重置呢')
+
         },
     }
 
@@ -379,14 +377,12 @@ export default {
     position: absolute;
     top: 10%;
     left: 14.6%;
-    width: 85.4%;
-    // height: 90%;
+    width: 85.4%; // height: 90%;
     background-color: #f0f0f0;
     padding: 0;
     overflow: scroll;
     overflow-y: hidden;
     overflow-x: hidden
-
 }
 
 .el-menu-item-group {
