@@ -8,12 +8,12 @@
       <div class="search">
         <div>
           下单时间:
-          <el-date-picker size="small" v-model="xiadandata" type="daterange" align="left" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
+          <el-date-picker size="small" v-model="xiadanTime" type="daterange" align="left" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
           </el-date-picker>
         </div>
         <div>
           订单号:
-          <el-input size="small" placeholder="请输入订单号" suffix-icon="el-icon-search" v-model="ordersId">
+          <el-input size="small" placeholder="请输入订单号" suffix-icon="el-icon-search" v-model="ordersNume">
           </el-input>
         </div>
         <div>
@@ -38,7 +38,7 @@
             <template slot-scope="scope">
               <img style="width:60px;height:60px" :src="'../static/series/'+scope.row.imgSrc" alt="">
             </template>
-          </el-table-column> 
+          </el-table-column>
           <el-table-column prop="goodsInfo[0].goodsPrice" align="center" header-align="center" label="商品价格" show-overflow-tooltip>
           </el-table-column>
           <el-table-column prop="goodsInfo[0].goodsPrice" align="center" header-align="center" label="退款金额" show-overflow-tooltip>
@@ -79,13 +79,15 @@ export default {
   data() {
     return {
       multipleSelection: [],
-      xiadandata: "",
       tableData: [],
-      goodsName: "", //商品名
-      ordersId: "",
       refst: false,
       current: 1, //当前页
-      size: 5
+      size: 5,
+      // searshArr:{
+      xiadanTime: "", //下单时间
+      goodsName: "", //商品名
+      ordersNume: ""
+      // }
     };
   },
   created() {
@@ -111,7 +113,7 @@ export default {
                 item.newTime = that.formatDate(item.createTime);
                 item.orderStatus = that.orderStatus(item.orderStatus);
                 item.refunState1 = that.refunState(0);
-                newArr.push(item)
+                newArr.push(item);
               }
             });
             this.tableData = newArr;
@@ -191,7 +193,6 @@ export default {
           .then(res => {
             this.$set(item, "goodsInfo", res.data.data);
             this.$set(item, "imgSrc", res.data.data[0].goodLargeImg);
-            // console.log(this.$set(item, "imgSrc", res.data.data[0].goodLargeImg))
             // console.log(item.imgSrc)
           })
           .catch(err => {
@@ -254,37 +255,55 @@ export default {
     },
     // 搜索-------------
     tables: function() {
-      if (this.goodsName == "") {
-        return this.data1;
-      } else {
-        var newArr = [];
-        for (var i = 0; i < this.tableData.length; i++) {
-          if (
-            this.tableData[i].goodsInfo[0].goodsName.indexOf(this.goodsName) >
-            -1
-          ) {
-            newArr.push(this.tableData[i]);
-          }
+    if (this.goodsName == "") {
+      return this.data1;
+    } else {
+      var newArr = [];
+      for (var i = 0; i < this.tableData.length; i++) {
+        if (
+          this.tableData[i].goodsInfo[0].goodsName.indexOf(this.goodsName) >
+          -1
+        ) {
+          newArr.push(this.tableData[i]);
         }
-        return newArr;
       }
-      if (this.ordersId == "") {
-        return this.data1;
-      } else {
-        var orderArr = [];
-        for (var j = 0; j < this.tableData.length; j++) {
-          if (this.tableData[j].orderunique.indexOf(this.ordersId) > -1) {
-            orderArr.push(this.tableData[j]);
-          }
+      return newArr;
+    }
+    if (this.ordersId == "") {
+      return this.data1;
+    } else {
+      var orderArr = [];
+      for (var j = 0; j < this.tableData.length; j++) {
+        if (this.tableData[j].orderunique.indexOf(this.ordersId) > -1) {
+          orderArr.push(this.tableData[j]);
         }
-        return orderArr;
       }
+      return orderArr;
+    }
     },
     total() {
       // console.log(this.tableData.length)
       return this.tableData.length;
     }
   }
+  // watch:{
+  //   searshArrFn:{
+  //     searshArr(){
+  //       let xiadanTime=searshArr.xiadanTime;
+  //       let goodsName=searshArr.goodsName;
+  //       let ordersNume=searshArr.ordersNume;
+  //       let newSearchArr=[];
+  //       console.log(ordersNume)
+  //         if (goodsName !== "") {
+  //         let i = newSearchArr;
+  //         arr = [];
+  //         i.forEach(item => {
+  //           if (item.goodsName == goodsName) arr.push(item);
+  //         });
+  //       }
+  //     }
+  //   }
+  // }
 };
 </script>
 
