@@ -2,7 +2,7 @@
   <div id="goods">
     <div class="main">
       <div class="main_top">
-        <div>商品分类</div>
+        <div>商品系列</div>
       </div>
       <div class="search">
         <el-row>
@@ -13,22 +13,18 @@
           <el-col :span="4" class="span1">系列名:</el-col>
           <el-col :span="3">
             <el-select size="small" placeholder="请选择系列" v-model="type">
-              <!-- <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option> -->
+              <el-option v-for="item in data" :key="item.typeId" :label="item.typeName" :value="item.typeName"></el-option>
             </el-select>
           </el-col>
-          <el-col :span="2" class="span1">商品价格:</el-col>
-          <el-col :span="3">
-            <el-input size="small" placeholder="请输入商品价格" prefix-icon="el-icon-search"></el-input>
-          </el-col>
-          <el-col :span="2" :push="5">
-            <el-button size="small" type="primary">添加商品</el-button>
+          <el-col :span="2" :push="10">
+            <el-button size="small" type="primary">添加系列</el-button>
           </el-col>
         </el-row>
       </div>
       <el-table :data="data1" border style="width: 100%" stripe show-header @row-click="getImg">
-        <el-table-column prop="typeId" sortable label="系列ID"> </el-table-column>
-        <el-table-column prop="typeName" label="系列名"> </el-table-column>
-        <el-table-column prop="newDesc" label="系列描述">
+        <el-table-column prop="typeId"  label="系列ID" align="center"> </el-table-column>
+        <el-table-column prop="typeName" label="系列名" align="center"> </el-table-column>
+        <el-table-column prop="newDesc" label="系列描述" align="center">
           <template slot-scope="scope">
             <el-popover trigger="hover" placement="top">
               <p>第一句: {{ scope.row.newDesc[0] }}</p>
@@ -40,22 +36,27 @@
             </el-popover>
           </template>
         </el-table-column>
-        <el-table-column label="系列轮播图">
+        <el-table-column label="系列轮播图" align="center">
           <template slot-scope="scope">
             <el-button type="text" @click="dialogVisible = true">点击查看</el-button>
           </template>
         </el-table-column>
-        <el-table-column prop="typeBannerImg" label="系列小图">
+        <el-table-column prop="typeBannerImg" label="系列小图" align="center">
           <template slot-scope="scope">
             <el-button type="text" @click="dialogVisible = true">点击查看</el-button>
           </template>
         </el-table-column>
-        <el-table-column prop="idShow" sortable>
+        <el-table-column prop="idShow" label="是否展示" align="center">
           <template slot-scope="scope">
-            <el-switch v-model="scope.row.idShow" active-color="#409eff" inactive-color="#dcdfe6" active-text="显示" inactive-text="隐藏"></el-switch>
+            <el-switch v-model="scope.row.idShow" active-color="#409eff" inactive-color="#dcdfe6"></el-switch>
           </template>
         </el-table-column>
-        <el-table-column prop="newTime" sortable label="创建时间"></el-table-column>
+        <el-table-column prop="newTime" label="创建时间" align="center"></el-table-column>
+        <el-table-column label="操作" align="center">
+          <template slot-scope="scope">
+            <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+          </template>
+        </el-table-column>
       </el-table>
       <el-row class="page">
         <el-col :span="3" :push="18">
@@ -134,6 +135,7 @@ export default {
             item.newDesc = this.editDes(item.typeDes);
             item.newDesc.name = "查看描述";
             item.newTime = this.formatDate(item.createime);
+            item.idShow = item.idShow == 1 ? true : false;
           });
           this.data = res.data.data;
         })
@@ -254,7 +256,7 @@ export default {
   overflow: hidden;
 }
 .largImg {
-  width: 600px;
+  width: 500px;
   height: 300px;
 }
 .smallImg {

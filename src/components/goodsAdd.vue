@@ -14,10 +14,10 @@
           <el-col :span="3">
             <el-input size="small" v-model="goodsName" placeholder="请输入商品名" prefix-icon="el-icon-search"></el-input>
           </el-col>
-          <el-col :span="2" class="span1">商品类型:</el-col>
+          <el-col :span="2" class="span1">商品系列:</el-col>
           <el-col :span="3">
             <el-select size="small" v-model="goodsType" placeholder="请选择">
-              <!-- <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option> -->
+              <el-option v-for="item in types" :key="item.typeId" :label="item.typeName" :value="item.typeName"></el-option>
             </el-select>
           </el-col>
           <el-col :span="2" class="span1">商品价格:</el-col>
@@ -26,32 +26,30 @@
           </el-col>
           <el-col :span="2" :push="1">
             <el-button size="small" type="primary">添加商品</el-button>
-          </el-col><el-col :span="2" :push="1">
-            <el-button size="small" type="primary">添加商品</el-button>
           </el-col>
         </el-row>
       </div>
       <el-table :data="data1" border style="width: 100%" stripe show-header tooltip-effect="dark" align="center">
         <el-table-column prop="goodsId" sortable label="商品ID" show-overflow-tooltip width="90" align="center"> </el-table-column>
-        <el-table-column prop="goodsName" label="商品名" show-overflow-tooltip align="center"> </el-table-column>
-        <el-table-column prop="typeName" label="商品类型" show-overflow-tooltip align="center"> </el-table-column>
-        <el-table-column prop="goodsDesc" label="商品描述" show-overflow-tooltip align="center"></el-table-column>
-        <el-table-column prop="goodSvg" label="商品价格" show-overflow-tooltip align="center"></el-table-column>
-        <el-table-column prop="goodStock" label="商品库存" show-overflow-tooltip align="center"></el-table-column>
-        <el-table-column prop="goodscore" label="商品评价" show-overflow-tooltip align="center">
+        <el-table-column prop="goodsName" label="商品名" show-overflow-tooltip align="center" width="120" > </el-table-column>
+        <el-table-column prop="typeName" label="商品系列" show-overflow-tooltip align="center" width="90" > </el-table-column>
+        <el-table-column prop="goodsDesc" label="商品描述" show-overflow-tooltip align="center" width="90" ></el-table-column>
+        <el-table-column prop="goodSvg" label="商品价格" show-overflow-tooltip align="center" width="80"></el-table-column>
+        <el-table-column prop="goodStock" label="商品库存" show-overflow-tooltip align="center" width="80"></el-table-column>
+        <el-table-column prop="goodscore" label="商品评价" show-overflow-tooltip align="center"  width="130">
           <template slot-scope="scope">
             <el-rate size="small" v-model="scope.row.goodscore" disabled text-color="#ff9900">
             </el-rate>
           </template>
         </el-table-column>
-        <el-table-column prop="isSale" label="是否上架" show-overflow-tooltip align="center">
+        <el-table-column prop="isSale" label="是否上架" show-overflow-tooltip align="center"  width="100">
           <template slot-scope="scope">
-            <el-switch v-model="scope.row.isSale" active-color="#409eff" inactive-color="#dcdfe6" active-text="启用" inactive-text="禁用"></el-switch>
+            <el-switch v-model="scope.row.isSale" active-color="#409eff" inactive-color="#dcdfe6"></el-switch>
           </template>
         </el-table-column>
-        <el-table-column prop="isHot" label="是否热销" show-overflow-tooltip align="center">
+        <el-table-column prop="isHot" label="是否热销"  align="center" width="100">
           <template slot-scope="scope">
-            <el-switch v-model="scope.row.isHot" active-color="#409eff" inactive-color="#dcdfe6" active-text="启用" inactive-text="禁用"></el-switch>
+            <el-switch v-model="scope.row.isHot" active-color="#409eff" inactive-color="#dcdfe6"></el-switch>
           </template>
         </el-table-column>
         <el-table-column label="上架时间" align="center">
@@ -82,12 +80,13 @@ export default {
   data() {
     return {
       data: [],
+      types:[],
       current: 1,
       size: 5,
-      time:'',
-      goodsName:'',
-      goodsType:'',
-      goodSvg:''
+      time: "",
+      goodsName: "",
+      goodsType: "",
+      goodSvg: ""
     };
   },
   computed: {
@@ -102,25 +101,17 @@ export default {
         if (this.data[i]) arr.push(this.data[i]);
       }
       return arr;
-    },
-    types() {}
+    }
   },
   created() {
-    new Promise((a, b) => {
-      this.getData(a, b);
-    })
-      .then(() => {
-        this.getTypes();
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    this.getData();
+    this.getTypes();
   },
   methods: {
     setCurrent(val) {
       this.current = val;
     },
-    getData(a, b) {
+    getData() {
       this.$http
         .get("/goodsList")
         .then(res => {
@@ -130,20 +121,15 @@ export default {
             item.isNew = item.isNew == 1 ? true : false;
           });
           this.data = res.data.data;
-          a();
         })
         .catch(err => {
           console.log(err);
-          b(err);
         });
     },
-    getTypes() {
-      var data = this.data;
-      data.forEach(item => {
-        this.$http.get(`/goodsTypeList?typeId=${item.typeId}`).then(res => {
-          this.$set(item, "typeName", res.data.data[0].typeName);
-        });
-      });
+    getTypes(){
+      this.$http.get('goodsTypeList').then(res=>{
+        this.types = res.data.data;
+      })
     }
   }
 };
