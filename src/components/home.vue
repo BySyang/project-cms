@@ -8,8 +8,11 @@
             <div class="log_item">
                 <img :src='img'>
                 <span>管理员</span>
+                <!-- 密码修改按钮 -->
                 <i class="iconfont icon-xiugai" @click="show = !show"></i>
+                <!-- 前台链接 -->
                 <a class="iconfont icon-liulanqi-IE" href="http://172.16.13.7:8080"></a>
+                <!-- 登录退出 -->
                 <i class="iconfont icon-swticontuichu1" @click="exit()"></i>
             </div>
         </el-header>
@@ -141,7 +144,6 @@ export default {
                 ],
             }
         }
-
     },
     created() {
         if (this.$route.name == "home") {
@@ -169,11 +171,12 @@ export default {
             this.$refs[formName].validate((valid) => {
                 if (valid) {
                     const h = this.$createElement;
-                    var $el = this.$parent
                     this.$message({
                         message: h('p', null, [
                             h('span', null, '修改成功 ')
-                        ])
+                        ]).then({
+                            // 密码修改成功后执行的函数
+                        })
                     });
                 } else {
                     console.log('error submit!!');

@@ -1,6 +1,6 @@
 <template>
 <div id="index">
-
+        <!-- 列表 -->
         <div class="list">
             <div class="list_item">
                 <div>
@@ -41,6 +41,7 @@
                 <label for="">$521314</label>
             </div>
         </div>
+        <!-- 分栏内容 -->
         <div id="contain">
             <div id="treated">
                 <div class="title">
@@ -112,6 +113,7 @@
                 </div>
             </div>
         </div>
+        <!-- Echars图表 -->
          <div id="Echars">
             <div id="Echars_1"></div>
             <div id="Echars_2"></div>
