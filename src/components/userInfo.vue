@@ -53,6 +53,7 @@
   </div>
 
 </template>
+
 <script>
   export default {
     data() {
@@ -162,6 +163,7 @@
   }
 
 </script>
+
 <style lang="scss" scoped>
   .orders {
     width: 100%;
