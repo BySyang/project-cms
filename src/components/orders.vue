@@ -292,7 +292,7 @@ export default {
       position: relative;
       height: 30px;
       border-bottom: 1px solid #e5e6e6;
-      div {
+    div {
         position: absolute;
         top: 0;
         left: 40px;
@@ -302,7 +302,7 @@ export default {
         text-align: center;
         background-color: #59ace2;
       }
-      .el-button {
+    .el-button {
         position: absolute;
         top: 1px;
         right: 100px;
