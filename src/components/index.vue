@@ -480,12 +480,12 @@ export default {
 }
 
 #Echars_3 {
-    top: 36.8%;
+    top: 36.7%;
     margin-left: 13px;
 }
 
 #Echars_4 {
-    top: 36.8%;
+    top: 36.7%;
     margin-right: 38px;
     right: 0px;
 }
@@ -578,7 +578,7 @@ export default {
     }
     span {
         font-size: 15px;
-        margin-bottom: 5px;
+        margin-bottom: 7px;
     }
     .menu_2_list_1 {
         background: #ffbe60
