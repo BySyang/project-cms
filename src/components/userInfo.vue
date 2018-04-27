@@ -7,7 +7,7 @@
       <div class="search">
         <div>
           注册时间:
-          <el-date-picker v-model="xiadandata" type="daterange" align="left" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions2">
+          <el-date-picker v-model="xiadandata" type="daterange" align="left" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
           </el-date-picker>
         </div>
         <div>
@@ -25,9 +25,9 @@
           </el-table-column>
           <el-table-column prop="userName" align="center" header-align="center" label="用户名" width="150" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column prop="userPhoto" align="center" header-align="center" label="头像" show-overflow-tooltip>
+          <el-table-column align="center" header-align="center" label="头像" show-overflow-tooltip>
             <template slot-scope="scope">
-              <img style="width:80%;height:80%" :src="scope.row.userPhoto" alt="" />
+              <img style="width:80%;height:80%" :src="'../static/series/'+scope.row.imgsrc" alt="" />
             </template>
           </el-table-column>
           <el-table-column prop="userSex" align="center" header-align="center" label="性别" show-overflow-tooltip>
@@ -59,7 +59,6 @@
 
 </template>
 <script>
-
 export default {
   data() {
     return {
@@ -93,9 +92,9 @@ export default {
         return this.data1;
       } else {
         var newArr = [];
-        for (var i = 0; i < this.data1.length; i++) {
-          if (this.data1[i].userName.indexOf(this.select_word) > -1) {
-            newArr.push(this.data1[i]);
+        for (var i = 0; i < this.data.length; i++) {
+          if (this.data[i].userName.indexOf(this.select_word) > -1) {
+            newArr.push(this.data[i]);
           }
         }
         return newArr;
@@ -105,24 +104,18 @@ export default {
       return this.data.length;
     }
   },
-  created() {
-    new Promise((a, b) => {
-      this.getData(a);
-    }).then(() => {
-      this.getName();
-    });
+  created(){
+    this.getData();
   },
   //获取数据
   methods: {
-    getData(item) {
+    getData() {
       this.$http
         .get("/userInfo")
         .then(res => {
           this.data = res.data.data;
-          // this.$set(item, "imgsrc", res.data.data[0].userPhoto);
-                //  console.log(this.$set(item,"imgsrc",res.data.data[0].userPhoto))
-          
-                 console.log(this.data[0].userPhoto)
+          let photo = res.data.data[0].userPhoto.slice(2);
+            this.$set(res.data.data[0], "imgsrc", photo);
         })
         .catch(err => {
           console.log(err);
