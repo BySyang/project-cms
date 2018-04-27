@@ -20,23 +20,26 @@
         <!--</div>-->
       </div>
       <div class="table">
-        <el-table border ref="multipleTable" :data="tables" tooltip-effect="dark" style="width: 100%">
-          <el-table-column prop="userId" header-align="center" align="center" label="用户id" width="100">
+        <el-table border ref="multipleTable" :data="data1" tooltip-effect="dark" style="width: 100%">
+          <el-table-column prop="userId" header-align="center" align="center" label="用户id" width="65">
           </el-table-column>
           <el-table-column prop="userName" align="center" header-align="center" label="用户名" width="150" show-overflow-tooltip>
           </el-table-column>
           <el-table-column align="center" header-align="center" label="头像" show-overflow-tooltip>
             <template slot-scope="scope">
-              <img style="width:80%;height:80%" :src="'../static/series/'+scope.row.imgsrc" alt="" />
+              <img style="width:80%;height:80%" :src="'../static/'+scope.row.imgsrc" alt="" />
             </template>
           </el-table-column>
-          <el-table-column prop="userSex" align="center" header-align="center" label="性别" show-overflow-tooltip>
+          <el-table-column prop="userSex" align="center" header-align="center" label="性别" width="65" show-overflow-tooltip>
           </el-table-column>
           <el-table-column prop="userPhone" align="center" header-align="center" label="联系号码" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column prop="userEmail" align="center" header-align="center" label="邮箱" show-overflow-tooltip>
+          <el-table-column prop="userEmail" align="center" header-align="center" label="邮箱" width="170" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column prop="userBirthday" align="center" header-align="center" label="生日" show-overflow-tooltip>
+          <el-table-column align="center" header-align="center" label="生日" width="190" show-overflow-tooltip>
+            <template slot-scope="scope">
+              {{(scope.row.userBirthday.substr(0,10))+"---"+(scope.row.userBirthday.substr(11,8))}}
+            </template>
           </el-table-column>
           <el-table-column prop="rankId" label="会员等级" align="center" header-align="center" width="120" show-overflow-tooltip>
           </el-table-column>
@@ -48,7 +51,7 @@
             </template>
           </el-table-column>
         </el-table>
-        <div class="block">
+        <div class="pagination">
           <el-pagination ref="pages" layout="prev, pager, next" :total="total" :page-size="size" @current-change="setCurrent">
           </el-pagination>
         </div>
@@ -104,18 +107,23 @@ export default {
       return this.data.length;
     }
   },
-  created(){
+  created() {
     this.getData();
   },
   //获取数据
   methods: {
     getData() {
+      var that = this;
       this.$http
         .get("/userInfo")
         .then(res => {
+          var newArr = [];
           this.data = res.data.data;
-          let photo = res.data.data[0].userPhoto.slice(2);
-            this.$set(res.data.data[0], "imgsrc", photo);
+          this.data.forEach(item => {
+            item.imgsrc = that.slic(item.userPhoto);
+            newArr.push(item);
+          });
+          this.data = newArr;
         })
         .catch(err => {
           console.log(err);
@@ -124,7 +132,10 @@ export default {
     setCurrent(val) {
       this.current = val;
     },
-
+    slic(str) {
+      var cc = str.slice(9);
+      return cc;
+    },
     refund(row) {
       this.open4(row);
     },
