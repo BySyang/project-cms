@@ -5,7 +5,7 @@
         <div>系统日志</div>
       </div>
       <div class="logs_centerBox">
-        <el-table border  :data="tableData" tooltip-effect="dark" style="width: 100%" >
+        <el-table border :data="tableData" tooltip-effect="dark" style="width: 100%">
           <el-table-column prop="adminName" header-align="center" align="center" label="登录名" width="150">
           </el-table-column>
           <el-table-column prop="state" align="center" header-align="center" label="状态" width="100" show-overflow-tooltip>
@@ -20,9 +20,9 @@
           </el-table-column>
         </el-table>
         <div class="pagination">
-                <el-pagination ref="pages" layout="prev, pager, next" :total="total" :page-size="size" @current-change="setCurrent">
-                </el-pagination>
-            </div>
+          <el-pagination ref="pages" layout="prev, pager, next" :total="total" :page-size="size" @current-change="setCurrent">
+          </el-pagination>
+        </div>
       </div>
     </div>
   </div>
@@ -39,46 +39,46 @@ export default {
           adminName: "admin",
           state: "1",
           IPaddress: "172.16.13.9",
-          accessAddress:"172.16.13.19",
-          startTime:"2018-04-27 18:55:51",
-          endTime:"2018-04-27 18:58:51"
+          accessAddress: "172.16.13.19",
+          startTime: "2018-04-27 18:55:51",
+          endTime: "2018-04-27 18:58:51"
         },
         {
           adminName: "admin",
           state: "1",
           IPaddress: "172.16.13.20",
-          accessAddress:"172.16.13.19",
-          startTime:"2018-04-27 11:45:42",
-          endTime:"2018-04-27 11:55:51"
+          accessAddress: "172.16.13.19",
+          startTime: "2018-04-27 11:45:42",
+          endTime: "2018-04-27 11:55:51"
         },
         {
           adminName: "admin",
           state: "1",
           IPaddress: "172.16.13.16",
-          accessAddress:"172.16.13.19",
-          startTime:"2018-04-26 13:15:21",
-          endTime:"2018-04-26 13:23:51"
+          accessAddress: "172.16.13.19",
+          startTime: "2018-04-26 13:15:21",
+          endTime: "2018-04-26 13:23:51"
         },
         {
           adminName: "admin",
           state: "1",
           IPaddress: "172.16.13.3",
-          accessAddress:"172.16.13.19",
-          startTime:"2018-04-24 18:55:51",
-          endTime:"2018-04-24 19:00:00"
+          accessAddress: "172.16.13.19",
+          startTime: "2018-04-24 18:55:51",
+          endTime: "2018-04-24 19:00:00"
         },
         {
           adminName: "admin",
           state: "1",
           IPaddress: "172.16.13.21",
-          accessAddress:"172.16.13.19",
-          startTime:"2018-04-23 10:55:51",
-          endTime:"2018-04-23 11:55:01"
+          accessAddress: "172.16.13.19",
+          startTime: "2018-04-23 10:55:51",
+          endTime: "2018-04-23 11:55:01"
         }
       ]
     };
   },
-  computed:{
+  computed: {
     data1() {
       var arr = [];
       var current = this.current;
@@ -92,7 +92,7 @@ export default {
       return this.tableData.length;
     }
   },
-  methods:{
+  methods: {
     setCurrent(val) {
       this.current = val;
     }
@@ -135,8 +135,10 @@ export default {
       height: 92%; // border:1px solid #e5e6e6;
       width: 96%;
       margin: 10px auto;
-      .pagination{
-        
+      .pagination {
+        display: flex;
+        flex-direction: row;
+        justify-content:  flex-end;
       }
     }
   }
