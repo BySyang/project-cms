@@ -17,6 +17,7 @@
           <el-col :span="2" class="span1">商品系列:</el-col>
           <el-col :span="3">
             <el-select size="small" v-model="goodsType" placeholder="请选择">
+              <el-option label="全部" value=" "></el-option>
               <el-option v-for="item in types" :key="item.typeId" :label="item.typeName" :value="item.typeName"></el-option>
             </el-select>
           </el-col>
@@ -86,7 +87,7 @@ export default {
       size: 5,
       time: "",
       goodsName: "",
-      goodsType: "",
+      goodsType: "全部",
       goodSvg: ""
     };
   },

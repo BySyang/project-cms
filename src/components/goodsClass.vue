@@ -12,7 +12,8 @@
           </el-col>
           <el-col :span="4" class="span1">系列名:</el-col>
           <el-col :span="3">
-            <el-select size="small" placeholder="请选择系列" v-model="type">
+            <el-select size="small" placeholder="请选择系列" v-model="types">
+              <el-option label="全部" value="全部"></el-option>
               <el-option v-for="item in data" :key="item.typeId" :label="item.typeName" :value="item.typeName"></el-option>
             </el-select>
           </el-col>
@@ -104,21 +105,46 @@ export default {
       className: true,
       index: 0,
       time: "",
-      type: ""
+      types: "全部"
     };
   },
   computed: {
+    data2(){
+      return this.data
+    },
     total() {
       return this.data.length;
     },
-    data1() {
-      var arr = [];
-      var current = this.current;
-      var size = this.size;
-      for (var i = (current - 1) * size; i < (current - 1) * size + size; i++) {
-        if (this.data[i]) arr.push(this.data[i]);
+    data1: {
+      get() {
+        var arr = [];
+        var current = this.current;
+        var size = this.size;
+        for (
+          var i = (current - 1) * size;
+          i < (current - 1) * size + size;
+          i++
+        ) {
+          if (this.data[i]) arr.push(this.data[i]);
+        }
+        return arr;
+      },
+      set(val){
+        
       }
-      return arr;
+    }
+  },
+  watch: {
+    types: function() {
+      if (this.types === "全部") {
+        this.data1 = this.data;
+      } else {
+        var newArr = [];
+        this.data.forEach(item => {
+          if (item.typeName.indexOf(this.types) > -1) newArr.push(item);
+        });
+        this.data1 = newArr;
+      }
     }
   },
   created() {
