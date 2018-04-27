@@ -7,7 +7,7 @@
       <div class="search">
         <div>
           评论时间:
-          <el-date-picker v-model="xiadandata" type="daterange" align="left" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions2">
+          <el-date-picker v-model="xiadandata" format="yyyy-MM-dd" value-format="yyyy-MM-dd" type="daterange" align="left" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions2">
           </el-date-picker>
         </div>
 
@@ -50,6 +50,21 @@
 
       </div>
     </div>
+
+    //开关
+        <el-switch
+      v-model="value3"
+      active-text="按月付费"
+      inactive-text="按年付费">
+    </el-switch>
+    <el-switch
+      style="display: block"
+      v-model="value4"
+      active-color="#13ce66"
+      inactive-color="#ff4949"
+      active-text="按月付费"
+      inactive-text="按年付费">
+    </el-switch>
   </div>
 </template>
 
@@ -116,27 +131,29 @@ export default {
     },
     //搜索
      tables:function(){
-        if(this.select_word==""){
-          return this.data1
-        }else{
-          var newArr=[];
-          for(var i=0;i<this.data1.length;i++){
-            if(this.data1[i].username.indexOf(this.select_word)>-1){
-              newArr.push(this.data1[i])
-            }
-          }
-          return newArr;
-        }
+       return this.data1
+        // if(this.select_word==""){
+        //   return this.data1
+        // }else{
+        //   var newArr=[];
+        //   for(var i=0;i<this.data1.length;i++){
+        //     if(this.data1[i].username.indexOf(this.select_word)>-1){
+        //       newArr.push(this.data1[i])
+        //     }
+        //   }
+        //   return newArr;
+        // }
       },
     total() {
       return this.data.length;
     }
   },
+  //获取用户名
   created() {
     new Promise((a, b) => {
       this.getData(a);
     }).then(() => {
-      this.getName();
+      // this.getName();
     });
   },
   //获取数据
@@ -157,12 +174,22 @@ export default {
         });
       });
     },
-    // searchpl() {
-    //   this.$http.get("/goodScoreList").then(res => {
-    //     this.data = res.data.data;
-    //   })
-    // }
+    searchpl() {
+      console.info(this.xiadandata);
+      var startDate = "";
+      var endDate = "";
+      if(this.xiadandata  != null){
+        startDate = this.xiadandata[0] == undefined ? "" : this.xiadandata[0];
+        endDate = this.xiadandata[1] == undefined ? "" : this.xiadandata[1];
+      }
+      var url = "/goodScoreList?username="+this.select_word+"&startDate="+startDate+"&endDate="+endDate;
+      this.$http.get(url).then(res => {
+        this.data = res.data.data;
+      })
+    }
 },
+  //开关
+
 
 //
 }
@@ -216,6 +243,13 @@ export default {
     .table {
       width: 96%;
       margin: 10px auto;
+    }
+
+    .block{
+      text-align: right;
+      position: absolute;
+      top: 510px;
+      left: 870px; 
     }
   }
 }
