@@ -1,6 +1,6 @@
 <template>
 <div id="index">
-
+        <!-- 列表 -->
         <div class="list">
             <div class="list_item">
                 <div>
@@ -41,6 +41,7 @@
                 <label for="">$521314</label>
             </div>
         </div>
+        <!-- 分栏内容 -->
         <div id="contain">
             <div id="treated">
                 <div class="title">
@@ -112,11 +113,13 @@
                 </div>
             </div>
         </div>
+        <!-- Echars图表 -->
          <div id="Echars">
             <div id="Echars_1"></div>
             <div id="Echars_2"></div>
-            <div id="Echars_3"></div>
             <div id="Echars_4"></div>
+            <div id="Echars_3"></div>
+            
         </div>
 </div>
 </template>
@@ -367,6 +370,10 @@ export default {
         ]
       }),
       myChart4.setOption({
+        title:{
+          left: "43%",
+          text:'月销售比例'
+        },
         tooltip: {
           trigger: "item",
           formatter: "{a} <br/>{b}: {c} ({d}%)"
@@ -439,7 +446,7 @@ export default {
   box-shadow: -1px -1px -1px -1px lightgray;
 }
 #Echars {
-  margin-top: 8px;
+  margin-top: 15px;
   display: flex;
 //   flex-direction: row;
   flex-wrap: wrap;
@@ -452,13 +459,14 @@ export default {
 #Echars_4 {
   // border: 1px solid black;
   height: 300px;
-  width: 47.5%;
+  width: 48.6%;
   background: #e6e6fa;
   box-shadow: 1px 0px 1px 0px lightgrey;
-  margin: 0px 10px 10px 10px;
+  margin: 10px 0px 15px 0px;
 }
 
 .list {
+  // border: 1px solid red;
   overflow: hidden;
   display: flex;
   flex-direction: row;
@@ -507,22 +515,24 @@ export default {
   padding-right: 10px;
   line-height: 85px;
   color: white;
-  font-size: 24px;
+  font-size: 26px;
 }
 #contain{
     width: 100%;
+    margin-top: 10px;
     display: flex;
     flex-direction: row;
+    justify-content: space-between
     // flex-wrap: wrap;
 }
 #treated {
-  margin:8px 0px 0px 10px;
+  margin:8px 0px 0px 0px;
   width: 48.7%;
   background: #f0f0f0;
 }
 
 .title {
-  width: 96%;
+  width: 96.3%;
   padding: 10px 0px 10px 20px;
   border-bottom: 1px solid white;
   box-shadow: 1px 0px 1px 0px lightgrey;

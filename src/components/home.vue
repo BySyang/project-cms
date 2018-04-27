@@ -8,8 +8,11 @@
             <div class="log_item">
                 <img :src='img'>
                 <span>管理员</span>
+                <!-- 密码修改按钮 -->
                 <i class="iconfont icon-xiugai" @click="show = !show"></i>
+                <!-- 前台链接 -->
                 <a class="iconfont icon-liulanqi-IE" href="http://172.16.13.7:8080"></a>
+                <!-- 登录退出 -->
                 <i class="iconfont icon-swticontuichu1" @click="exit()"></i>
             </div>
         </el-header>
@@ -141,7 +144,6 @@ export default {
                 ],
             }
         }
-
     },
     created() {
         if (this.$route.name == "home") {
@@ -167,22 +169,21 @@ export default {
         },
         submitForm(formName) {
             this.$refs[formName].validate((valid) => {
+                var oldPassword = window.localStorage.getItem('logPwd');
                 if (valid) {
-                    const h = this.$createElement;
-                    var $el = this.$parent
-                    this.$message({
-                        message: h('p', null, [
-                            h('span', null, '修改成功 ')
-                        ])
-                    });
+                    oldPassword = this.ruleForm.name
+                    console.log(this.ruleForm.name);
+
                 } else {
-                    console.log('error submit!!');
+                    alert('error 修改失败!!');
                     return false;
                 }
             });
         },
         resetForm(formName) {
             this.$refs[formName].resetFields();
+            console.log('密码被重置呢')
+
         },
     }
 
@@ -376,14 +377,12 @@ export default {
     position: absolute;
     top: 10%;
     left: 14.6%;
-    width: 85.4%;
-    // height: 90%;
+    width: 85.4%; // height: 90%;
     background-color: #f0f0f0;
     padding: 0;
     overflow: scroll;
     overflow-y: hidden;
     overflow-x: hidden
-
 }
 
 .el-menu-item-group {
