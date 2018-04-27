@@ -8,7 +8,7 @@
       <div class="search">
         <div>
           下单时间:
-          <el-date-picker size="small" v-model="xiadandata" type="daterange" align="left" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions2">
+          <el-date-picker size="small" v-model="xiadandata" type="daterange" align="left" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
           </el-date-picker>
         </div>
         <div>
@@ -28,17 +28,17 @@
         <el-table border ref="multipleTable" :data="tables" tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange">
           <el-table-column prop="orderId" header-align="center" align="center" label="订单id" width="100">
           </el-table-column>
-          <el-table-column prop="orderunique" header-align="center" align="center" label="订单号" width="200">
+          </el-table-column>
+          <el-table-column prop="orderunique" header-align="center" align="center" label="订单号" width="150">
           </el-table-column>
           <el-table-column prop="goodsInfo[0].goodsName" align="center" header-align="center" label="商品名称" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column  prop="goodsInfo[0].goodsImg" align="center" header-align="center" label="商品图片" show-overflow-tooltip>
-            <template slot-scope="img">
-              <el-row>
-                <img src="imgSrc" alt="">
-              </el-row>
-            </template>
           </el-table-column>
+          <el-table-column width="100px" align="center" header-align="center" label="商品图片" show-overflow-tooltip>
+            <template slot-scope="scope">
+              <img style="width:60px;height:60px" :src="'../static/series/'+scope.row.imgSrc" alt="">
+            </template>
+          </el-table-column> 
           <el-table-column prop="goodsInfo[0].goodsPrice" align="center" header-align="center" label="商品价格" show-overflow-tooltip>
           </el-table-column>
           <el-table-column prop="goodsInfo[0].goodsPrice" align="center" header-align="center" label="退款金额" show-overflow-tooltip>
@@ -68,10 +68,6 @@
           <el-pagination ref="pages" layout="prev, pager, next" :total="total" :page-size="size" @current-change="setCurrent">
           </el-pagination>
         </div>
-        <div class="modal">
-        </div>
-      </div>
-      <div class="modal">
       </div>
     </div>
 
@@ -89,39 +85,7 @@ export default {
       ordersId: "",
       refst: false,
       current: 1, //当前页
-      size: 5,
-      //时间插件
-      pickerOptions2: {
-        shortcuts: [
-          {
-            text: "最近一周",
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit("pick", [start, end]);
-            }
-          },
-          {
-            text: "最近一个月",
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-              picker.$emit("pick", [start, end]);
-            }
-          },
-          {
-            text: "最近三个月",
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-              picker.$emit("pick", [start, end]);
-            }
-          }
-        ]
-      }
+      size: 5
     };
   },
   created() {
@@ -141,14 +105,16 @@ export default {
       this.$http.get("ordersList").then(
         resp => {
           if (resp.data.data) {
+            var newArr = [];
             resp.data.data.forEach(item => {
-              item.newTime = that.formatDate(item.createTime);
-              this.tableData = resp.data.data;
-              item.orderStatus = that.orderStatus(item.orderStatus);
-              item.refunState1 = that.refunState(0);
-              // console.log(that.orderStatus(item.orderStatus))
+              if (item.orderStatus == 1 || item.orderStatus == 2) {
+                item.newTime = that.formatDate(item.createTime);
+                item.orderStatus = that.orderStatus(item.orderStatus);
+                item.refunState1 = that.refunState(0);
+                newArr.push(item)
+              }
             });
-            this.tableData = resp.data.data;
+            this.tableData = newArr;
             resolve("ok");
             // console.log(resp.data.data);
           }
@@ -158,9 +124,9 @@ export default {
         }
       );
     },
+    // ----年月日的拼接-------
     formatDate(dateStr) {
       var iDate = new Date(dateStr);
-
       function addZreo(num) {
         return num < 10 ? "0" + num : num;
       }
@@ -172,6 +138,7 @@ export default {
         addZreo(iDate.getDate())
       );
     },
+    // 退款状态
     refunState(refst) {
       var refunStatetext = " ";
       if (refst) {
@@ -181,6 +148,7 @@ export default {
       }
       return refunStatetext;
     },
+    //订单状态-------------
     orderStatus(status) {
       var newst = "";
       switch (status) {
@@ -222,14 +190,14 @@ export default {
           .get(`/orderGoods?orderId=${item.orderId}`)
           .then(res => {
             this.$set(item, "goodsInfo", res.data.data);
+            this.$set(item, "imgSrc", res.data.data[0].goodLargeImg);
+            // console.log(this.$set(item, "imgSrc", res.data.data[0].goodLargeImg))
+            // console.log(item.imgSrc)
           })
           .catch(err => {
             console.log(err);
           });
       });
-    },
-    getImg(){
-      
     },
     setCurrent(val) {
       this.current = val;
@@ -237,7 +205,6 @@ export default {
     refund(row) {
       this.open4(row);
     },
-
     // 模态框------------
 
     open4(row) {
@@ -328,6 +295,7 @@ export default {
   background-color: #e5e6e6;
   overflow: hidden;
   #afterSales_body {
+    padding-bottom: 30px;
     background-color: white; // height: 60px;
     width: 98%;
     margin: 1% auto;
@@ -373,9 +341,7 @@ export default {
   .pages {
     width: 17%;
     margin-top: 30px;
-    position: absolute;
-    right: 7%;
-    // top: 25%;
+    margin-left: 75%;
   }
 }
 </style>
