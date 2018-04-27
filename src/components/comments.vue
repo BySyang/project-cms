@@ -7,7 +7,7 @@
       <div class="search">
         <div>
           评论时间:
-          <el-date-picker v-model="xiadandata" type="daterange" align="left" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions2">
+          <el-date-picker v-model="xiadandata" format="yyyy-MM-dd" value-format="yyyy-MM-dd" type="daterange" align="left" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
           </el-date-picker>
         </div>
         <div>
@@ -36,11 +36,19 @@
             </template>
           </el-table-column>
           <el-table-column prop="orderScore" align="center" header-align="center" label="评分" show-overflow-tooltip>
+            <template slot-scope="scope">
+              <el-rate size="small" v-model="scope.row.orderScore" disabled text-color="#ff9900">
+              </el-rate>
+            </template>
           </el-table-column>
           <el-table-column prop="isShow" align="center" header-align="center" label="是否显示" show-overflow-tooltip>
+            <template slot-scope="scope">
+              <el-switch v-model="scope.row.isShow" active-color="#409eff" inactive-color="#dcdfe6"></el-switch>
+            </template>
           </el-table-column>
-        </el-table>
 
+        </el-table>
+        <!-- 分页 -->
         <div class="block">
           <el-pagination ref="pages" layout="prev, pager, next" :total="total" :page-size="size" @current-change="setCurrent">
           </el-pagination>
@@ -65,38 +73,6 @@ export default {
       current: 1,
       size: 5,
       is_search: false,
-      //时间选择插件
-      pickerOptions2: {
-        shortcuts: [
-          {
-            text: "最近一周",
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit("pick", [start, end]);
-            }
-          },
-          {
-            text: "最近一个月",
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-              picker.$emit("pick", [start, end]);
-            }
-          },
-          {
-            text: "最近三个月",
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-              picker.$emit("pick", [start, end]);
-            }
-          }
-        ]
-      },
       data: []
     };
   },
@@ -112,6 +88,10 @@ export default {
   methods: {
     getData() {
       this.$http.get("/goodScoreList").then(res => {
+        //开关
+        res.data.data.forEach(item=>{
+          item.isShow = item.isShow==1?true:false;
+        })
         this.data = res.data.data;
       });
     },
@@ -151,17 +131,18 @@ export default {
     },
     //搜索
     tables: function() {
-      if (this.select_word == "") {
-        return this.data1;
-      } else {
-        var newArr = [];
-        for (var i = 0; i < this.data1.length; i++) {
-          if (this.data1[i].username.indexOf(this.select_word) > -1) {
-            newArr.push(this.data1[i]);
-          }
-        }
-        return newArr;
-      }
+      return this.data1;
+      // if (this.select_word == "") {
+      //   return this.data1;
+      // } else {
+      //   var newArr = [];
+      //   for (var i = 0; i < this.data1.length; i++) {
+      //     if (this.data1[i].username.indexOf(this.select_word) > -1) {
+      //       newArr.push(this.data1[i]);
+      //     }
+      //   }
+      //   return newArr;
+      // }
     },
     total() {
       return this.data.length;
@@ -186,6 +167,7 @@ export default {
     .main_top {
       position: relative;
       height: 30px;
+      color:white;
       border-bottom: 1px solid #e5e6e6;
       div {
         position: absolute;
@@ -222,10 +204,9 @@ export default {
   }
 
   .block {
-    text-align: right;
-    position: absolute;
-    top: 510px;
-    left: 870px;
+   
+   margin-top:20px;
+   margin-left:843px;
   }
 }
 </style>
