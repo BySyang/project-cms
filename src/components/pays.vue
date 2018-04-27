@@ -16,14 +16,14 @@
               </el-table-column>
               <el-table-column prop="payImg" label="图片" width="180" align="center">
                 <template slot-scope="scope">
-                  <img :src="scope.row.image" height="60" />
+                  <img :src="scope.row.payImg" height="60" />
                 </template>
               </el-table-column>
               <el-table-column prop="payInfo" label="简介" align="center">
               </el-table-column>
               <el-table-column prop="isOn" label="状态" width='140' align="center">
                 <template slot-scope="scope">
-                  <el-switch v-model="scope.row.isOn" active-text="启用" inactive-text="禁用">
+                  <el-switch v-model="scope.row.isOn" active-text="启用" inactive-text="禁用" :active-value="1" :sinactive-value="0">
                   </el-switch>
                 </template>
               </el-table-column>
@@ -39,45 +39,18 @@
 export default {
   data() {
     return {
-      // value1: true,
-      // value2: true,
-      multipleSelection:[],
-      payName: "",
-      payImg: "",
-      payInfo: "",
-      isOn: 1,
-      tableData:[]
-      // tableData: [
-      //   {
-      //     payName: "支付宝",
-      //     image: require("../assets/zhifb.jpg"),
-      //     introduce:
-      //       "支付宝（中国）网络技术有限公司是国内领先的第三方支付平台，致力于提供“简单、安全、快速”的支付解决方案。",
-      //     judge: ""
-      //   },
-      //   {
-      //     name: "微信支付",
-      //     image: require("../assets/weixin.jpg"),
-      //     introduce:
-      //       "微信支付是集成在微信客户端的支付功能，用户可以通过手机完成快速的支付流程。",
-      //     judge: ""
-      //   },
-      //   {
-      //     name: "银联支付",
-      //     image: require("../assets/yinlian.jpg"),
-      //     introduce:
-      //       "中国银联是通过银联跨行交易清算系统实现商业银行系统间的互联互通和资源共享，保证银行卡跨行、跨地区和跨境使用。",
-      //     judge: ""
-      //   }
-      // ]
+      multipleSelection: [],
+      tableData: []
     };
+  },
+  created() {
+    this.getData();
   },
   //获取数据
   methods: {
-    getData(a) {
+    getData() {
       this.$http.get("/pays").then(res => {
-        this.data = res.data.data;
-        a("");
+        this.tableData = res.data.data;
       });
     }
   }
