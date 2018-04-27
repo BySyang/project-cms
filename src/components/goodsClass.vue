@@ -22,7 +22,8 @@
         </el-row>
       </div>
       <el-table :data="data1" border style="width: 100%" stripe show-header @row-click="getImg">
-        <el-table-column prop="typeId"  label="系列ID" align="center"> </el-table-column>
+        <el-table-column type="selection" width="30" label="批量删除"></el-table-column>
+        <el-table-column prop="typeId" label="系列ID" align="center"> </el-table-column>
         <el-table-column prop="typeName" label="系列名" align="center"> </el-table-column>
         <el-table-column prop="newDesc" label="系列描述" align="center">
           <template slot-scope="scope">
@@ -239,6 +240,9 @@ export default {
       width: 80px;
       line-height: 32px;
     }
+  }
+  .el-table {
+    margin-left: 2%;
   }
 }
 .el-row {

@@ -30,24 +30,25 @@
         </el-row>
       </div>
       <el-table :data="data1" border style="width: 100%" stripe show-header tooltip-effect="dark" align="center">
+        <el-table-column type="selection" width="30" label="批量删除"></el-table-column>
         <el-table-column prop="goodsId" sortable label="商品ID" show-overflow-tooltip width="90" align="center"> </el-table-column>
-        <el-table-column prop="goodsName" label="商品名" show-overflow-tooltip align="center" width="120" > </el-table-column>
-        <el-table-column prop="typeName" label="商品系列" show-overflow-tooltip align="center" width="90" > </el-table-column>
-        <el-table-column prop="goodsDesc" label="商品描述" show-overflow-tooltip align="center" width="90" ></el-table-column>
+        <el-table-column prop="goodsName" label="商品名" show-overflow-tooltip align="center" width="120"> </el-table-column>
+        <el-table-column prop="typeName" label="商品系列" show-overflow-tooltip align="center" width="90"> </el-table-column>
+        <el-table-column prop="goodsDesc" label="商品描述" show-overflow-tooltip align="center" width="90"></el-table-column>
         <el-table-column prop="goodSvg" label="商品价格" show-overflow-tooltip align="center" width="80"></el-table-column>
         <el-table-column prop="goodStock" label="商品库存" show-overflow-tooltip align="center" width="80"></el-table-column>
-        <el-table-column prop="goodscore" label="商品评价" show-overflow-tooltip align="center"  width="130">
+        <el-table-column prop="goodscore" label="商品评价" show-overflow-tooltip align="center" width="130">
           <template slot-scope="scope">
             <el-rate size="small" v-model="scope.row.goodscore" disabled text-color="#ff9900">
             </el-rate>
           </template>
         </el-table-column>
-        <el-table-column prop="isSale" label="是否上架" show-overflow-tooltip align="center"  width="100">
+        <el-table-column prop="isSale" label="是否上架" show-overflow-tooltip align="center" width="100">
           <template slot-scope="scope">
             <el-switch v-model="scope.row.isSale" active-color="#409eff" inactive-color="#dcdfe6"></el-switch>
           </template>
         </el-table-column>
-        <el-table-column prop="isHot" label="是否热销"  align="center" width="100">
+        <el-table-column prop="isHot" label="是否热销" align="center" width="100">
           <template slot-scope="scope">
             <el-switch v-model="scope.row.isHot" active-color="#409eff" inactive-color="#dcdfe6"></el-switch>
           </template>
@@ -80,7 +81,7 @@ export default {
   data() {
     return {
       data: [],
-      types:[],
+      types: [],
       current: 1,
       size: 5,
       time: "",
@@ -126,10 +127,10 @@ export default {
           console.log(err);
         });
     },
-    getTypes(){
-      this.$http.get('goodsTypeList').then(res=>{
+    getTypes() {
+      this.$http.get("goodsTypeList").then(res => {
         this.types = res.data.data;
-      })
+      });
     }
   }
 };
@@ -166,6 +167,9 @@ export default {
       width: 80px;
       line-height: 32px;
     }
+  }
+  .el-table{
+    margin-left: 2%;
   }
 }
 .el-row {
