@@ -376,7 +376,7 @@ export default {
     top: 9%;
     left: 15%;
     width: 85%;
-    height: 300%;
+    height: 200%;
     background-color: #f0f0f0;
     padding: 0;
     overflow: scroll;
