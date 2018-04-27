@@ -311,7 +311,6 @@ export default {
 
 <style lang="scss" scoped>
 .orders {
-<<<<<<< HEAD
   width: 100%;
   height: 100%;
   .orders_main {
@@ -349,31 +348,6 @@ export default {
         display: inline-block;
         .el-range-editor.el-input__inner {
           width: 72%;
-=======
-    width: 100%;
-    height: 100%;
-    .orders_main {
-        margin: 1% auto;
-        width: 98%;
-        height: 95%;
-        background-color: white;
-        box-shadow: 0 -3px 0 0 #59ace2;
-        .main_top {
-            position: relative;
-            height: 30px;
-            border-bottom: 1px solid #e5e6e6;
-            div {
-                position: absolute;
-                top: 0;
-                left: 22px;
-                width: 100px;
-                height: 30px;
-                line-height: 30px;
-                text-align: center;
-                color: white;
-                background-color: #59ace2;
-            }
->>>>>>> 9699d1736c0dd2fa6e57c5ab85a1d9708dcc6342
         }
         .search {
             padding: 10px 0 0 22px;
@@ -397,5 +371,5 @@ export default {
             margin: 10px auto;
         }
     }
-}
+}}}
 </style>
