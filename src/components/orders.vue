@@ -101,12 +101,6 @@ export default {
             userName: "",
             ordersId: "",
             xiadandata: "",
-            form: {
-                adminRemarks: "",
-                // newstatus:'',
-                orderScore: "",
-                newTime: ""
-            },
             //交易状态
             jiaoyilist: [{
                     value: "0",
@@ -131,8 +125,6 @@ export default {
             ],
             //表格数据
             orsersTable: [],
-            //username
-            userNameList: []
         };
     },
     created() {
@@ -151,20 +143,6 @@ export default {
         total() {
             return this.orsersTable.length;
         }
-        // 搜索
-        /*     orsersTable1: function() {
-          if (this.ordersId == "") {
-            return this.orsersTable1;
-          } else {
-            var newArr = [];
-            for (var i = 0; i < this.orsersTable1.length; i++) {
-              if (this.orsersTable1[i].orderunique.indexOf(this.ordersId) > -1) {
-                newArr.push(this.orsersTable1[i]);
-              }
-            }
-            return newArr;
-          }
-        } */
     },
     methods: {
         handleSelectionChange(val) {
@@ -196,31 +174,6 @@ export default {
                             item.newTime = that.formatDate(item.createTime);
                             // console.log(item.orderStatus);
                             item.newstatus = that.ordersStatus(item.orderStatus);
-                            /* for (let i = 0; i < resp.data.data.length; i++) {
-                              // var that = this;
-                              this.$http
-                                .get("userInfo", {
-                                  params: {
-                                    userId: resp.data.data[i].userId
-                                  }
-                                })
-                                .then(
-                                  resp => {
-                                    console.log(resp.data.data[i].userId)
-                                    if (resp.data.data) {
-                                      resp.data.data.forEach(item => {
-                                        item.newname = item.userName;
-                                      });
-                                      // console.log(item.newname)
-                                      this.orsersTable.push(item.userName)
-                                      // console.log(this.orsersTable[0].userName);
-                                    }
-                                  },
-                                  err => {
-                                    consolo.log(err);
-                                  }
-                                );
-                            } */
                         });
                         this.orsersTable = resp.data.data;
                     }
