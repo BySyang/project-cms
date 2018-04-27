@@ -236,7 +236,7 @@ export default {
       position: absolute;
       top: 510px;
       left: 870px; 
-    }
+    } 
   }
-}
+
 </style>
