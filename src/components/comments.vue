@@ -7,7 +7,7 @@
       <div class="search">
         <div>
           评论时间:
-          <el-date-picker v-model="xiadandata" type="daterange" align="left" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions2">
+          <el-date-picker v-model="xiadandata" format="yyyy-MM-dd" value-format="yyyy-MM-dd" type="daterange" align="left" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions2">
           </el-date-picker>
         </div>
         <div>
@@ -122,20 +122,14 @@ export default {
       console.info(this.xiadandata);
       var startDate = "";
       var endDate = "";
-      if (this.xiadandata != null) {
+      if(this.xiadandata  != null){
         startDate = this.xiadandata[0] == undefined ? "" : this.xiadandata[0];
         endDate = this.xiadandata[1] == undefined ? "" : this.xiadandata[1];
       }
-      var url =
-        "/goodScoreList?username=" +
-        this.select_word +
-        "&startDate=" +
-        startDate +
-        "&endDate=" +
-        endDate;
+      var url = "/goodScoreList?username="+this.select_word+"&startDate="+startDate+"&endDate="+endDate;
       this.$http.get(url).then(res => {
         this.data = res.data.data;
-      });
+      })
     }
   },
   //分页
@@ -151,17 +145,18 @@ export default {
     },
     //搜索
     tables: function() {
-      if (this.select_word == "") {
-        return this.data1;
-      } else {
-        var newArr = [];
-        for (var i = 0; i < this.data1.length; i++) {
-          if (this.data1[i].username.indexOf(this.select_word) > -1) {
-            newArr.push(this.data1[i]);
-          }
-        }
-        return newArr;
-      }
+      return this.data1;
+      // if (this.select_word == "") {
+      //   return this.data1;
+      // } else {
+      //   var newArr = [];
+      //   for (var i = 0; i < this.data1.length; i++) {
+      //     if (this.data1[i].username.indexOf(this.select_word) > -1) {
+      //       newArr.push(this.data1[i]);
+      //     }
+      //   }
+      //   return newArr;
+      // }
     },
     total() {
       return this.data.length;
