@@ -11,75 +11,68 @@
           <el-date-picker size="small" v-model="xiadandata" type="daterange" align="left" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions2">
           </el-date-picker>
         </div>
-        <!-- 搜索 -->
-        <div class="search">
-          <div>
-            下单时间:
-            <el-date-picker v-model="xiadandata" type="daterange" align="left" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions2">
-            </el-date-picker>
-          </div>
-
-          <div>
-            订单号:
-            <el-input size="small" placeholder="请输入订单号" suffix-icon="el-icon-search" v-model="ordersId">
-            </el-input>
-          </div>
-          <div>
-            商品名称:
-            <el-input size="small" placeholder="请输入商品名" suffix-icon="el-icon-search" v-model="goodsName">
-            </el-input>
-          </div>
+        <div>
+          订单号:
+          <el-input size="small" placeholder="请输入订单号" suffix-icon="el-icon-search" v-model="ordersId">
+          </el-input>
         </div>
+        <div>
+          商品名称:
+          <el-input size="small" placeholder="请输入商品名" suffix-icon="el-icon-search" v-model="goodsName">
+          </el-input>
+        </div>
+      </div>
 
-        <!-- 表格 -->
-        <div class="tableData">
-          <el-table border ref="multipleTable" :data="tables" tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange">
-            <el-table-column prop="orderId" header-align="center" align="center" label="订单id" width="100">
-            </el-table-column>
-            </el-table-column>
-            <el-table-column prop="orderunique" header-align="center" align="center" label="订单号" width="200">
-            </el-table-column>
-            <el-table-column prop="goodsInfo[0].goodsName" align="center" header-align="center" label="商品名称" show-overflow-tooltip>
-            </el-table-column>
-            <!-- </el-table-column>
-          <el-table-column prop="goodsInfo[0].goodsImg" align="center" header-align="center" label="商品图片" show-overflow-tooltip>
-          </el-table-column> -->
-            <el-table-column prop="goodsInfo[0].goodsPrice" align="center" header-align="center" label="商品价格" show-overflow-tooltip>
-            </el-table-column>
-            <el-table-column prop="goodsInfo[0].goodsPrice" align="center" header-align="center" label="退款金额" show-overflow-tooltip>
-            </el-table-column>
-            <el-table-column prop="goodsInfo[0].goodsNum" align="center" header-align="center" label="数量" show-overflow-tooltip>
-            </el-table-column>
-            <el-table-column prop="refunInstruction" align="center" header-align="center" label="退款说明" show-overflow-tooltip>
-            </el-table-column>
-            <el-table-column prop="orderStatus" align="center" header-align="center" label="订单状态" show-overflow-tooltip>
-            </el-table-column>
-            <el-table-column prop="refunState1" align="center" header-align="center" label="退款状态" show-overflow-tooltip>
+      <!-- 表格 -->
+      <div class="tableData">
+        <el-table border ref="multipleTable" :data="tables" tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange">
+          <el-table-column prop="orderId" header-align="center" align="center" label="订单id" width="100">
+          </el-table-column>
+          <el-table-column prop="orderunique" header-align="center" align="center" label="订单号" width="200">
+          </el-table-column>
+          <el-table-column prop="goodsInfo[0].goodsName" align="center" header-align="center" label="商品名称" show-overflow-tooltip>
+          </el-table-column>
+          <el-table-column  prop="goodsInfo[0].goodsImg" align="center" header-align="center" label="商品图片" show-overflow-tooltip>
+            <template slot-scope="img">
+              <el-row>
+                <img src="imgSrc" alt="">
+              </el-row>
+            </template>
+          </el-table-column>
+          <el-table-column prop="goodsInfo[0].goodsPrice" align="center" header-align="center" label="商品价格" show-overflow-tooltip>
+          </el-table-column>
+          <el-table-column prop="goodsInfo[0].goodsPrice" align="center" header-align="center" label="退款金额" show-overflow-tooltip>
+          </el-table-column>
+          <el-table-column prop="goodsInfo[0].goodsNum" align="center" header-align="center" label="数量" show-overflow-tooltip>
+          </el-table-column>
+          <el-table-column prop="refunInstruction" align="center" header-align="center" label="退款说明" show-overflow-tooltip>
+          </el-table-column>
+          <el-table-column prop="orderStatus" align="center" header-align="center" label="订单状态" show-overflow-tooltip>
+          </el-table-column>
+          <el-table-column prop="refunState1" align="center" header-align="center" label="退款状态" show-overflow-tooltip>
 
-            </el-table-column>
-            <el-table-column prop="newTime" label="下单日期" align="center" header-align="center" width="120">
-            </el-table-column>
-            <el-table-column label="操作" header-align="center" align="center">
-              <template slot-scope="scope">
-                <el-row>
-                  <el-button size="mini" type="primary" @click="refund(scope.row)">退款</el-button>
-                </el-row>
-              </template>
-            </el-table-column>
-          </el-table>
+          </el-table-column>
+          <el-table-column prop="newTime" label="下单日期" align="center" header-align="center" width="120">
+          </el-table-column>
+          <el-table-column label="操作" header-align="center" align="center">
+            <template slot-scope="scope">
+              <el-row>
+                <el-button size="mini" type="primary" @click="refund(scope.row)">退款</el-button>
+              </el-row>
+            </template>
+          </el-table-column>
+        </el-table>
 
-          <!-- 分页 -->
-          <div class="pages">
-            <el-pagination ref="pages" layout="prev, pager, next" :total="total" :page-size="size" @current-change="setCurrent">
-            </el-pagination>
-          </div>
-          <div class="modal">
-          </div>
+        <!-- 分页 -->
+        <div class="pages">
+          <el-pagination ref="pages" layout="prev, pager, next" :total="total" :page-size="size" @current-change="setCurrent">
+          </el-pagination>
         </div>
         <div class="modal">
         </div>
       </div>
-
+      <div class="modal">
+      </div>
     </div>
 
   </div>
@@ -165,6 +158,20 @@ export default {
         }
       );
     },
+    formatDate(dateStr) {
+      var iDate = new Date(dateStr);
+
+      function addZreo(num) {
+        return num < 10 ? "0" + num : num;
+      }
+      return (
+        iDate.getFullYear() +
+        "-" +
+        addZreo(iDate.getMonth() + 1) +
+        "-" +
+        addZreo(iDate.getDate())
+      );
+    },
     refunState(refst) {
       var refunStatetext = " ";
       if (refst) {
@@ -221,7 +228,9 @@ export default {
           });
       });
     },
-
+    getImg(){
+      
+    },
     setCurrent(val) {
       this.current = val;
     },

@@ -9,7 +9,7 @@
                 <img :src='img'>
                 <span>管理员</span>
                 <i class="iconfont icon-xiugai" @click="show = !show"></i>
-                <a class="iconfont icon-liulanqi-IE" href="http://localhost:8080"></a>
+                <a class="iconfont icon-liulanqi-IE" href="http://172.16.13.7:8080"></a>
                 <i class="iconfont icon-swticontuichu1" @click="exit()"></i>
             </div>
         </el-header>
@@ -351,7 +351,7 @@ export default {
 }
 
 .section2 {
-    height: 700px;
+    height: 100%;
     .el-aside {
         position: fixed;
         top: 9%;
@@ -372,15 +372,18 @@ export default {
 }
 
 .el-main {
+    // border: 1px solid red;
     position: absolute;
-    top: 9%;
-    left: 15%;
-    width: 85%;
-    height: 300%;
+    top: 10%;
+    left: 14.6%;
+    width: 85.4%;
+    // height: 90%;
     background-color: #f0f0f0;
     padding: 0;
     overflow: scroll;
-    overflow-y: hidden
+    overflow-y: hidden;
+    overflow-x: hidden
+
 }
 
 .el-menu-item-group {
