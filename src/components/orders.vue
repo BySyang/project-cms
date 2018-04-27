@@ -101,6 +101,12 @@ export default {
             userName: "",
             ordersId: "",
             xiadandata: "",
+            form: {
+                adminRemarks: "",
+                // newstatus:'',
+                orderScore: "",
+                newTime: ""
+            },
             //交易状态
             jiaoyilist: [{
                     value: "0",
@@ -125,6 +131,8 @@ export default {
             ],
             //表格数据
             orsersTable: [],
+            //username
+            userNameList: []
         };
     },
     created() {
@@ -143,6 +151,20 @@ export default {
         total() {
             return this.orsersTable.length;
         }
+        // 搜索
+        /*     orsersTable1: function() {
+          if (this.ordersId == "") {
+            return this.orsersTable1;
+          } else {
+            var newArr = [];
+            for (var i = 0; i < this.orsersTable1.length; i++) {
+              if (this.orsersTable1[i].orderunique.indexOf(this.ordersId) > -1) {
+                newArr.push(this.orsersTable1[i]);
+              }
+            }
+            return newArr;
+          }
+        } */
     },
     methods: {
         handleSelectionChange(val) {
@@ -174,6 +196,31 @@ export default {
                             item.newTime = that.formatDate(item.createTime);
                             // console.log(item.orderStatus);
                             item.newstatus = that.ordersStatus(item.orderStatus);
+                            /* for (let i = 0; i < resp.data.data.length; i++) {
+                              // var that = this;
+                              this.$http
+                                .get("userInfo", {
+                                  params: {
+                                    userId: resp.data.data[i].userId
+                                  }
+                                })
+                                .then(
+                                  resp => {
+                                    console.log(resp.data.data[i].userId)
+                                    if (resp.data.data) {
+                                      resp.data.data.forEach(item => {
+                                        item.newname = item.userName;
+                                      });
+                                      // console.log(item.newname)
+                                      this.orsersTable.push(item.userName)
+                                      // console.log(this.orsersTable[0].userName);
+                                    }
+                                  },
+                                  err => {
+                                    consolo.log(err);
+                                  }
+                                );
+                            } */
                         });
                         this.orsersTable = resp.data.data;
                     }
@@ -264,43 +311,29 @@ export default {
 
 <style lang="scss" scoped>
 .orders {
-  width: 100%;
-  height: 100%;
-  .orders_main {
-    margin: 1% auto;
-    width: 98%;
-    height: 95%;
-    background-color: white;
-    box-shadow: 0 -3px 0 0 #59ace2;
-    .main_top {
-      position: relative;
-      height: 30px;
-      border-bottom: 1px solid #e5e6e6;
-    div {
-        position: absolute;
-        top: 0;
-        left: 40px;
-        width: 100px;
-        height: 30px;
-        line-height: 30px;
-        text-align: center;
-        background-color: #59ace2;
-      }
-    .el-button {
-        position: absolute;
-        top: 1px;
-        right: 100px;
-        padding: 5px 15px;
-        border-radius: 5px;
-      }
-    }
-    .search {
-      padding: 10px 0 0 10px;
-      > div {
-        width: 28%;
-        display: inline-block;
-        .el-range-editor.el-input__inner {
-          width: 72%;
+    width: 100%;
+    height: 100%;
+    .orders_main {
+        margin: 1% auto;
+        width: 98%;
+        height: 95%;
+        background-color: white;
+        box-shadow: 0 -3px 0 0 #59ace2;
+        .main_top {
+            position: relative;
+            height: 30px;
+            border-bottom: 1px solid #e5e6e6;
+            div {
+                position: absolute;
+                top: 0;
+                left: 22px;
+                width: 100px;
+                height: 30px;
+                line-height: 30px;
+                text-align: center;
+                color: white;
+                background-color: #59ace2;
+            }
         }
         .search {
             padding: 10px 0 0 22px;
@@ -324,5 +357,5 @@ export default {
             margin: 10px auto;
         }
     }
-}}}
+}
 </style>
