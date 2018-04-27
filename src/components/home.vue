@@ -9,7 +9,7 @@
                 <img :src='img'>
                 <span>管理员</span>
                 <i class="iconfont icon-xiugai" @click="show = !show"></i>
-                <a class="iconfont icon-liulanqi-IE" href="http://localhost:8080"></a>
+                <a class="iconfont icon-liulanqi-IE" href="http://172.16.13.7:8080"></a>
                 <i class="iconfont icon-swticontuichu1" @click="exit()"></i>
             </div>
         </el-header>
