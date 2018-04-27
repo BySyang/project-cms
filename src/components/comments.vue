@@ -168,9 +168,10 @@ export default {
 .orders {
     width: 100%;
     height: 100%;
+    // background-color: white;
     .orders_main {
         margin: 1% auto;
-        width: 98%;
+        width: 100%;
         height: 95%;
         background-color: white;
         box-shadow: 0 -3px 0 0 #59ace2;
