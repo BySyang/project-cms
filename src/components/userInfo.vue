@@ -12,26 +12,29 @@
         </div>
         <div>
           用户名:
-          <el-input placeholder="请输入用户名" prefix-icon="el-icon-search" v-model="userName">
+          <el-input placeholder="请输入用户名" prefix-icon="el-icon-search" v-model="select_word">
           </el-input>
         </div>
-        <div>
-          <el-button type="primary" @click="searchpl" icon="el-icon-search">搜索</el-button>
-        </div>
+        <!--<div>-->
+        <!--<el-button type="primary" icon="el-icon-search">搜索</el-button>-->
+        <!--</div>-->
       </div>
       <div class="table">
-        <el-table border ref="multipleTable" :data="table1" tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange">
+        <el-table border ref="multipleTable" :data="tables" tooltip-effect="dark" style="width: 100%">
           <el-table-column prop="userId" header-align="center" align="center" label="用户id" width="100">
           </el-table-column>
           <el-table-column prop="userName" align="center" header-align="center" label="用户名" width="150" show-overflow-tooltip>
           </el-table-column>
           <el-table-column prop="userPhoto" align="center" header-align="center" label="头像" show-overflow-tooltip>
+            <template slot-scope="scope">
+              <img style="width:80%;height:80%" :src="scope.row.userPhoto" alt="" />
+            </template>
           </el-table-column>
           <el-table-column prop="userSex" align="center" header-align="center" label="性别" show-overflow-tooltip>
           </el-table-column>
           <el-table-column prop="userPhone" align="center" header-align="center" label="联系号码" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column prop="userEmail" align="center" header-align="center" label="邮箱" :formatter="formatter" show-overflow-tooltip>
+          <el-table-column prop="userEmail" align="center" header-align="center" label="邮箱" show-overflow-tooltip>
           </el-table-column>
           <el-table-column prop="userBirthday" align="center" header-align="center" label="生日" show-overflow-tooltip>
           </el-table-column>
@@ -39,7 +42,9 @@
           </el-table-column>
           <el-table-column label="操作" header-align="center" align="center">
             <template slot-scope="scope">
-              <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+              <el-row>
+                <el-button size="mini" type="primary" @click="refund(scope.row)">禁用</el-button>
+              </el-row>
             </template>
           </el-table-column>
         </el-table>
@@ -53,8 +58,8 @@
   </div>
 
 </template>
-
 <script>
+
 export default {
   data() {
     return {
@@ -68,38 +73,6 @@ export default {
       current: 1,
       size: 5,
       is_search: false,
-      //时间选择插件
-      pickerOptions2: {
-        shortcuts: [
-          {
-            text: "最近一周",
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit("pick", [start, end]);
-            }
-          },
-          {
-            text: "最近一个月",
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-              picker.$emit("pick", [start, end]);
-            }
-          },
-          {
-            text: "最近三个月",
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-              picker.$emit("pick", [start, end]);
-            }
-          }
-        ]
-      },
       data: []
     };
   },
@@ -115,13 +88,13 @@ export default {
       return arr;
     },
     //搜索
-    table1: function() {
+    tables: function() {
       if (this.select_word == "") {
         return this.data1;
       } else {
         var newArr = [];
         for (var i = 0; i < this.data1.length; i++) {
-          if (this.data1[i].username.indexOf(this.select_word) > -1) {
+          if (this.data1[i].userName.indexOf(this.select_word) > -1) {
             newArr.push(this.data1[i]);
           }
         }
@@ -141,28 +114,75 @@ export default {
   },
   //获取数据
   methods: {
-    getData(a) {
-      this.$http.get("/userInfo").then(res => {
-        this.data = res.data.data;
-        a("");
-      });
+    getData(item) {
+      this.$http
+        .get("/userInfo")
+        .then(res => {
+          this.data = res.data.data;
+          // this.$set(item, "imgsrc", res.data.data[0].userPhoto);
+                //  console.log(this.$set(item,"imgsrc",res.data.data[0].userPhoto))
+          
+                 console.log(this.data[0].userPhoto)
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
     setCurrent(val) {
       this.current = val;
     },
-    getName() {
-      this.data.forEach(item => {
-        this.$http.get("/userInfo?" + "userId=" + item.userId).then(res => {
-          this.$set(item, "username", res.data.data[0].userName);
+
+    refund(row) {
+      this.open4(row);
+    },
+
+    // 模态框------------
+
+    open4(row) {
+      const h = this.$createElement;
+      this.$msgbox({
+        title: "禁用确认",
+        message: h("p", null, [
+          h("span", null, "是否确认"),
+          h("i", { style: "color: teal" }, "禁用")
+        ]),
+        showCancelButton: true,
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        beforeClose: (action, instance, done) => {
+          if (action === "confirm") {
+            instance.confirmButtonLoading = true;
+            // instance.confirmButtonText = '执行中...';
+            setTimeout(() => {
+              done();
+              setTimeout(() => {
+                instance.confirmButtonLoading = false;
+              }, 100);
+            }, 500);
+          } else {
+            done();
+          }
+        }
+      }).then(action => {
+        this.$message({
+          type: "success",
+          message: "禁用成功"
         });
+        row.refunState1 = "已禁用";
       });
     }
+    //    getName() {
+    //      this.data.forEach(item => {
+    //        this.$http.get("/userInfo?" + "userId=" + item.userId).then(res => {
+    //          this.$set(item, "username", res.data.data[0].userName);
+    //        });
+    //      });
+    //    },
   }
 
   //
 };
 </script>
-
 <style lang="scss" scoped>
 .orders {
   width: 100%;
@@ -210,6 +230,12 @@ export default {
       width: 96%;
       margin: 10px auto;
     }
+  }
+  .block {
+    width: 17%;
+    margin-top: 30px;
+    position: absolute;
+    right: 7%;
   }
 }
 </style>
