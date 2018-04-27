@@ -22,44 +22,46 @@
           </el-col>
         </el-row>
       </div>
-      <el-table :data="data1" border style="width: 100%" stripe show-header @row-click="getImg">
-        <el-table-column type="selection" width="30" label="批量删除"></el-table-column>
-        <el-table-column prop="typeId" label="系列ID" align="center"> </el-table-column>
-        <el-table-column prop="typeName" label="系列名" align="center"> </el-table-column>
-        <el-table-column prop="newDesc" label="系列描述" align="center">
-          <template slot-scope="scope">
-            <el-popover trigger="hover" placement="top">
-              <p>第一句: {{ scope.row.newDesc[0] }}</p>
-              <p>第二句: {{ scope.row.newDesc[1] }}</p>
-              <p>第三句: {{ scope.row.newDesc[2] }}</p>
-              <div slot="reference" class="name-wrapper">
-                <el-tag size="medium">{{ scope.row.newDesc.name}}</el-tag>
-              </div>
-            </el-popover>
-          </template>
-        </el-table-column>
-        <el-table-column label="系列轮播图" align="center">
-          <template slot-scope="scope">
-            <el-button type="text" @click="dialogVisible = true">点击查看</el-button>
-          </template>
-        </el-table-column>
-        <el-table-column prop="typeBannerImg" label="系列小图" align="center">
-          <template slot-scope="scope">
-            <el-button type="text" @click="dialogVisible = true">点击查看</el-button>
-          </template>
-        </el-table-column>
-        <el-table-column prop="idShow" label="是否展示" align="center">
-          <template slot-scope="scope">
-            <el-switch v-model="scope.row.idShow" active-color="#409eff" inactive-color="#dcdfe6"></el-switch>
-          </template>
-        </el-table-column>
-        <el-table-column prop="newTime" label="创建时间" align="center"></el-table-column>
-        <el-table-column label="操作" align="center">
-          <template slot-scope="scope">
-            <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
+      <div class="table-wrap">
+        <el-table :data="data1" border style="width: 100%" show-header @row-click="getImg">
+          <el-table-column type="selection" width="30"></el-table-column>
+          <el-table-column prop="typeId" label="系列ID" align="center"> </el-table-column>
+          <el-table-column prop="typeName" label="系列名" align="center"> </el-table-column>
+          <el-table-column prop="newDesc" label="系列描述" align="center">
+            <template slot-scope="scope">
+              <el-popover trigger="hover" placement="top">
+                <p>第一句: {{ scope.row.newDesc[0] }}</p>
+                <p>第二句: {{ scope.row.newDesc[1] }}</p>
+                <p>第三句: {{ scope.row.newDesc[2] }}</p>
+                <div slot="reference" class="name-wrapper">
+                  <el-tag size="medium">{{ scope.row.newDesc.name}}</el-tag>
+                </div>
+              </el-popover>
+            </template>
+          </el-table-column>
+          <el-table-column label="系列轮播图" align="center">
+            <template slot-scope="scope">
+              <el-button type="text" @click="dialogVisible = true">点击查看</el-button>
+            </template>
+          </el-table-column>
+          <el-table-column label="系列小图" align="center">
+            <template slot-scope="scope">
+              <el-button type="text" @click="dialogVisible = true">点击查看</el-button>
+            </template>
+          </el-table-column>
+          <el-table-column label="是否展示" align="center">
+            <template slot-scope="scope">
+              <el-switch v-model="scope.row.idShow" active-color="#409eff" inactive-color="#dcdfe6"></el-switch>
+            </template>
+          </el-table-column>
+          <el-table-column prop="newTime" label="创建时间" align="center"></el-table-column>
+          <el-table-column label="操作" align="center">
+            <template slot-scope="scope">
+              <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
       <el-row class="page">
         <el-col :span="3" :push="18">
           <div class="block">
@@ -96,6 +98,7 @@ export default {
     return {
       data: [],
       size: 3,
+      data2: [],
       current: 1,
       autoUpload: true,
       imgSrc: [],
@@ -104,16 +107,13 @@ export default {
       title: "",
       className: true,
       index: 0,
-      time: "",
+      time: null,
       types: "全部"
     };
   },
   computed: {
-    data2(){
-      return this.data
-    },
     total() {
-      return this.data.length;
+      return this.data2.length;
     },
     data1: {
       get() {
@@ -125,25 +125,39 @@ export default {
           i < (current - 1) * size + size;
           i++
         ) {
-          if (this.data[i]) arr.push(this.data[i]);
+          if (this.data2[i]) arr.push(this.data2[i]);
         }
+        console.log(1);
         return arr;
-      },
-      set(val){
-        
       }
     }
   },
   watch: {
     types: function() {
       if (this.types === "全部") {
-        this.data1 = this.data;
+        this.data2 = this.data;
       } else {
         var newArr = [];
         this.data.forEach(item => {
           if (item.typeName.indexOf(this.types) > -1) newArr.push(item);
         });
-        this.data1 = newArr;
+        this.data2 = newArr;
+      }
+    },
+    time() {
+      if (this.time == null) {
+        this.data2 = this.data;
+      } else {
+        var newArr = [];
+        var flag = false;
+        this.data.forEach(item => {
+          if (
+            new Date(item.createime) >= new Date(this.time[0]) &&
+            new Date(item.createime) <= new Date(this.time[1])
+          )
+            newArr.push(item);
+        });
+        this.data2 = newArr;
       }
     }
   },
@@ -165,6 +179,7 @@ export default {
             item.idShow = item.idShow == 1 ? true : false;
           });
           this.data = res.data.data;
+          this.data2 = [...this.data];
         })
         .catch(err => {
           console.log(err);
@@ -235,6 +250,9 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.el-table-column {
+  margin-top: 5px;
+}
 #goods {
   width: 100%;
   height: 100%;
@@ -267,8 +285,11 @@ export default {
       line-height: 32px;
     }
   }
-  .el-table {
-    margin-left: 2%;
+  .table-wrap {
+    padding-left: 2%;
+    .el-table {
+      height: 264px;
+    }
   }
 }
 .el-row {
