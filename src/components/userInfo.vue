@@ -43,20 +43,20 @@
             </template>
           </el-table-column>
         </el-table>
-          <div class="block">
-            <el-pagination ref="pages" layout="prev, pager, next" :total="total" :page-size="size" @current-change="setCurrent">
-            </el-pagination>
-          </div>
+        <div class="block">
+          <el-pagination ref="pages" layout="prev, pager, next" :total="total" :page-size="size" @current-change="setCurrent">
+          </el-pagination>
         </div>
       </div>
+    </div>
 
   </div>
 
 </template>
 
 <script>
-  export default {
-    data() {
+export default {
+  data() {
     return {
       multipleSelection: [],
       jiaoyistats: "",
@@ -74,34 +74,34 @@
           {
             text: "最近一周",
             onClick(picker) {
-            const end = new Date();
-    const start = new Date();
-    start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-    picker.$emit("pick", [start, end]);
-  }
-  },
-  {
-    text: "最近一个月",
-      onClick(picker) {
-    const end = new Date();
-    const start = new Date();
-    start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-    picker.$emit("pick", [start, end]);
-  }
-  },
-  {
-    text: "最近三个月",
-      onClick(picker) {
-    const end = new Date();
-    const start = new Date();
-    start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-    picker.$emit("pick", [start, end]);
-  }
-  }
-  ]
-  },
-  data: []
-  };
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit("pick", [start, end]);
+            }
+          },
+          {
+            text: "最近一个月",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+              picker.$emit("pick", [start, end]);
+            }
+          },
+          {
+            text: "最近三个月",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+              picker.$emit("pick", [start, end]);
+            }
+          }
+        ]
+      },
+      data: []
+    };
   },
   //分页
   computed: {
@@ -115,14 +115,14 @@
       return arr;
     },
     //搜索
-    table1:function(){
-      if(this.select_word==""){
-        return this.data1
-      }else{
-        var newArr=[];
-        for(var i=0;i<this.data1.length;i++){
-          if(this.data1[i].username.indexOf(this.select_word)>-1){
-            newArr.push(this.data1[i])
+    table1: function() {
+      if (this.select_word == "") {
+        return this.data1;
+      } else {
+        var newArr = [];
+        for (var i = 0; i < this.data1.length; i++) {
+          if (this.data1[i].username.indexOf(this.select_word) > -1) {
+            newArr.push(this.data1[i]);
           }
         }
         return newArr;
@@ -136,8 +136,8 @@
     new Promise((a, b) => {
       this.getData(a);
     }).then(() => {
-        this.getName();
-      });
+      this.getName();
+    });
   },
   //获取数据
   methods: {
@@ -156,61 +156,60 @@
           this.$set(item, "username", res.data.data[0].userName);
         });
       });
-    },
-  },
-
-  //
+    }
   }
 
+  //
+};
 </script>
 
 <style lang="scss" scoped>
-  .orders {
-    width: 100%;
-    height: 100%;
+.orders {
+  width: 100%;
+  height: 100%;
   .orders_main {
     margin: 1% auto;
     width: 98%;
     height: 95%;
     background-color: white;
     box-shadow: 0 -3px 0 0 #59ace2;
-  .main_top {
-    position: relative;
-    height: 30px;
-    border-bottom: 1px solid #e5e6e6;
-  div {
-    position: absolute;
-    top: 0;
-    left: 22px;
-    width: 100px;
-    height: 30px;
-    line-height: 30px;
-    text-align: center;
-    color: white;
-    background-color: #59ace2;
+    .main_top {
+      position: relative;
+      height: 30px;
+      border-bottom: 1px solid #e5e6e6;
+      div {
+        position: absolute;
+        top: 0;
+        left: 22px;
+        width: 100px;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        color: white;
+        background-color: #59ace2;
+      }
+    }
+    .search {
+      padding: 10px 0 0 22px;
+      > div {
+        width: 28%;
+        display: inline-block;
+        .el-range-editor.el-input__inner {
+          width: 72%;
+        }
+        .el-input {
+          width: 70%;
+        }
+      }
+      div:nth-of-type(3),
+      div:nth-of-type(4) {
+        width: 20%;
+      }
+    }
+    .table {
+      width: 96%;
+      margin: 10px auto;
+    }
   }
-  }
-  .search {
-    padding: 10px 0 0 22px;
-  > div {
-      width: 28%;
-      display: inline-block;
-  .el-range-editor.el-input__inner {
-    width: 72%;
-  }
-  .el-input {
-    width: 70%;
-  }
-  }
-  div:nth-of-type(3),
-  div:nth-of-type(4) {
-    width: 20%;
-  }
-  }
-  .table {
-    width: 96%;
-    margin: 10px auto;
-  }
-  }
-  }
+}
 </style>

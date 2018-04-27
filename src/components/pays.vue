@@ -11,7 +11,7 @@
         <div class="centerContent">
           <el-alert title="提示：" description="该支付方式启用并不能正常使用，需要开通支付功能才能使用相应的支付方式。" type="error"></el-alert>
           <div class="paymentBox">
-            <el-table :data="tableData" border style="width: 100%">
+            <el-table ref="multipleSelection" :data="tableData" border style="width: 100%">
               <el-table-column prop="payName" label="支付方式" width="180" align="center">
               </el-table-column>
               <el-table-column prop="payImg" label="图片" width="180" align="center">
@@ -41,11 +41,12 @@ export default {
     return {
       // value1: true,
       // value2: true,
-      multipleSelection: [],
+      multipleSelection:[],
       payName: "",
       payImg: "",
       payInfo: "",
-      isOn: 1
+      isOn: 1,
+      tableData:[]
       // tableData: [
       //   {
       //     payName: "支付宝",
