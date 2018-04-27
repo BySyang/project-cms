@@ -16,15 +16,17 @@
           </el-col>
           <el-col :span="2" class="span1">商品类型:</el-col>
           <el-col :span="3">
-            <el-select size="small" v-model="value" placeholder="请选择">
-              <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+            <el-select size="small" v-model="goodsType" placeholder="请选择">
+              <!-- <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option> -->
             </el-select>
           </el-col>
           <el-col :span="2" class="span1">商品价格:</el-col>
           <el-col :span="3">
             <el-input size="small" v-model="goodSvg" placeholder="请输入商品价格" prefix-icon="el-icon-search"></el-input>
           </el-col>
-          <el-col :span="2" push="1">
+          <el-col :span="2" :push="1">
+            <el-button size="small" type="primary">添加商品</el-button>
+          </el-col><el-col :span="2" :push="1">
             <el-button size="small" type="primary">添加商品</el-button>
           </el-col>
         </el-row>
@@ -51,7 +53,6 @@
           <template slot-scope="scope">
             <el-switch v-model="scope.row.isHot" active-color="#409eff" inactive-color="#dcdfe6" active-text="启用" inactive-text="禁用"></el-switch>
           </template>
-        </el-table-column>
         </el-table-column>
         <el-table-column label="上架时间" align="center">
           <template slot-scope="scope">
@@ -82,7 +83,11 @@ export default {
     return {
       data: [],
       current: 1,
-      size: 5
+      size: 5,
+      time:'',
+      goodsName:'',
+      goodsType:'',
+      goodSvg:''
     };
   },
   computed: {

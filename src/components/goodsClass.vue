@@ -10,26 +10,25 @@
           <el-col :span="4">
             <el-date-picker size="small" v-model="time" type="daterange" align="left" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
           </el-col>
-          <el-col :span="2" class="span1">商品名称:</el-col>
+          <el-col :span="4" class="span1">系列名:</el-col>
           <el-col :span="3">
-            <el-input size="small" v-model="goodsName" placeholder="请输入商品名" prefix-icon="el-icon-search"></el-input>
-          </el-col>
-          <el-col :span="2" class="span1">商品类型:</el-col>
-          <el-col :span="3">
-            <el-select size="small" v-model="value" placeholder="请选择">
-              <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+            <el-select size="small" placeholder="请选择系列" v-model="type">
+              <!-- <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option> -->
             </el-select>
           </el-col>
           <el-col :span="2" class="span1">商品价格:</el-col>
           <el-col :span="3">
-            <el-input size="small" v-model="goodSvg" placeholder="请输入商品价格" prefix-icon="el-icon-search"></el-input>
+            <el-input size="small" placeholder="请输入商品价格" prefix-icon="el-icon-search"></el-input>
+          </el-col>
+          <el-col :span="2" :push="5">
+            <el-button size="small" type="primary">添加商品</el-button>
           </el-col>
         </el-row>
       </div>
       <el-table :data="data1" border style="width: 100%" stripe show-header @row-click="getImg">
-        <el-table-column prop="typeId" sortable label="分类ID"> </el-table-column>
-        <el-table-column prop="typeName" label="分类名"> </el-table-column>
-        <el-table-column prop="newDesc" label="分类描述">
+        <el-table-column prop="typeId" sortable label="系列ID"> </el-table-column>
+        <el-table-column prop="typeName" label="系列名"> </el-table-column>
+        <el-table-column prop="newDesc" label="系列描述">
           <template slot-scope="scope">
             <el-popover trigger="hover" placement="top">
               <p>第一句: {{ scope.row.newDesc[0] }}</p>
@@ -41,17 +40,21 @@
             </el-popover>
           </template>
         </el-table-column>
-        <el-table-column label="分类轮播图">
+        <el-table-column label="系列轮播图">
           <template slot-scope="scope">
             <el-button type="text" @click="dialogVisible = true">点击查看</el-button>
           </template>
         </el-table-column>
-        <el-table-column prop="typeBannerImg" label="分类小图">
+        <el-table-column prop="typeBannerImg" label="系列小图">
           <template slot-scope="scope">
             <el-button type="text" @click="dialogVisible = true">点击查看</el-button>
           </template>
         </el-table-column>
-        <el-table-column prop="idShow" sortable label="是否显示"></el-table-column>
+        <el-table-column prop="idShow" sortable>
+          <template slot-scope="scope">
+            <el-switch v-model="scope.row.idShow" active-color="#409eff" inactive-color="#dcdfe6" active-text="显示" inactive-text="隐藏"></el-switch>
+          </template>
+        </el-table-column>
         <el-table-column prop="newTime" sortable label="创建时间"></el-table-column>
       </el-table>
       <el-row class="page">
@@ -98,10 +101,8 @@ export default {
       title: "",
       className: true,
       index: 0,
-      chooseData: {
-        time: "",
-        name: ""
-      }
+      time: "",
+      type: ""
     };
   },
   computed: {
