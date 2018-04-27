@@ -351,7 +351,7 @@ export default {
 }
 
 .section2 {
-    height: 700px;
+    height: 100%;
     .el-aside {
         position: fixed;
         top: 9%;
@@ -372,11 +372,12 @@ export default {
 }
 
 .el-main {
+    // border: 1px solid red;
     position: absolute;
-    top: 9%;
-    left: 15%;
-    width: 85%;
-    height: 200%;
+    top: 10%;
+    left: 14.6%;
+    width: 85.4%;
+    // height: 90%;
     background-color: #f0f0f0;
     padding: 0;
     overflow: scroll;
