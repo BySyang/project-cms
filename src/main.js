@@ -10,12 +10,7 @@ import 'element-ui/lib/theme-chalk/index.css';
 import avatar from 'vue-avatar'
 
 Vue.config.productionTip = false
-<<<<<<< HEAD
-
-
-=======
 Vue.use(avatar)
->>>>>>> 9699d1736c0dd2fa6e57c5ab85a1d9708dcc6342
 Vue.use(elementui);
 Vue.prototype.$http = axios;
 
