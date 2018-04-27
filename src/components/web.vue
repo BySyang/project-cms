@@ -1,36 +1,39 @@
 <template>
-       <div class="container" id="app">
-        <div>
-            <input type="text" placeholder="search" @input="search" list="cars" class="search">
-            <datalist id="cars">
-                <option v-for="item in searchlist" :value="item" :key="item.id"></option>
-            </datalist>
-            <input type="button" class="add" @click="add" value="新增">
+<div class="orders">
+    <div class="container orders_main" id="app">
+            <div>
+                <input type="text" placeholder="search" @input="search" list="cars" class="search">
+                <datalist id="cars">
+                    <option v-for="item in searchlist" :value="item" :key="item.id"></option>
+                </datalist>
+                <input type="button" class="add" @click="add" value="新增">
+            </div>
+            <div>
+                <table>
+                    <tr>
+                        <th>ID</th>
+                        <th>栏目名称</th>
+                        <th>连接地址</th>
+                        <th>添加时间</th>
+                        <th>级别</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                    <tr v-cloak v-for="(item, index) of slist " :key="item.id">
+                        <td>{{index+1}}</td>
+                        <td>{{item.columnName}}</td>
+                        <td>{{item.src}}</td>
+                        <td>{{item.addTime}}</td>
+                        <td>{{item.classes}}</td>
+                        <td>{{item.state}}</td>
+                        <td><a href="javascript:;" @click="showOverlay(index)">修改</a> | <a href="javascript:;" @click="del(index)">删除</a></td>
+                    </tr>
+                </table>
+            </div>
+            <model :list='selectedlist' :isactive="isActive" v-cloak @change="changeOverlay" @modify="modify"></model>
         </div>
-        <div>
-            <table>
-                <tr>
-                    <th>id</th>
-                    <th>用户名</th>
-                    <th>邮箱</th>
-                    <th>性别</th>
-                    <th>省份</th>
-                    <th>爱好</th>
-                    <th>操作</th>
-                </tr>
-                <tr v-cloak v-for="(item, index) of slist " :key="item.id">
-                    <td>{{index+1}}</td>
-                    <td>{{item.username}}</td>
-                    <td>{{item.email}}</td>
-                    <td>{{item.sex}}</td>
-                    <td>{{item.province}}</td>
-                    <td>{{item.hobby.join(' | ')}}</td>
-                    <td><a href="javascript:;" @click="showOverlay(index)">修改</a> | <a href="javascript:;" @click="del(index)">删除</a></td>
-                </tr>
-            </table>
-        </div>
-        <model :list='selectedlist' :isactive="isActive" v-cloak @change="changeOverlay" @modify="modify"></model>
-    </div>
+ </div>
+       
 </template>
 
 
@@ -47,6 +50,8 @@
 
 <script type="text/javascript" src="https://unpkg.com/vue@2.3.4/dist/vue.js"></script>
 <script type="text/javascript">
+import Vue from 'vue'
+
 Vue.component('model', {
         props: ['list', 'isactive'],
         template: `<div class="overlay" v-show="isactive">
@@ -56,41 +61,39 @@ Vue.component('model', {
                         <table>
                         <tr>
                         <td>用户名</td>
-                        <td><input type="text" v-model="modifylist.username"></td>
+                        <td><input type="text" v-model="modifylist.columnName"></td>
                         </tr>
                         <tr>
                         <td>邮箱</td>
-                        <td><input type="text" v-model="modifylist.email"></td>
+                        <td><input type="text" v-model="modifylist.src"></td>
                         </tr>
                         <tr>
                         <td>性别</td>
                         <td>
-                        <label><input type="radio" name="sex" value="男" v-model="modifylist.sex">男</label>
-                        <label><input type="radio" name="sex" value="女" v-model="modifylist.sex">女</label>
-                        <label><input type="radio" name="sex" value="未知" v-model="modifylist.sex">未知</label>
+                        <label><input type="radio" name="addTime" value="男" v-model="modifylist.addTime">男</label>
+                        <label><input type="radio" name="addTime" value="女" v-model="modifylist.addTime">女</label>
+                        <label><input type="radio" name="addTime" value="未知" v-model="modifylist.addTime">未知</label>
                         </td>
                         </tr>
                         <tr>
                         <td>省份</td>
                         <td>
-                        <select name="" id="" v-model="modifylist.province">
-                        <option value="北京市">北京市</option>
-                        <option value="河北省">河北省</option>
-                        <option value="河南省">河南省</option>
-                        <option value="重庆市">重庆市</option>
-                        <option value="广东省">广东省</option>
-                        <option value="辽宁省">辽宁省</option>
+                        <select name="" id="" v-model="modifylist.classes">
+                        <option value="一级">一级</option>
+                        <option value="二级">二级</option>
+                        <option value="三级">三级</option>
+                        <option value="四级">四级</option>
                         </select>
                         </td>
                         </tr>
                         <tr>
                         <td>爱好</td>
                         <td>
-                        <label><input type="checkbox" v-model="modifylist.hobby" value="篮球">篮球</label>
-                        <label><input type="checkbox" v-model="modifylist.hobby" value="读书">读书</label>
-                        <label><input type="checkbox" v-model="modifylist.hobby" value="插画">插画</label>
-                        <label><input type="checkbox" v-model="modifylist.hobby" value="编程">编程</label>
-                        <label><input type="checkbox" v-model="modifylist.hobby" value="弹琴">弹琴</label>
+                        <label><input type="checkbox" v-model="modifylist.state" value="篮球">篮球</label>
+                        <label><input type="checkbox" v-model="modifylist.state" value="读书">读书</label>
+                        <label><input type="checkbox" v-model="modifylist.state" value="插画">插画</label>
+                        <label><input type="checkbox" v-model="modifylist.state" value="编程">编程</label>
+                        <label><input type="checkbox" v-model="modifylist.state" value="弹琴">弹琴</label>
                         </td>
                         </tr>
                         </table>
@@ -115,63 +118,53 @@ Vue.component('model', {
             }
         }
     });
-    var app = new Vue({
-        el: '#app',
-        data: {
-            isActive: false,
+      var app = new Vue({
+    });
+ export default {
+     data(){
+       return {
+           el: '#app',
+        isActive: false,
             selected: -1,
             selectedlist: {},
             slist: [],
             searchlist: [],
             list: [
                 {
-                    username: 'aaaaa',
-                    email: '123@qq.com',
-                    sex: '男',
-                    province: '北京市',
-                    hobby: ['篮球', '读书', '编程']
+                    columnName: '首页',
+                    src: 'http://www.weiqing.com/help.php?name=23&id=1',
+                    addTime: '2017-03-28',
+                    classes: '一类',
+                    state: "显示"
                 },
                 {
-                    username: 'bbbbb',
-                    email: 'bbbbbbb@163.com',
-                    sex: '女',
-                    province: '河北省',
-                    hobby: ['弹琴', '读书', '插画']
+                    columnName: "产品页",
+                    src: "http://www.weiqing.com/help.php?name=23&id=2",
+                    addTime: "2017-04-02",
+                    classes: "二类",
+                    state: "显示"
                 },
                 {
-                    username: 'aaabb',
-                    email: 'abababab@qq.com',
-                    sex: '女',
-                    province: '重庆市',
-                    hobby: ['篮球']
+                    columnName: "关于我们",
+                    src: "http://www.weiqing.com/help.php?name=23&id=4",
+                    addTime: "2017-04-05",
+                    classes: "二类",
+                    state: "显示"
                 },
                 {
-                    username: 'cccccc',
-                    email: '123@qq.com',
-                    sex: '男',
-                    province: '北京市',
-                    hobby: ['篮球', '读书', '编程']
+                    columnName: "运动系列",
+                    src: "http://www.weiqing.com/help.php?name=23&id=21",
+                    addTime: "2017-04-09",
+                    classes: "二类",
+                    state: "显示"
                 },
-                {
-                    username: 'dddddd',
-                    email: 'bbbbbbb@163.com',
-                    sex: '女',
-                    province: '河北省',
-                    hobby: ['弹琴', '读书', '插画']
-                },
-                {
-                    username: 'eeeee',
-                    email: 'abababab@qq.com',
-                    sex: '女',
-                    province: '重庆市',
-                    hobby: ['篮球']
-                }
             ]
-        },
+      }
+    },
         created() {
-            console.log(Date.now());
-            this.setSlist(this.list);
-        },
+                    console.log(Date.now());
+                    this.setSlist(this.list);
+                },
         methods: {
             // 修改数据
             showOverlay(index) {
@@ -191,11 +184,11 @@ Vue.component('model', {
             },
             add: function () {
                 this.selectedlist = {
-                    username: '',
-                    email: '',
-                    sex: '男',
-                    province: '北京市',
-                    hobby: []
+                    columnName: '',
+                    src: '',
+                    addTime: '男',
+                    classes: '北京市',
+                    state: ""
                 };
                 this.isActive = true;
             },
@@ -220,14 +213,14 @@ Vue.component('model', {
                     var ss = [];
                     // 过滤需要的数据
                     this.list.forEach(function (item) {
-                        if (item.username.indexOf(v) > -1) {
-                            if (self.searchlist.indexOf(item.username) == -1) {
-                                self.searchlist.push(item.username);
+                        if (item.columnName.indexOf(v) > -1) {
+                            if (self.searchlist.indexOf(item.columnName) == -1) {
+                                self.searchlist.push(item.columnName);
                             }
                             ss.push(item);
-                        } else if (item.email.indexOf(v) > -1) {
-                            if (self.searchlist.indexOf(item.email) == -1) {
-                                self.searchlist.push(item.email);
+                        } else if (item.src.indexOf(v) > -1) {
+                            if (self.searchlist.indexOf(item.src) == -1) {
+                                self.searchlist.push(item.src);
                             }
                             ss.push(item);
                         }
@@ -241,7 +234,10 @@ Vue.component('model', {
         },
         watch: {
         }
-    })
+
+
+    
+}
 </script>
 
 
@@ -255,6 +251,33 @@ Vue.component('model', {
 
 
 <style scoped>
+    .orders {
+        width: 100%;
+        height: 100%;
+    }
+ .orders_main {
+    margin: 1% auto;
+    width: 98%;
+    height: 95%;
+    background-color: white;
+    box-shadow: 0 -3px 0 0 #59ace2;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
    [v-cloak] {
             display: none
         }
