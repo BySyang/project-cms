@@ -12,7 +12,7 @@
           </el-col>
           <el-col :span="2" class="span1 style1">商品名称:</el-col>
           <el-col :span="3">
-            <el-input size="small" v-model="searchArr.goodsName" placeholder="请输入商品名" prefix-icon="el-icon-search"></el-input>
+            <el-input size="small" v-model="searchArr.goodsName" placeholder="请输入商品名" prefix-icon="el-icon-search" clearable></el-input>
           </el-col>
           <el-col :span="2" class="span1">商品系列:</el-col>
           <el-col :span="3">
@@ -23,7 +23,7 @@
           </el-col>
           <el-col :span="2" class="span1">商品价格:</el-col>
           <el-col :span="3">
-            <el-input size="small" v-model="searchArr.goodSvg" placeholder="请输入商品价格" prefix-icon="el-icon-search"></el-input>
+            <el-input size="small" v-model="searchArr.goodSvg" placeholder="请输入商品价格" prefix-icon="el-icon-search" clearable></el-input>
           </el-col>
           <el-col :span="2" :push="1">
             <el-button size="small" type="primary">添加商品</el-button>
@@ -37,7 +37,11 @@
           <el-table-column prop="goodsName" label="商品名" show-overflow-tooltip align="center" width="120"> </el-table-column>
           <el-table-column prop="typeName" label="商品系列" show-overflow-tooltip align="center" width="90"> </el-table-column>
           <el-table-column prop="goodsDesc" label="商品描述" show-overflow-tooltip align="center" width="90"></el-table-column>
-          <el-table-column prop="goodSvg" label="商品价格" show-overflow-tooltip align="center" width="80"></el-table-column>
+          <el-table-column prop="goodSvg" label="商品价格" show-overflow-tooltip align="center" width="80">
+            <template slot-scope="scope">
+              <p>{{'¥'+scope.row.goodSvg}}</p>
+            </template>
+          </el-table-column>
           <el-table-column prop="goodStock" label="商品库存" show-overflow-tooltip align="center" width="80"></el-table-column>
           <el-table-column prop="goodscore" label="商品评价" show-overflow-tooltip align="center" width="130">
             <template slot-scope="scope">
