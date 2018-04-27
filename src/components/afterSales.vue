@@ -28,11 +28,9 @@
         <el-table border ref="multipleTable" :data="tables" tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange">
           <el-table-column prop="orderId" header-align="center" align="center" label="订单id" width="100">
           </el-table-column>
-          </el-table-column>
           <el-table-column prop="orderunique" header-align="center" align="center" label="订单号" width="150">
           </el-table-column>
           <el-table-column prop="goodsInfo[0].goodsName" align="center" header-align="center" label="商品名称" show-overflow-tooltip>
-          </el-table-column>
           </el-table-column>
           <el-table-column width="100px" align="center" header-align="center" label="商品图片" show-overflow-tooltip>
             <template slot-scope="scope">
