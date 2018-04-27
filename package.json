@@ -14,8 +14,13 @@
     "axios": "^0.18.0",
     "echarts": "^4.0.4",
     "element-ui": "^2.3.6",
+    "qs": "^6.5.1",
     "vue": "^2.5.2",
+<<<<<<< HEAD
+    "vue-resource": "^1.5.0",
+=======
     "vue-avatar": "^2.1.4",
+>>>>>>> 9699d1736c0dd2fa6e57c5ab85a1d9708dcc6342
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"
   },
