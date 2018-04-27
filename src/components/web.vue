@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
 <div class="orders">
     <div class="container orders_main" id="app">
             <div>
@@ -237,6 +238,20 @@ Vue.component('model', {
 
 
     
+=======
+<div>
+    前端管理
+</div>
+</template>
+
+<script>
+export default {
+    data() {
+        return {
+
+        }
+    }
+>>>>>>> 9699d1736c0dd2fa6e57c5ab85a1d9708dcc6342
 }
 </script>
 
@@ -278,6 +293,7 @@ Vue.component('model', {
 
 
 
+<<<<<<< HEAD
    [v-cloak] {
             display: none
         }
@@ -339,3 +355,6 @@ Vue.component('model', {
             padding: 20px;
         }
 </style>
+=======
+</style>
+>>>>>>> 9699d1736c0dd2fa6e57c5ab85a1d9708dcc6342

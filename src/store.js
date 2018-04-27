@@ -20,7 +20,7 @@ const store = new Vuex.Store({
   actions: {
     setIsLog({commit}) {
       axios.post('/adminIsLog').then(res => {
-        if (res.data == 'ok') {
+        if (res.data == 'flase') {
           commit('saveLogState', true)
           window.sessionStorage.setItem('isLog','true')
         } else {
