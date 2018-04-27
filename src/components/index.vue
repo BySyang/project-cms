@@ -44,7 +44,6 @@
             <label for="">$521314</label>
         </div>
     </div>
-    
     <div id="treated">
         <div class="title">
             <h4>待处理</h4>
@@ -55,7 +54,7 @@
                 <li>待发货</li>
                 <li>906</li>
             </ul>
-             <ul>
+            <ul>
                 <li class="iconfont icon-daifukuan"></li>
                 <li>待付款</li>
                 <li>928</li>
@@ -77,6 +76,43 @@
             </ul>
         </div>
     </div>
+    <div id="Common_menu">
+        <div class="title_2">
+            <h4>常用菜单</h4>
+        </div>
+        <div class="menu_2">
+            <div class="menu_2_list">
+                <div class="menu_2_list_1">
+                    <i class="iconfont icon-shangpin"></i>
+                </div>
+                <span>商品系列</span>
+            </div>
+            <div class="menu_2_list">
+                <div class="menu_2_list_2">
+                    <i class="iconfont icon-tupian"></i>
+                </div>
+                <span>首页轮播</span>
+            </div>
+            <div class="menu_2_list">
+                <div class="menu_2_list_3">
+                    <i class="iconfont icon-kefu"></i>
+                </div>
+                <span>在线客服</span>
+            </div>
+            <div class="menu_2_list">
+                <div class="menu_2_list_4">
+                    <i class="iconfont icon-wenzhang-copy"></i>
+                </div>
+                <span>文章发布</span>
+            </div>
+            <div class="menu_2_list">
+                <div class="menu_2_list_5">
+                    <i class="iconfont icon-204"></i>
+                </div>
+                <span>会员中心</span>
+            </div>
+        </div>
+    </div>
 </div>
 </template>
 
@@ -88,7 +124,7 @@ export default {
 
         }
     },
-    mounted() { 
+    mounted() {
         /*ECharts图表*/
         var myChart1 = echarts.init(document.getElementById('Echars_1')); //初始化图标到相应的div中
         var myChart2 = echarts.init(document.getElementById('Echars_2'));
@@ -102,7 +138,7 @@ export default {
                     show: true,
                     icon: 'image://http://echarts.baidu.com/images/favicon.png',
                     feature: {
-                        left: '40px',
+                        left: '36.8px',
                         magicType: {
                             show: true,
                             type: ['line', 'bar']
@@ -189,7 +225,7 @@ export default {
                     radius: '55%',
                     center: ['50%', '60%'],
                     data: [{
-                            value: 335,
+                            value: 336.8,
                             name: '情调趣味'
                         },
                         {
@@ -201,7 +237,7 @@ export default {
                             name: '气质优雅'
                         },
                         {
-                            value: 135,
+                            value: 136.8,
                             name: '清新自然'
                         },
                         {
@@ -242,7 +278,7 @@ export default {
                 toolbox: {
                     top: '8%',
                     feature: {
-                        left: '40px',
+                        left: '36.8px',
                         magicType: {
                             show: true,
                             type: ['line', 'bar']
@@ -327,7 +363,7 @@ export default {
                         }
                     },
                     data: [{
-                            value: 335,
+                            value: 336.8,
                             name: '情调趣味'
                         },
                         {
@@ -339,7 +375,7 @@ export default {
                             name: '清新自然'
                         },
                         {
-                            value: 135,
+                            value: 136.8,
                             name: '气质优雅'
                         },
                         {
@@ -359,7 +395,7 @@ export default {
     background: white;
     width: 96%;
     height: 150%;
-    margin: 25px auto;
+    margin: 25.8px auto;
     padding: 1px;
     box-shadow: -1px -1px -1px -1px lightgray
 }
@@ -424,7 +460,7 @@ export default {
 #Echars_1,
 #Echars_2,
 #Echars_3,
-#Echars_4{
+#Echars_4 {
     position: absolute;
     height: 18.5%;
     width: 46.5%;
@@ -444,56 +480,120 @@ export default {
 }
 
 #Echars_3 {
-    top: 25.8%;
+    top: 36.7%;
     margin-left: 13px;
 }
+
 #Echars_4 {
-    top: 25.8%;
+    top: 36.7%;
     margin-right: 38px;
     right: 0px;
 }
-#treated{
+
+#treated {
     position: absolute;
-    top: 44.8%;
+    top: 25.8%;
     width: 46.7%;
-    margin-left:13px;
-    background: #f0f0f0;
-    // border: 1px solid red;
+    margin-left: 13px;
+    background: #f0f0f0; // border: 1px solid red;
 }
-.title{
+
+.title {
     width: 96%;
     padding: 10px 0px 10px 20px;
     border-bottom: 1px solid white;
+    box-shadow: 1px 0px 1px 0px lightgrey;
     background: #2da3fb;
     color: white;
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     font-size: 15px;
-    }
-.menu{
+}
+
+.menu {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    ul{
-    float: left;
-    margin: 25px 10px 20px 25px;
-    li{
-        list-style: none;
-        margin: 10px 0px;
-        text-align: center;
+    ul {
+        float: left;
+        margin: 25.8px 10px 20px 25.8px;
+        li {
+            list-style: none;
+            margin: 10px 0px;
+            text-align: center;
+        }
+        li:nth-child(1) {
+            font-size: 30px;
+            color: #3399ff;
+        }
+        li:nth-child(2) {
+            font-size: 14px;
+            color: #6897bb;
+        }
+        li:nth-child(3) {
+            font-size: 17px;
+        }
     }
-    li:nth-child(1){
-        font-size: 30px;
-        color: #3399ff;
-    }
-    li:nth-child(2){
-        font-size: 14px;
-        color: #6897bb;
-    }
-    li:nth-child(3){
-        font-size: 17px;
-    }
-}
 }
 
+#Common_menu {
+    position: absolute;
+    top: 25.8%;
+    right: 3%;
+    width: 46.7%;
+    margin-left: 13px;
+    background: #f0f0f0; // border: 1px solid red;
+    .title_2 {
+        width: 96%;
+        padding: 10px 0px 10px 20px;
+        border-bottom: 1px solid white;
+        box-shadow: 1px 0px 1px 0px lightgrey;
+        background: #ffab7f;
+        color: white;
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        font-size: 15px;
+    }
+}
+
+.menu_2 {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.menu_2_list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between; // border: 1px solid yellow;
+    div {
+        padding: 20px; // border: 1px solid red;
+        margin: 30px 0px;
+        border-radius: 5px;
+    }
+    i {
+        font-size: 30px;
+        color: white;
+    }
+    span {
+        font-size: 15px;
+        margin-bottom: 7px;
+    }
+    .menu_2_list_1 {
+        background: #ffbe60
+    }
+    .menu_2_list_2 {
+        background: #47d7e8
+    }
+    .menu_2_list_3 {
+        background: #55de9f
+    }
+    .menu_2_list_4 {
+        background: #fb99cc
+    }
+    .menu_2_list_5 {
+        background: #87c0ea
+    }
+}
 </style>

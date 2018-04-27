@@ -5,9 +5,8 @@ import home from '@/components/home'
 import children from './children'
 Vue.use(Router)
 const router = new Router({
-  mode:'history',
-  routes: [
-    {
+  mode: 'history',
+  routes: [{
       path: '/login',
       name: 'login',
       component: login,
@@ -31,9 +30,9 @@ const router = new Router({
     }
   ]
 })
-//路由全局守卫
+// 路由全局守卫
 router.beforeEach(function (to, from, next) {
-  const isLog = window.sessionStorage.getItem('isLog')=='true'?true:false;
+  const isLog = window.sessionStorage.getItem('isLog') == 'true' ? true : false;
   if (to.matched.some(r => r.meta.isVerify)) {
     if (!isLog) {
       next({
