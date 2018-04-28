@@ -253,31 +253,31 @@ export default {
     },
     // 搜索-------------
     tables: function() {
-    if (this.goodsName == "") {
-      return this.data1;
-    } else {
-      var newArr = [];
-      for (var i = 0; i < this.tableData.length; i++) {
-        if (
-          this.tableData[i].goodsInfo[0].goodsName.indexOf(this.goodsName) >
-          -1
-        ) {
-          newArr.push(this.tableData[i]);
+      if (this.goodsName == "") {
+        return this.data1;
+      } else {
+        var newArr = [];
+        for (var i = 0; i < this.tableData.length; i++) {
+          if (
+            this.tableData[i].goodsInfo[0].goodsName.indexOf(this.goodsName) >
+            -1
+          ) {
+            newArr.push(this.tableData[i]);
+          }
         }
+        return newArr;
       }
-      return newArr;
-    }
-    if (this.ordersId == "") {
-      return this.data1;
-    } else {
-      var orderArr = [];
-      for (var j = 0; j < this.tableData.length; j++) {
-        if (this.tableData[j].orderunique.indexOf(this.ordersId) > -1) {
-          orderArr.push(this.tableData[j]);
+      if (this.ordersId == "") {
+        return this.data1;
+      } else {
+        var orderArr = [];
+        for (var j = 0; j < this.tableData.length; j++) {
+          if (this.tableData[j].orderunique.indexOf(this.ordersId) > -1) {
+            orderArr.push(this.tableData[j]);
+          }
         }
+        return orderArr;
       }
-      return orderArr;
-    }
     },
     total() {
       // console.log(this.tableData.length)
@@ -309,10 +309,8 @@ export default {
 #afterSales {
   width: 100%;
   height: 100%;
-  background-color: #e5e6e6;
   overflow: hidden;
   #afterSales_body {
-    padding-bottom: 30px;
     background-color: white; // height: 60px;
     width: 98%;
     margin: 1% auto;
@@ -325,11 +323,12 @@ export default {
       .afterSales_text {
         position: absolute;
         top: 0;
-        left: 2 2px;
+        left: 22px;
         width: 100px;
         height: 30px;
         line-height: 30px;
         text-align: center;
+        color: white;
         background-color: #59ace2;
       }
     }
@@ -356,9 +355,10 @@ export default {
     }
   }
   .pages {
-    width: 17%;
-    margin-top: 30px;
-    margin-left: 75%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin: 20px 0;
   }
 }
 </style>

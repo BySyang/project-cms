@@ -241,5 +241,11 @@ export default {
     position: absolute;
     right: 7%;
   }
+  .pagination {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin: 20px 0;
+  }
 }
 </style>
