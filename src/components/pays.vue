@@ -11,7 +11,7 @@
           <!-- 添加支付区域 -->
           <div class="centerTop">
             <!-- <span>在线支付方式</span> -->
-            <el-button type="primary" @click="open">添加支付 </el-button>
+            <el-button type="primary" @click="addPays">添加支付 </el-button>
           </div>
           <!-- 表格展示支付方式 -->
           <div class="paymentBox">
@@ -97,17 +97,21 @@ export default {
     setCurrent(val) {
       this.current = val;
     },
-    open() {
-      this.$alert("这是一段内容", "标题名称", {
-        confirmButtonText: "确定",
-        callback: action => {
-          this.$message({
-            type: "info",
-            message: `action: ${action}`
-          });
-        }
-      });
+    addPays(){
+      
     }
+    //提示弹框
+    // open() {
+    //   this.$alert("这是一段内容", "标题名称", {
+    //     confirmButtonText: "确定",
+    //     callback: action => {
+    //       this.$message({
+    //         type: "info",
+    //         message: `action: ${action}`
+    //       });
+    //     }
+    //   });
+    // }
   }
 };
 </script>
