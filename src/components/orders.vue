@@ -231,7 +231,7 @@ export default {
       this.$http.post("orderModify", qs.stringify(this.form)).then(res => {
         if (res.data.code == 2) {
           this.$message.success(`编辑成功`);
-        }else{
+        } else {
           this.$message.error(`编辑错误，请重新尝试`);
         }
       });
@@ -301,7 +301,6 @@ export default {
   .orders_main {
     margin: 1% auto;
     width: 98%;
-    height: 95%;
     background-color: white;
     box-shadow: 0 -3px 0 0 #59ace2;
     .main_top {
@@ -340,6 +339,12 @@ export default {
     .table {
       width: 96%;
       margin: 10px auto;
+    }
+    .pagination {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+      margin: 20px 0;
     }
   }
 }

@@ -133,8 +133,8 @@ export default {
       this.current = val;
     },
     slic(str) {
-      var cc = str.slice(9);
-      return cc;
+      var long = str.slice(9);
+      return long;
     },
     refund(row) {
       this.open4(row);
@@ -240,6 +240,12 @@ export default {
     margin-top: 30px;
     position: absolute;
     right: 7%;
+  }
+  .pagination {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin: 20px 0;
   }
 }
 </style>

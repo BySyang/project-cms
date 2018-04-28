@@ -5,18 +5,22 @@
         <div>支付管理</div>
       </div>
       <div class="pays_centerBox">
-        <div class="centerTop">
-          <span>在线支付方式</span>
-        </div>
         <div class="centerContent">
-          <el-alert title="提示：" description="该支付方式启用并不能正常使用，需要开通支付功能才能使用相应的支付方式。" type="error"></el-alert>
+          <!-- 提示区域 -->
+          <el-alert title="提示：" description="该支付方式启用并不能正常使用，需要开通支付功能才能使用相应的支付方式。" type="error" :closable="false"></el-alert>
+          <!-- 添加支付区域 -->
+          <div class="centerTop">
+            <!-- <span>在线支付方式</span> -->
+            <el-button type="primary" @click="open">添加支付 </el-button>
+          </div>
+          <!-- 表格展示支付方式 -->
           <div class="paymentBox">
             <el-table ref="multipleSelection" :data="tableData" border style="width: 100%">
               <el-table-column prop="payName" label="支付方式" width="180" align="center">
               </el-table-column>
               <el-table-column prop="payImg" label="图片" width="180" align="center">
                 <template slot-scope="scope">
-                  <img :src="scope.row.payImg" height="60" />
+                  <img :src="'../static/'+scope.row.payImg" height="60" />
                 </template>
               </el-table-column>
               <el-table-column prop="payInfo" label="简介" align="center">
@@ -28,6 +32,10 @@
                 </template>
               </el-table-column>
             </el-table>
+            <div class="pagination">
+              <el-pagination ref="pages" layout="prev, pager, next" :total="total" :page-size="size" @current-change="setCurrent">
+              </el-pagination>
+            </div>
           </div>
         </div>
       </div>
@@ -39,18 +47,65 @@
 export default {
   data() {
     return {
+      current: 1,
+      size: 5,
       multipleSelection: [],
       tableData: []
     };
   },
+  // 调用创建后的实例
   created() {
     this.getData();
   },
-  //获取数据
+  // 计算分页
+  computed: {
+    data1() {
+      var arr = [];
+      var current = this.current;
+      var size = this.size;
+      for (var i = (current - 1) * size; i < (current - 1) * size + size; i++) {
+        if (this.data[i]) arr.push(this.data[i]);
+      }
+      return arr;
+    },
+    total() {
+      return this.tableData.length;
+    }
+  },
   methods: {
+    //获取数据
     getData() {
-      this.$http.get("/pays").then(res => {
-        this.tableData = res.data.data;
+      this.$http
+        .get("/pays")
+        .then(res => {
+          var newArr = [];
+          this.tableData = res.data.data;
+          this.data.forEach(item => {
+            item.imgsrc = that.slic(item.payImg);
+            newArr.push(item);
+          });
+          this.data = newArr;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    slic(str) {
+      var cc = str.slice(9);
+      return cc;
+    },
+    setCurrent(val) {
+      this.current = val;
+    },
+    open() {
+      this.$alert("这是一段内容", "标题名称", {
+        confirmButtonText: "确定",
+        callback: action => {
+          this.$message({
+            type: "info",
+            message: `action: ${action}`
+          });
+        }
       });
     }
   }
@@ -90,18 +145,30 @@ export default {
     .pays_centerBox {
       margin-top: 1%;
       height: 92%; // border:1px solid #e5e6e6;
-      .centerTop {
-        height: 30px;
-        padding-left: 22px;
-        background: linear-gradient(#fefefe, #f1f1f1);
-        span {
-          line-height: 30px;
-        }
-      }
+
       .centerContent {
-        padding: 10px 22px 0;
+        padding: 0px 22px;
+        .centerTop {
+          height: 50px;
+          padding-top: 10px;
+          // background: linear-gradient(#fefefe, #f1f1f1);
+          span {
+            line-height: 40px;
+          }
+          .el-button {
+            width: 10%;
+            display: inline-block;
+            float: right;
+          }
+        }
         .paymentBox {
-          margin-top: 20px;
+          margin-top: 5px;
+        }
+        .pagination {
+          display: flex;
+          flex-direction: row;
+          justify-content: flex-end;
+          margin: 20px 0;
         }
       }
     }

@@ -201,5 +201,11 @@ export default {
       width: 96%;
       margin: 10px auto;
     }
+    .block {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+      margin: 20px 0;
+    }
   }}
 </style>
