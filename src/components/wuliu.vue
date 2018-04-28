@@ -22,7 +22,7 @@
         </div>
       </div>
       <div class="table">
-        <el-table :data="wuliuTable1" style="width: 100%">
+        <el-table :data="wuliuTable1" border style="width: 100%">
           <el-table-column type="expand">
             <template slot-scope="props">
               <el-form label-position="left" inline class="demo-table-expand">
@@ -45,23 +45,33 @@
                   <span>{{ props.row.orderScore }}</span>
                 </el-form-item>
                 <el-form-item label="下单日期：">
-                  <span>{{ props.row.newTime }}</span>
+                  <span>{{ formatDate(props.row.createTime) }}</span>
                 </el-form-item>
                 <el-form-item label="付款方式：">
                   <span>{{props.row.payName }}</span>
                 </el-form-item>
+                <el-form-item label="地址：">
+                  <span>{{props.row.orderAddress }}</span>
+                </el-form-item>
               </el-form>
             </template>
           </el-table-column>
-          <el-table-column label="订单号" prop="orderunique">
+          <el-table-column label="订单号" prop="orderunique" align="center" header-align="center">
           </el-table-column>
-          <el-table-column label="快递单号" prop="">
+          <el-table-column label="用户" prop="userId" align="center" header-align="center">
           </el-table-column>
-          <el-table-column label="下单日期" prop="newTime">
+          <el-table-column label="下单日期" align="center" header-align="center">
+            <template slot-scope="scope">
+              <div>{{formatDate(scope.row.createTime)}}</div>
+            </template>
           </el-table-column>
-          <el-table-column label="快递方式" prop="">
+          <el-table-column prop="orderAddress" align="center" header-align="center" label="地址" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column label="操作">
+          <el-table-column label="快递单号" prop="" align="center" header-align="center">
+          </el-table-column>
+          <el-table-column label="快递方式" prop="" align="center" header-align="center">
+          </el-table-column>
+          <el-table-column label="操作" align="center" header-align="center">
             <template slot-scope="scope">
               <el-button type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">发货</el-button>
             </template>
@@ -109,43 +119,43 @@ export default {
       data: [],
       fahuo: [
         {
-          value: "0",
+          value: 0,
           label: "邮政EMS"
         },
         {
-          value: "1",
+          value: 1,
           label: "邮政小包"
         },
         {
-          value: "2",
+          value: 2,
           label: "申通快递"
         },
         {
-          value: "3",
+          value: 3,
           label: "圆通快递"
         },
         {
-          value: "4",
+          value: 4,
           label: "中通快递"
         },
         {
-          value: "5",
+          value: 5,
           label: "韵达快递"
         },
         {
-          value: "6",
+          value: 6,
           label: "天天快递"
         },
         {
-          value: "7",
+          value: 7,
           label: "顺丰快递"
         },
         {
-          value: "8",
+          value: 8,
           label: "百世汇通快递"
         },
         {
-          value: "9",
+          value: 9,
           label: "德邦快递"
         }
       ],
@@ -214,15 +224,13 @@ export default {
       var that = this;
       this.$http.get("ordersList").then(
         resp => {
-          var yuan = this;
           if (resp.data.data) {
-            resp.data.data.forEach(item => {
-              item.newTime = that.formatDate(item.createTime);
-            });
+            this.data = resp.data.data;
+            this.wuliuTable = [...this.data];
           }
-          this.data = resp.data.data;
-          this.wuliuTable = [...this.data];
-          console.log(this.data)
+          // this.data = resp.data.data;
+          // this.wuliuTable = [...this.data];
+          // console.log(this.data)
         },
         err => {
           consolo.log(err);
@@ -315,6 +323,12 @@ export default {
         margin-bottom: 0;
         width: 50%;
       }
+    }
+    .pagination {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+      margin: 20px 0;
     }
   }
 }

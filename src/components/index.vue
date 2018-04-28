@@ -4,8 +4,8 @@
         <div class="list">
             <div class="list_item">
                 <div>
-                    <i class="iconfont icon-gouwuchekong"></i>
-                    <span>新增订单</span>
+                  <i class="iconfont icon-gouwuchekong"></i>
+                  <span>新增订单</span>
                 </div>
                 <label for="">30</label>
             </div>
@@ -438,17 +438,17 @@ export default {
 
 <style lang="scss" scoped>
 #index {
-//   border: 1px solid yellow;
+  border: none;
+  outline: none;
   background: white;
   width: 96%;
   margin: 25.8px auto;
-  padding: 1px;
+  padding: 0px 1px 0px 1px;
   box-shadow: -1px -1px -1px -1px lightgray;
 }
 #Echars {
   margin-top: 15px;
   display: flex;
-//   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-between;
   width: 100%;
@@ -474,7 +474,6 @@ export default {
   align-content: center;
   .list_item:nth-child(1) {
     background: #17d57e;
-    margin-left: 5px;
   }
   .list_item:nth-child(2) {
     background: #fec92b;
@@ -487,37 +486,38 @@ export default {
   }
   .list_item:nth-child(5) {
     background: #c172d8;
-    margin-right: 5px;
   }
 }
 .list_item {
-  margin-top: 5px;
+  // border: 1px solid red;
   display: flex;
   flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 45px 15px 45px;
 }
 .list_item > div {
+  text-align: center;
   display: flex;
   flex-direction: column;
-  margin-left: 10px;
 }
 .list_item > div > i {
-  font-size: 46px;
-  margin-top: 15px;
-  margin-bottom: 8px;
+  font-size: 42px;
   color: white;
 }
 .list_item > div > span {
   font-size: 12px;
   color: white;
+  margin-top: 5px;
 }
 .list_item > label {
-  margin-left: 100px;
-  padding-right: 10px;
-  line-height: 85px;
+  margin-left: 20px;
   color: white;
   font-size: 26px;
 }
 #contain{
+    outline: none;
+    border: none;
     width: 100%;
     margin-top: 10px;
     display: flex;
@@ -532,8 +532,8 @@ export default {
 }
 
 .title {
-  width: 96.3%;
-  padding: 10px 0px 10px 20px;
+  width: 100%;
+  padding: 10px 0px 10px 0px;
   border-bottom: 1px solid white;
   box-shadow: 1px 0px 1px 0px lightgrey;
   background: #2da3fb;
@@ -549,7 +549,7 @@ export default {
   justify-content: space-between;
   ul {
     float: left;
-    margin: 25.8px 10px 20px 25.8px;
+    margin: 25.8px 25px 20px 25px;
     li {
       list-style: none;
       margin: 10px 0px;
@@ -574,8 +574,8 @@ export default {
   margin: 8px 0px 0px 10px;
   background: #f0f0f0; // border: 1px solid red;
   .title_2 {
-    width: 96%;
-    padding: 10px 0px 10px 20px;
+    width: 100%;
+    padding: 10px 0px 10px 0px;
     border-bottom: 1px solid white;
     box-shadow: 1px 0px 1px 0px lightgrey;
     background: #ffab7f;
@@ -591,15 +591,16 @@ export default {
   align-items: center;
   justify-content: space-around;
 }
-
 .menu_2_list {
+  // border: 1px solid red;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between; // border: 1px solid yellow;
   div {
-    padding: 20px; // border: 1px solid red;
-    margin: 30px 0px;
+    // border:  1px solid yellow;
+    padding: 20px; 
+    margin: 30px 0px 10px 0px;
     border-radius: 5px;
   }
   i {
@@ -608,7 +609,7 @@ export default {
   }
   span {
     font-size: 15px;
-    margin-bottom: 7px;
+    margin-bottom: 20px;
   }
   .menu_2_list_1 {
     background: #ffbe60;
@@ -625,5 +626,8 @@ export default {
   .menu_2_list_5 {
     background: #87c0ea;
   }
+}
+h4{
+  margin-left: 27px
 }
 </style>
