@@ -41,11 +41,17 @@
           </el-table-column>
           <el-table-column prop="adminRemarks" align="center" header-align="center" label="修改备注" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column prop="newstatus" align="center" header-align="center" label="订单状态" show-overflow-tooltip>
+          <el-table-column align="center" header-align="center" label="订单状态" show-overflow-tooltip>
+            <template slot-scope="scope">
+              <div>{{ordersStatus(scope.row.orderStatus)}}</div>
+            </template>
           </el-table-column>
           <el-table-column prop="orderScore" align="center" header-align="center" label="获得积分" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column prop="newTime" label="下单日期" align="center" header-align="center" width="120" show-overflow-tooltip>
+          <el-table-column label="下单日期" align="center" header-align="center" width="120" show-overflow-tooltip>
+            <template slot-scope="scope">
+              <div>{{formatDate(scope.row.createTime)}}</div>
+            </template>
           </el-table-column>
           <el-table-column label="操作" header-align="center" align="center">
             <template slot-scope="scope">
@@ -64,13 +70,13 @@
     <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
       <el-form ref="form" :model="form" label-width="100px">
         <el-form-item label="下单日期">
-          <el-date-picker type="date" placeholder="选择日期" v-model="form.newTime" value-format="yyyy-MM-dd" style="width: 100%;"></el-date-picker>
+          <el-date-picker type="date" placeholder="选择日期" v-model="form.createTime" value-format="yyyy-MM-dd" style="width: 100%;"></el-date-picker>
         </el-form-item>
         <el-form-item label="修改备注">
           <el-input v-model="form.adminRemarks"></el-input>
         </el-form-item>
         <el-form-item label="订单状态">
-          <el-select v-model="form.newstatus" filterable placeholder="请选择">
+          <el-select v-model="form.orderStatus" filterable>
             <el-option v-for="item in jiaoyilist" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
@@ -90,6 +96,7 @@
 </template>
 
 <script>
+import qs from "qs";
 export default {
   data() {
     return {
@@ -98,7 +105,7 @@ export default {
       jiaoyistats: "",
       current: 1,
       size: 5,
-      form:{},
+      form: {},
       searchArr: {
         username: "",
         jiaoyi: "全部",
@@ -108,23 +115,23 @@ export default {
       //交易状态
       jiaoyilist: [
         {
-          value: "0",
+          value: 0,
           label: "待付款"
         },
         {
-          value: "1",
+          value: 1,
           label: "待发货"
         },
         {
-          value: "2",
+          value: 2,
           label: "已发货"
         },
         {
-          value: "3",
+          value: 3,
           label: "已取消"
         },
         {
-          value: "4",
+          value: 4,
           label: "已完成"
         }
       ],
@@ -200,31 +207,38 @@ export default {
       this.multipleSelection = val;
     },
     handleEdit(index, row) {
-      this.form = this.orsersTable1[index]
-      if(this.form.orderStatus === this.orsersTable1[index].orderStatus){
-        this.form.newstatus = this.orsersTable1[index].newstatus
-      }
-      console.log(this.form.orderStatus)
-      console.log(this.orsersTable1[index].orderStatus)
-      console.log(this.orsersTable1)
-      this.current = index
-      this.editVisible = true
+      this.form = {
+        orderId: row.orderId,
+        createTime: row.createTime,
+        adminRemarks: row.adminRemarks,
+        orderStatus: row.orderStatus,
+        orderScore: row.orderScore
+      };
+      this.editVisible = true;
     },
     // 保存编辑
     saveEdit() {
-      this.orsersTable1.push(this.form)
-      this.editVisible = false
-      this.$message.success(`编辑成功`);
+      this.orsersTable.forEach((item, index) => {
+        if (item.orderId === this.form.orderId) {
+          for (let [key, val] of Object.entries(this.form)) {
+            item[key] = val;
+          }
+        }
+      });
+      this.editVisible = false;
+      this.$http.post("orderModify", qs.stringify(this.form)).then(res => {
+        if (res.data.code == 2) {
+          this.$message.success(`编辑成功`);
+        }else{
+          this.$message.error(`编辑错误，请重新尝试`);
+        }
+      });
     },
     orsersTableList() {
       var that = this;
       this.$http.get("ordersList").then(
         resp => {
           if (resp.data.data) {
-            resp.data.data.forEach(item => {
-              item.newTime = that.formatDate(item.createTime);
-              item.newstatus = that.ordersStatus(item.orderStatus);
-            });
             this.data = resp.data.data;
             this.orsersTable = [...this.data];
           }
@@ -253,7 +267,7 @@ export default {
     },
     ordersStatus(status) {
       var newst = "";
-      switch (status) {
+      switch (parseInt(status)) {
         case 0:
           newst = "待付款";
           break;
