@@ -70,7 +70,6 @@
           <el-input v-model="form.adminRemarks"></el-input>
         </el-form-item>
         <el-form-item label="订单状态">
-          <!-- <el-input v-model="form.newstatus"></el-input> -->
           <el-select v-model="form.newstatus" filterable placeholder="请选择">
             <el-option v-for="item in jiaoyilist" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
@@ -202,6 +201,12 @@ export default {
     },
     handleEdit(index, row) {
       this.form = this.orsersTable1[index]
+      if(this.form.orderStatus === this.orsersTable1[index].orderStatus){
+        this.form.newstatus = this.orsersTable1[index].newstatus
+      }
+      console.log(this.form.orderStatus)
+      console.log(this.orsersTable1[index].orderStatus)
+      console.log(this.orsersTable1)
       this.current = index
       this.editVisible = true
     },
