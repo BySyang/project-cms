@@ -12,7 +12,7 @@
         </div>
 
         <div>
-          评论商品:
+          商品名称:
           <el-input v-model="select_word" placeholder="请输入商品名称" prefix-icon="el-icon-search">
           </el-input>
         </div>
