@@ -35,18 +35,20 @@
           </el-table-column>
           <el-table-column prop="userId" align="center" header-align="center" label="用户ID" width="100" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column prop="totalMoney" align="center" header-align="center" label="订单总价" show-overflow-tooltip>
+          <el-table-column prop="totalMoney" align="center" header-align="center" label="订单总价" width="100" show-overflow-tooltip>
           </el-table-column>
           <el-table-column prop="orderRemarks" align="center" header-align="center" label="用户备注" show-overflow-tooltip>
           </el-table-column>
           <el-table-column prop="adminRemarks" align="center" header-align="center" label="修改备注" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column align="center" header-align="center" label="订单状态" show-overflow-tooltip>
+          <el-table-column align="center" header-align="center" label="订单状态" width="100" show-overflow-tooltip>
             <template slot-scope="scope">
               <div>{{ordersStatus(scope.row.orderStatus)}}</div>
             </template>
           </el-table-column>
-          <el-table-column prop="orderScore" align="center" header-align="center" label="获得积分" show-overflow-tooltip>
+          <el-table-column prop="orderScore" align="center" header-align="center" label="获得积分" width="100" show-overflow-tooltip>
+          </el-table-column>
+          <el-table-column prop="orderAddress" align="center" header-align="center" label="地址" show-overflow-tooltip>
           </el-table-column>
           <el-table-column label="下单日期" align="center" header-align="center" width="120" show-overflow-tooltip>
             <template slot-scope="scope">
@@ -69,8 +71,8 @@
     <!-- 编辑弹出框 -->
     <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
       <el-form ref="form" :model="form" label-width="100px">
-        <el-form-item label="下单日期">
-          <el-date-picker type="date" placeholder="选择日期" v-model="form.createTime" value-format="yyyy-MM-dd" style="width: 100%;"></el-date-picker>
+        <el-form-item label="修改地址">
+          <el-input v-model="form.orderAddress"></el-input>
         </el-form-item>
         <el-form-item label="修改备注">
           <el-input v-model="form.adminRemarks"></el-input>
@@ -209,7 +211,7 @@ export default {
     handleEdit(index, row) {
       this.form = {
         orderId: row.orderId,
-        createTime: row.createTime,
+        orderAddress: row.orderAddress,
         adminRemarks: row.adminRemarks,
         orderStatus: row.orderStatus,
         orderScore: row.orderScore
