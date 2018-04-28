@@ -10,22 +10,33 @@
           <el-date-picker v-model="xiadandata" format="yyyy-MM-dd" value-format="yyyy-MM-dd" type="daterange" align="left" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
           </el-date-picker>
         </div>
+
+        <div>
+          评论商品:
+          <el-input v-model="select_word" placeholder="请输入商品名称" prefix-icon="el-icon-search">
+          </el-input>
+        </div>
+
+
         <div>
           评论人:
           <el-input v-model="select_word" placeholder="请输入姓名" prefix-icon="el-icon-search">
           </el-input>
         </div>
 
-        <div>
+        <!-- <div>
           <el-button type="primary" @click="searchpl" icon="el-icon-search">搜索</el-button>
-        </div>
+        </div> -->
       </div>
       <div class="table">
         <el-table border ref="multipleTable" :data="tables" tooltip-effect="dark" style="width: 100%">
           <!-- <el-table-column prop="userId" header-align="center" align="center" label="用户名" width="100">
           </el-table-column> -->
 
-          <el-table-column prop="username" header-align="center" align="center" label="用户名" width="100">
+          <el-table-column prop="username" header-align="center" align="center" label="用户名" width="153">
+          </el-table-column>
+
+           <el-table-column prop="scoreText" align="center" header-align="center" label="评论商品" show-overflow-tooltip width="153">
           </el-table-column>
 
           <el-table-column prop="scoreText" align="center" header-align="center" label="评论内容" show-overflow-tooltip>
@@ -41,6 +52,15 @@
               </el-rate>
             </template>
           </el-table-column>
+
+
+           <el-table-column prop="orderScore" align="center" header-align="center" label="回复" show-overflow-tooltip>
+            <template slot-scope="scope">
+              <el-rate size="small" v-model="scope.row.orderScore" disabled text-color="#ff9900">
+              </el-rate>
+            </template>
+          </el-table-column>
+
           <el-table-column prop="isShow" align="center" header-align="center" label="是否显示" show-overflow-tooltip>
             <template slot-scope="scope">
               <el-switch v-model="scope.row.isShow" active-color="#409eff" inactive-color="#dcdfe6"></el-switch>
@@ -185,8 +205,9 @@ export default {
       > div {
         width: 28%;
         display: inline-block;
+        margin-left: 11px;
         .el-range-editor.el-input__inner {
-          width: 70%;
+          width: 75%;
         }
         .el-input {
           width: 70%;
