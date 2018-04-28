@@ -1,6 +1,7 @@
 <template>
 <div id="login">
-    <video id="myvideo" src="/static/27288790_12.mp4" muted="muted" autoplay="autoplay" loop="loop"></video>
+    <img :src="img" alt="" id="myvideo">
+    <!-- <video id="myvideo" src="/static/27288790_12.mp4" muted="muted" autoplay="autoplay" loop="loop"></video> -->
     <h2>管理员登录系统</h2>
     <div class="wrap">
         <el-form ref="ruleForm" label-width="70px">
@@ -31,9 +32,11 @@
 <script>
 import qs from "qs";
 export default {
+    
     name: "login",
     data() {
         return {
+            img:require("../../static/login/566ae08210a96.jpg"),
             _dom: "",
             isRemeber: "",
             username: "",
@@ -125,8 +128,8 @@ export default {
     width: 350px;
     height: 350px;
     border-radius: 5px;
-    box-shadow: 1px 1px 4px 1px black;
-    background: rgba(0, 0, 0, 0.2);
+    box-shadow: 1px 1px 4px 1px lightgray;
+    background: rgba(255,255, 255, 0.6);
 }
 
 h2 {
