@@ -133,8 +133,8 @@ export default {
       this.current = val;
     },
     slic(str) {
-      var cc = str.slice(9);
-      return cc;
+      var long = str.slice(9);
+      return long;
     },
     refund(row) {
       this.open4(row);
