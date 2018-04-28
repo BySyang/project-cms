@@ -237,5 +237,4 @@ export default {
       left: 870px; 
     }
   }
-}
 </style>
