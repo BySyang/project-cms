@@ -33,10 +33,10 @@
           <!-- <el-table-column prop="userId" header-align="center" align="center" label="用户名" width="100">
           </el-table-column> -->
 
-          <el-table-column prop="username" header-align="center" align="center" label="用户名" width="153">
+          <el-table-column v-model="select_word"   prop="username" header-align="center" align="center" label="用户名" width="153">
           </el-table-column>
 
-           <el-table-column prop="scoreText" align="center" header-align="center" label="评论商品" show-overflow-tooltip width="153">
+           <el-table-column prop="scoreText" align="center" header-align="center" label="商品名称" show-overflow-tooltip width="153">
           </el-table-column>
 
           <el-table-column prop="scoreText" align="center" header-align="center" label="评论内容" show-overflow-tooltip>
@@ -113,30 +113,33 @@ export default {
           item.isShow = item.isShow==1?true:false;
         })
         this.data = res.data.data;
+        console.log(this.data)
       });
     },
+    //设置选中
     setCurrent(val) {
       this.current = val;
     },
-    searchpl() {
-      console.info(this.xiadandata);
-      var startDate = "";
-      var endDate = "";
-      if (this.xiadandata != null) {
-        startDate = this.xiadandata[0] == undefined ? "" : this.xiadandata[0];
-        endDate = this.xiadandata[1] == undefined ? "" : this.xiadandata[1];
-      }
-      var url =
-        "/goodScoreList?username=" +
-        this.select_word +
-        "&startDate=" +
-        startDate +
-        "&endDate=" +
-        endDate;
-      this.$http.get(url).then(res => {
-        this.data = res.data.data;
-      });
-    }
+    //搜索按钮
+    // searchpl() {
+    //   console.info(this.xiadandata);
+    //   var startDate = "";
+    //   var endDate = "";
+    //   if (this.xiadandata != null) {
+    //     startDate = this.xiadandata[0] == undefined ? "" : this.xiadandata[0];
+    //     endDate = this.xiadandata[1] == undefined ? "" : this.xiadandata[1];
+    //   }
+    //   var url =
+    //     "/goodScoreList?username=" +
+    //     this.select_word +
+    //     "&startDate=" +
+    //     startDate +
+    //     "&endDate=" +
+    //     endDate;
+    //   this.$http.get(url).then(res => {
+    //     this.data = res.data.data;
+    //   });
+    // }
   },
   //分页
   computed: {
@@ -152,17 +155,17 @@ export default {
     //搜索
     tables: function() {
       return this.data1;
-      // if (this.select_word == "") {
-      //   return this.data1;
-      // } else {
-      //   var newArr = [];
-      //   for (var i = 0; i < this.data1.length; i++) {
-      //     if (this.data1[i].username.indexOf(this.select_word) > -1) {
-      //       newArr.push(this.data1[i]);
-      //     }
-      //   }
-      //   return newArr;
-      // }
+      if (this.select_word == "") {
+        return this.data1;
+      } else {
+        var newArr = [];
+        for (var i = 0; i < this.data1.length; i++) {
+          if (this.data1[i].username.indexOf(this.select_word) > -1) {
+            newArr.push(this.data1[i]);
+          }
+        }
+        return newArr;
+      }
     },
     total() {
       return this.data.length;
