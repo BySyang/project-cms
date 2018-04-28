@@ -222,12 +222,5 @@ export default {
       width: 96%;
       margin: 10px auto;
     }
-  }
-
-  .block {
-   
-   margin-top:20px;
-   margin-left:843px;
-  }
-}
+  }}
 </style>
