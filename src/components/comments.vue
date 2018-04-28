@@ -201,15 +201,5 @@ export default {
       width: 96%;
       margin: 10px auto;
     }
-  }
-<<<<<<< HEAD
-=======
-
-  .block {
-   
-   margin-top:20px;
-   margin-left:843px;
-  }
-}
->>>>>>> 8fc273aceb24189ae6df24c0143fc2fc473f590c
+  }}
 </style>
