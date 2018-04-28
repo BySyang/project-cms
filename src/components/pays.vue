@@ -5,11 +5,13 @@
         <div>支付管理</div>
       </div>
       <div class="pays_centerBox">
-        <div class="centerTop">
-          <span>在线支付方式</span>
-        </div>
+
         <div class="centerContent">
-          <el-alert title="提示：" description="该支付方式启用并不能正常使用，需要开通支付功能才能使用相应的支付方式。" type="error"></el-alert>
+          <el-alert title="提示：" description="该支付方式启用并不能正常使用，需要开通支付功能才能使用相应的支付方式。" type="error" :closable="false"></el-alert>
+          <div class="centerTop">
+            <!-- <span>在线支付方式</span> -->
+            <el-button type="primary">添加支付</el-button>
+          </div>
           <div class="paymentBox">
             <el-table ref="multipleSelection" :data="tableData" border style="width: 100%">
               <el-table-column prop="payName" label="支付方式" width="180" align="center">
@@ -90,18 +92,24 @@ export default {
     .pays_centerBox {
       margin-top: 1%;
       height: 92%; // border:1px solid #e5e6e6;
-      .centerTop {
-        height: 30px;
-        padding-left: 22px;
-        background: linear-gradient(#fefefe, #f1f1f1);
-        span {
-          line-height: 30px;
-        }
-      }
+
       .centerContent {
-        padding: 10px 22px 0;
+        padding: 0px 22px ;
+        .centerTop {
+          height: 50px;
+          padding-top: 10px;
+          // background: linear-gradient(#fefefe, #f1f1f1);
+          span {
+            line-height: 40px;
+          }
+          .el-button {
+            width: 10%;
+            display: inline-block;
+            float: right;
+          }
+        }
         .paymentBox {
-          margin-top: 20px;
+          margin-top: 5px;
         }
       }
     }
