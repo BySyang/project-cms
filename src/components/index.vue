@@ -461,7 +461,7 @@ export default {
   height: 300px;
   width: 48.6%;
   background: #e6e6fa;
-  box-shadow: 1px 0px 1px 0px lightgrey;
+  box-shadow: 1px 0px -1px 0px lightgrey;
   margin: 10px 0px 15px 0px;
 }
 
@@ -577,7 +577,7 @@ export default {
     width: 100%;
     padding: 10px 0px 10px 0px;
     border-bottom: 1px solid white;
-    box-shadow: 1px 0px 1px 0px lightgrey;
+    // box-shadow: 1px 0px 1px 0px lightgrey;
     background: #ffab7f;
     color: white;
     font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
