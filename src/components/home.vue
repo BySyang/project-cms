@@ -7,9 +7,11 @@
             <!-- 头像 -->
             <div class="log_item">
                 <img :src='img'>
-                <span>管理员</span>
+                <!-- 密码修改按钮 -->
                 <i class="iconfont icon-xiugai" @click="show = !show"></i>
+                <!-- 前台链接 -->
                 <a class="iconfont icon-liulanqi-IE" href="http://172.16.13.7:8080"></a>
+                <!-- 登录退出 -->
                 <i class="iconfont icon-swticontuichu1" @click="exit()"></i>
             </div>
         </el-header>
@@ -93,9 +95,11 @@
 </template>
 
 <script>
+import qs from "qs";
 export default {
     data() {
         return {
+            show:true,
             el: '#home',
             show: false,
             img: require('../assets/personal.jpeg'),
@@ -141,7 +145,6 @@ export default {
                 ],
             }
         }
-
     },
     created() {
         if (this.$route.name == "home") {
@@ -166,23 +169,56 @@ export default {
             this.$message('click on item ' + command);
         },
         submitForm(formName) {
+            this.$http
+                .post(
+                    "adminLog",
+                    qs.stringify({
+                        logName: this.username,
+                        logPwd: this.password
+                    }),
+                ),
             this.$refs[formName].validate((valid) => {
+                var oldPassword = window.localStorage.getItem('logPwd');
+                const h = this.$createElement;
                 if (valid) {
-                    const h = this.$createElement;
-                    var $el = this.$parent
-                    this.$message({
+                        var that =this
+                        this.$message({
+                        type: 'success',
+                        duration:'1500',
+                        center:'true',
                         message: h('p', null, [
-                            h('span', null, '修改成功 ')
-                        ])
-                    });
-                } else {
-                    console.log('error submit!!');
+                            h('span', null, '密码修改成功,请重新登录'),
+                        ]),
+                        onClose:function(){
+                            console.log(that)
+                            that.exit()
+                        }
+                    })
+                }
+                
+                else {
+                      this.$message({
+                        type: 'error',
+                        color:'#f0f0f0',
+                        duration:'1500',
+                        center:'true',
+                        message: h('p', null, [
+                            h('span', null, '密码修改失败，请重新修改'),
+                        ]),
+                        onClose:function(){
+                            console.log(that)
+                            // console.log("11111")
+                            that.exit()
+                        }
+                    })
                     return false;
                 }
             });
         },
         resetForm(formName) {
             this.$refs[formName].resetFields();
+            console.log('密码被重置呢')
+
         },
     }
 
@@ -260,7 +296,7 @@ export default {
     z-index: 9;
     .log_item>img {
         position: absolute;
-        right: 230px;
+        right: 200px;
         top: 0px;
         bottom: 0px;
         margin: auto 0px;
@@ -269,7 +305,7 @@ export default {
         height: 40px;
         border-radius: 20px 20px;
     }
-    .log_item>i:nth-child(3) {
+    .log_item>i:nth-child(2) {
         position: absolute;
         right: 100px;
         top: 17px;
@@ -277,7 +313,7 @@ export default {
         z-index: 999;
         color: black;
     }
-    .log_item>i:nth-child(3):hover,
+    .log_item>i:nth-child(2):hover,
         {
         color: #20a0ff;
     }
@@ -293,7 +329,7 @@ export default {
         color: black;
         text-decoration: none;
     }
-    .log_item>i:nth-child(5) {
+    .log_item>i:nth-child(4) {
         position: absolute;
         right: 15px;
         top: 17px;
@@ -376,14 +412,12 @@ export default {
     position: absolute;
     top: 10%;
     left: 14.6%;
-    width: 85.4%;
-    // height: 90%;
+    width: 85.4%; // height: 90%;
     background-color: #f0f0f0;
     padding: 0;
     overflow: scroll;
     overflow-y: hidden;
     overflow-x: hidden
-
 }
 
 .el-menu-item-group {
