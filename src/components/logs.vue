@@ -136,10 +136,11 @@ export default {
       width: 96%;
       margin: 10px auto;
       .pagination {
-        display: flex;
-        flex-direction: row;
-        justify-content:  flex-end;
-      }
+          display: flex;
+          flex-direction: row;
+          justify-content: flex-end;
+          margin: 20px 0;
+        }
     }
   }
 }
