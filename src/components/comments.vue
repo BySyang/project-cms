@@ -7,20 +7,22 @@
       <div class="search">
         <div>
           评论时间:
-          <el-date-picker v-model="xiadandata" format="yyyy-MM-dd" value-format="yyyy-MM-dd" type="daterange" align="left" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
+          <el-date-picker v-model="comment_date" @change="dateFilter" format="yyyy-MM-dd" value-format="yyyy-MM-dd" 
+              type="daterange" align="left" unlink-panels range-separator="至" 
+              start-placeholder="开始日期" end-placeholder="结束日期">
           </el-date-picker>
         </div>
 
         <div>
           商品名称:
-          <el-input v-model="select_word" placeholder="请输入商品名称" prefix-icon="el-icon-search">
+          <el-input v-model="goodsName" @input="goodsNameFilter" placeholder="请输入商品名称" prefix-icon="el-icon-search">
           </el-input>
         </div>
 
 
         <div>
           评论人:
-          <el-input v-model="select_word" placeholder="请输入姓名" prefix-icon="el-icon-search">
+          <el-input v-model="username" placeholder="请输入姓名" prefix-icon="el-icon-search">
           </el-input>
         </div>
 
@@ -33,19 +35,21 @@
           <!-- <el-table-column prop="userId" header-align="center" align="center" label="用户名" width="100">
           </el-table-column> -->
 
-          <el-table-column v-model="select_word"   prop="username" header-align="center" align="center" label="用户名" width="153">
+          <el-table-column prop="username" header-align="center" align="center" label="用户名" width="153">
           </el-table-column>
 
-           <el-table-column prop="scoreText" align="center" header-align="center" label="商品名称" show-overflow-tooltip width="153">
+           <el-table-column prop="goodsName" align="center" header-align="center" label="商品名称" show-overflow-tooltip width="153">
           </el-table-column>
 
           <el-table-column prop="scoreText" align="center" header-align="center" label="评论内容" show-overflow-tooltip>
           </el-table-column>
+
           <el-table-column align="center" header-align="center" label="评论时间" show-overflow-tooltip>
             <template slot-scope="scope">
               <span style="margin-left: 10px">{{ scope.row.createTime.substr(0,10) }}</span>
             </template>
           </el-table-column>
+
           <el-table-column prop="orderScore" align="center" header-align="center" label="评分" show-overflow-tooltip>
             <template slot-scope="scope">
               <el-rate size="small" v-model="scope.row.orderScore" disabled text-color="#ff9900">
@@ -53,21 +57,20 @@
             </template>
           </el-table-column>
 
-
-           <el-table-column prop="orderScore" align="center" header-align="center" label="回复" show-overflow-tooltip>
+           <!-- <el-table-column prop="orderScore" align="center" header-align="center" label="回复" show-overflow-tooltip>
             <template slot-scope="scope">
               <el-rate size="small" v-model="scope.row.orderScore" disabled text-color="#ff9900">
               </el-rate>
             </template>
-          </el-table-column>
+          </el-table-column> -->
 
           <el-table-column prop="isShow" align="center" header-align="center" label="是否显示" show-overflow-tooltip>
             <template slot-scope="scope">
               <el-switch v-model="scope.row.isShow" active-color="#409eff" inactive-color="#dcdfe6"></el-switch>
             </template>
           </el-table-column>
-
         </el-table>
+
         <!-- 分页 -->
         <div class="block">
           <el-pagination ref="pages" layout="prev, pager, next" :total="total" :page-size="size" @current-change="setCurrent">
@@ -84,12 +87,11 @@ export default {
   data() {
     return {
       multipleSelection: [],
-      jiaoyistats: "",
       goodsName: "",
-      select_word: "",
+      username: "",
       ordersId: "",
-      // userId: "",
-      xiadandata: "",
+      userId: "",
+      comment_date: "",
       current: 1,
       size: 5,
       is_search: false,
@@ -113,33 +115,27 @@ export default {
           item.isShow = item.isShow==1?true:false;
         })
         this.data = res.data.data;
-        console.log(this.data)
+        // console.log(this.data)
       });
     },
     //设置选中
     setCurrent(val) {
       this.current = val;
     },
-    //搜索按钮
-    // searchpl() {
-    //   console.info(this.xiadandata);
-    //   var startDate = "";
-    //   var endDate = "";
-    //   if (this.xiadandata != null) {
-    //     startDate = this.xiadandata[0] == undefined ? "" : this.xiadandata[0];
-    //     endDate = this.xiadandata[1] == undefined ? "" : this.xiadandata[1];
-    //   }
-    //   var url =
-    //     "/goodScoreList?username=" +
-    //     this.select_word +
-    //     "&startDate=" +
-    //     startDate +
-    //     "&endDate=" +
-    //     endDate;
-    //   this.$http.get(url).then(res => {
-    //     this.data = res.data.data;
-    //   });
-    // }
+    dateFilter(val){
+      console.log(val)
+    },
+    goodsNameFilter(val){
+      debugger;
+      var data2 = [];
+      for(var i=0;i<this.data.length;i++){
+        if(val.indexOf(this.data[i].goodsName) == -1){
+          data2.push(this.data[i]);
+        }
+      }
+      console.log(data2);
+      return data2;
+    }
   },
   //分页
   computed: {
@@ -155,17 +151,6 @@ export default {
     //搜索
     tables: function() {
       return this.data1;
-      if (this.select_word == "") {
-        return this.data1;
-      } else {
-        var newArr = [];
-        for (var i = 0; i < this.data1.length; i++) {
-          if (this.data1[i].username.indexOf(this.select_word) > -1) {
-            newArr.push(this.data1[i]);
-          }
-        }
-        return newArr;
-      }
     },
     total() {
       return this.data.length;
