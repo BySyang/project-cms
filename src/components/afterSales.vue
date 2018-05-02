@@ -8,24 +8,24 @@
       <div class="search">
         <div>
           下单时间:
-          <el-date-picker size="small" v-model="xiadanTime" type="daterange" align="left" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
+          <el-date-picker size="small" v-model="searshArr.xiadanTime" type="daterange" align="left" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
           </el-date-picker>
         </div>
         <div>
           订单号:
-          <el-input size="small" placeholder="请输入订单号" suffix-icon="el-icon-search" v-model="ordersNume">
+          <el-input size="small" placeholder="请输入订单号" suffix-icon="el-icon-search" v-model="searshArr.ordersNum">
           </el-input>
         </div>
         <div>
           商品名称:
-          <el-input size="small" placeholder="请输入商品名" suffix-icon="el-icon-search" v-model="goodsName">
+          <el-input size="small" placeholder="请输入商品名" suffix-icon="el-icon-search" v-model="searshArr.goodsName">
           </el-input>
         </div>
       </div>
 
       <!-- 表格 -->
       <div class="tableData">
-        <el-table border ref="multipleTable" :data="tables" tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange">
+        <el-table border ref="multipleTable" :data="data1" tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange">
           <el-table-column prop="orderId" header-align="center" align="center" label="订单id" width="100">
           </el-table-column>
           <el-table-column prop="orderunique" header-align="center" align="center" label="订单号" width="150">
@@ -51,13 +51,13 @@
           </el-table-column> -->
           <el-table-column prop="refunInstruction" align="center" header-align="center" label="退款说明" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column prop="orderStatus" align="center" header-align="center" label="订单状态" show-overflow-tooltip>
-          </el-table-column>
+          <!-- <el-table-column prop="orderStatus" align="center" header-align="center" label="订单状态" show-overflow-tooltip>
+          </el-table-column> -->
           <el-table-column prop="refunState1" align="center" header-align="center" label="退款状态" show-overflow-tooltip>
 
           </el-table-column>
-          <!-- <el-table-column prop="newTime" label="下单日期" align="center" header-align="center" width="120">
-          </el-table-column> -->
+          <el-table-column prop="newTime" label="下单日期" align="center" header-align="center" width="120">
+          </el-table-column>
           <el-table-column label="操作" header-align="center" align="center">
             <template slot-scope="scope">
               <el-row>
@@ -83,10 +83,10 @@
               <span>{{form.goodsName}}</span>
             </el-form-item>
             <el-form-item label="商品价格:">
-              <span>{{form.goodsPrice}}</span>
+              <span>{{form.totalMoney}}</span>
             </el-form-item>
             <el-form-item label="退款金额:">
-              <span>{{form.goodsPrice}}</span>
+              <span>{{form.totalMoney}}</span>
             </el-form-item>
             <el-form-item label="订单状态:">
               <span>{{form.orderStatus}}</span>
@@ -112,16 +112,17 @@ export default {
     return {
       multipleSelection: [],
       tableData: [],
+      data: [],
       refst: false,
       current: 1, //当前页
       size: 5,
       form: {},
       editVisible: false,
-      // searshArr:{
-      xiadanTime: "", //下单时间
-      goodsName: "", //商品名
-      ordersNume: ""
-      // }
+      searshArr: {
+        xiadanTime: null, //下单时间
+        goodsName: "", //商品名
+        ordersNum: ""
+      }
     };
   },
   created() {
@@ -147,11 +148,12 @@ export default {
                 item.newTime = that.formatDate(item.createTime);
                 item.orderStatus = that.orderStatus(item.orderStatus);
                 item.refunState1 = that.refunState(0);
-                item.disabled =false;
+                item.disabled = false;
                 newArr.push(item);
               }
             });
             this.tableData = newArr;
+            this.data = newArr;
             resolve("ok");
             // console.log(resp.data.data);
           }
@@ -274,23 +276,22 @@ export default {
           message: "退款成功"
         });
         row.refunState1 = "已退款";
-        row.disabled=true;
+        row.disabled = true;
       });
     },
     // 查看弹出框
     handleEdit(index, row) {
-      
       this.form = {
         orderId: row.orderId,
         newTime: row.newTime,
-        goodsPrice: row.goodsInfo[0].goodsPrice,
+        totalMoney: row.totalMoney,
         orderStatus: row.orderStatus,
-        goodsName:row.goodsInfo[0].goodsName,
-        goodLargeImg:row.imgSrc,
+        goodsName: row.goodsInfo[0].goodsName,
+        goodLargeImg: row.imgSrc
       };
       this.editVisible = true;
     },
-    confirm(){
+    confirm() {
       this.editVisible = false;
     }
   },
@@ -306,57 +307,48 @@ export default {
       }
       return arr;
     },
-    // 搜索-------------
-    tables: function() {
-      if (this.goodsName == "") {
-        return this.data1;
-      } else {
-        var newArr = [];
-        for (var i = 0; i < this.tableData.length; i++) {
-          if (
-            this.tableData[i].goodsInfo[0].goodsName.indexOf(this.goodsName) >
-            -1
-          ) {
-            newArr.push(this.tableData[i]);
-          }
-        }
-        return newArr;
-      }
-      if (this.ordersId == "") {
-        return this.data1;
-      } else {
-        var orderArr = [];
-        for (var j = 0; j < this.tableData.length; j++) {
-          if (this.tableData[j].orderunique.indexOf(this.ordersId) > -1) {
-            orderArr.push(this.tableData[j]);
-          }
-        }
-        return orderArr;
-      }
-    },
     total() {
-      // console.log(this.tableData.length)
       return this.tableData.length;
     }
+  },
+  watch: {
+    searshArr: {
+      handler() {
+        let xiadanTime = this.searshArr.xiadanTime || null;
+        let goodsName = this.searshArr.goodsName.trim() || "";
+        let ordersNum = this.searshArr.ordersNum.trim() || "";
+        let newArr = [];
+        if (ordersNum === "") {
+          console.log(this);
+          newArr.push(...this.data); //注意数据中转，不能陷入死循环
+        } else {
+          this.tableData.forEach(item => {
+            if (item.orderunique.indexOf(ordersNum) > -1) newArr.push(item);
+          });
+        }
+        if (goodsName !== "") {
+          let i = newArr;
+          newArr = [];
+          i.forEach(item => {
+            if (item.goodsInfo[0].goodsName.indexOf(goodsName) > -1)
+              newArr.push(item);
+          });
+        }
+        if (xiadanTime) {
+          let i = newArr;
+          let start = new Date(xiadanTime[0]);
+          let end = new Date(xiadanTime[1]);
+          newArr = [];
+          i.forEach(item => {
+            let now = new Date(item.newTime);
+            if (start >= now && now <= end) newArr.push(item);
+          });
+        }
+        this.tableData = newArr;
+      },
+      deep: true
+    }
   }
-  // watch:{
-  //   searshArrFn:{
-  //     searshArr(){
-  //       let xiadanTime=searshArr.xiadanTime;
-  //       let goodsName=searshArr.goodsName;
-  //       let ordersNume=searshArr.ordersNume;
-  //       let newSearchArr=[];
-  //       console.log(ordersNume)
-  //         if (goodsName !== "") {
-  //         let i = newSearchArr;
-  //         arr = [];
-  //         i.forEach(item => {
-  //           if (item.goodsName == goodsName) arr.push(item);
-  //         });
-  //       }
-  //     }
-  //   }
-  // }
 };
 </script>
 
