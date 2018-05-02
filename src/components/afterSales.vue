@@ -32,17 +32,23 @@
           </el-table-column>
           <el-table-column prop="goodsInfo[0].goodsName" align="center" header-align="center" label="商品名称" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column width="100px" align="center" header-align="center" label="商品图片" show-overflow-tooltip>
+          <el-table-column label="商品详情" header-align="center" align="center">
+            <template slot-scope="scope">
+              <el-button type="info" plain size="mini" @click="handleEdit(scope.$index, scope.row)">查看</el-button>
+            </template>
+          </el-table-column>
+
+          <!-- <el-table-column width="100px" align="center" header-align="center" label="商品图片" show-overflow-tooltip>
             <template slot-scope="scope">
               <img style="width:60px;height:60px" :src="'../static/series/'+scope.row.imgSrc" alt="">
             </template>
-          </el-table-column>
-          <el-table-column prop="goodsInfo[0].goodsPrice" align="center" header-align="center" label="商品价格" show-overflow-tooltip>
-          </el-table-column>
-          <el-table-column prop="goodsInfo[0].goodsPrice" align="center" header-align="center" label="退款金额" show-overflow-tooltip>
-          </el-table-column>
-          <el-table-column prop="goodsInfo[0].goodsNum" align="center" header-align="center" label="数量" show-overflow-tooltip>
-          </el-table-column>
+          </el-table-column> -->
+          <!-- <el-table-column prop="goodsInfo[0].goodsPrice" align="center" header-align="center" label="商品价格" show-overflow-tooltip>
+          </el-table-column> -->
+          <!-- <el-table-column prop="goodsInfo[0].goodsPrice" align="center" header-align="center" label="退款金额" show-overflow-tooltip>
+          </el-table-column> -->
+          <!-- <el-table-column prop="goodsInfo[0].goodsNum" align="center" header-align="center" label="数量" show-overflow-tooltip>
+          </el-table-column> -->
           <el-table-column prop="refunInstruction" align="center" header-align="center" label="退款说明" show-overflow-tooltip>
           </el-table-column>
           <el-table-column prop="orderStatus" align="center" header-align="center" label="订单状态" show-overflow-tooltip>
@@ -50,12 +56,12 @@
           <el-table-column prop="refunState1" align="center" header-align="center" label="退款状态" show-overflow-tooltip>
 
           </el-table-column>
-          <el-table-column prop="newTime" label="下单日期" align="center" header-align="center" width="120">
-          </el-table-column>
+          <!-- <el-table-column prop="newTime" label="下单日期" align="center" header-align="center" width="120">
+          </el-table-column> -->
           <el-table-column label="操作" header-align="center" align="center">
             <template slot-scope="scope">
               <el-row>
-                <el-button size="mini" type="primary" @click="refund(scope.row)">退款</el-button>
+                <el-button size="mini" type="primary" @click="refund(scope.row)" :disabled="scope.row.disabled">退款</el-button>
               </el-row>
             </template>
           </el-table-column>
@@ -66,6 +72,34 @@
           <el-pagination ref="pages" layout="prev, pager, next" :total="total" :page-size="size" @current-change="setCurrent">
           </el-pagination>
         </div>
+
+        <!-- 查看详情弹出框 -->
+        <el-dialog title="订单详情" :visible.sync="editVisible" width="30%">
+          <el-form ref="form" :model="form" label-width="100px">
+            <el-form-item label="商品图片:">
+              <img style="width:60px;height:60px" :src="'../static/series/'+form.goodLargeImg" alt="">
+            </el-form-item>
+            <el-form-item label="商品名称:">
+              <span>{{form.goodsName}}</span>
+            </el-form-item>
+            <el-form-item label="商品价格:">
+              <span>{{form.goodsPrice}}</span>
+            </el-form-item>
+            <el-form-item label="退款金额:">
+              <span>{{form.goodsPrice}}</span>
+            </el-form-item>
+            <el-form-item label="订单状态:">
+              <span>{{form.orderStatus}}</span>
+            </el-form-item>
+            <el-form-item label="下单时间:">
+              <span>{{form.newTime}}</span>
+            </el-form-item>
+          </el-form>
+          <span slot="footer" class="dialog-footer">
+            <el-button type="primary" size='mini' @click="confirm">确 定</el-button>
+          </span>
+        </el-dialog>
+
       </div>
     </div>
 
@@ -81,6 +115,8 @@ export default {
       refst: false,
       current: 1, //当前页
       size: 5,
+      form: {},
+      editVisible: false,
       // searshArr:{
       xiadanTime: "", //下单时间
       goodsName: "", //商品名
@@ -111,6 +147,7 @@ export default {
                 item.newTime = that.formatDate(item.createTime);
                 item.orderStatus = that.orderStatus(item.orderStatus);
                 item.refunState1 = that.refunState(0);
+                item.disabled =false;
                 newArr.push(item);
               }
             });
@@ -191,7 +228,6 @@ export default {
           .then(res => {
             this.$set(item, "goodsInfo", res.data.data);
             this.$set(item, "imgSrc", res.data.data[0].goodLargeImg);
-            // console.log(item.imgSrc)
           })
           .catch(err => {
             console.log(err);
@@ -204,7 +240,8 @@ export default {
     refund(row) {
       this.open4(row);
     },
-    // 模态框------------
+
+    // 退款模态框------------
 
     open4(row) {
       const h = this.$createElement;
@@ -237,9 +274,27 @@ export default {
           message: "退款成功"
         });
         row.refunState1 = "已退款";
+        row.disabled=true;
       });
+    },
+    // 查看弹出框
+    handleEdit(index, row) {
+      
+      this.form = {
+        orderId: row.orderId,
+        newTime: row.newTime,
+        goodsPrice: row.goodsInfo[0].goodsPrice,
+        orderStatus: row.orderStatus,
+        goodsName:row.goodsInfo[0].goodsName,
+        goodLargeImg:row.imgSrc,
+      };
+      this.editVisible = true;
+    },
+    confirm(){
+      this.editVisible = false;
     }
   },
+
   //分页---------
   computed: {
     data1() {

@@ -246,7 +246,7 @@ export default {
           }
         },
         err => {
-          consolo.log(err);
+          console.log(err);
         }
       );
     },
