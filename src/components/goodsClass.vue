@@ -226,11 +226,11 @@ export default {
       return isLt5K && isImg;
     },
     getImg(data, event, col) {
-      if (col.id.endsWith("4")) {
+      if (col.id.endsWith("5")) {
         this.imgSrc = ["/static/series/" + data.typeBannerImg];
         this.className = true;
         this.title = col.label;
-      } else if (col.id.endsWith("5")) {
+      } else if (col.id.endsWith("6")) {
         let arr = [];
         let prev = data.typeImg.split("?")[0];
         let str = data.typeImg.split("?")[1];

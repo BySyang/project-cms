@@ -25,8 +25,8 @@
           <el-col :span="3">
             <el-input size="small" v-model="searchArr.goodSvg" placeholder="请输入商品价格" prefix-icon="el-icon-search" clearable></el-input>
           </el-col>
-          <el-col :span="2" :push="1">
-            <el-button size="small" type="primary">添加商品</el-button>
+          <el-col :span="2" :push="1" style="left:2.16666%">
+            <el-button size="small" type="primary" @click="onoff = true">添加商品</el-button>
           </el-col>
         </el-row>
       </div>
@@ -51,12 +51,12 @@
           </el-table-column>
           <el-table-column prop="isSale" label="是否上架" show-overflow-tooltip align="center" width="100">
             <template slot-scope="scope">
-              <el-switch v-model="scope.row.isSale" active-color="#409eff" inactive-color="#dcdfe6"></el-switch>
+              <el-switch v-model="scope.row.isSale" :active-value="1" :inactive-value="0" active-color="#409eff" inactive-color="#dcdfe6" @change="modfiyState(scope.row)"></el-switch>
             </template>
           </el-table-column>
           <el-table-column prop="isHot" label="是否热销" align="center" width="100">
             <template slot-scope="scope">
-              <el-switch v-model="scope.row.isHot" active-color="#409eff" inactive-color="#dcdfe6"></el-switch>
+              <el-switch v-model="scope.row.isHot" :active-value="1" :inactive-value="0" active-color="#409eff" inactive-color="#dcdfe6" @change="modfiyState(scope.row)"></el-switch>
             </template>
           </el-table-column>
           <el-table-column label="上架时间" align="center">
@@ -77,6 +77,57 @@
           </el-pagination>
         </el-col>
       </el-row>
+      <el-dialog title="添加商品" :visible.sync="onoff" width="30%" center>
+        <el-form ref="form" :model="addGoods" label-position="right">
+          <el-form-item label="商品名称" label-width="80px">
+            <el-col :span="15">
+              <el-input auto-complete="on" v-model="addGoods.goodsName" autofocus></el-input>
+            </el-col>
+          </el-form-item>
+          <el-form-item label="所属系列" label-width="80px">
+            <el-col :span="15">
+              <el-select placeholder="请选择所属系列" v-model="addGoods.goodsType">
+                <el-option v-for="item in types" :key="item.typeId" :label="item.typeName" :value="item.typeId"></el-option>
+              </el-select>
+            </el-col>
+          </el-form-item>
+          <el-form-item label="商品价格" label-width="80px">
+            <el-col :span="15">
+              <el-input auto-complete="on" v-model="addGoods.goodSvg"></el-input>
+            </el-col>
+          </el-form-item>
+          <el-form-item label="商品库存" label-width="80px">
+            <el-col :span="15">
+              <el-input auto-complete="on" v-model="addGoods.goodStock"></el-input>
+            </el-col>
+          </el-form-item>
+          <el-form-item label="商品描述" label-width="80px">
+            <el-col :span="15">
+              <el-input type="textarea" v-model="addGoods.goodsDesc" auto-complete="on"></el-input>
+            </el-col>
+          </el-form-item>
+          <el-form-item label="封面图" label-width="80px">
+            <el-col :span="15">
+              <el-upload ref="upload" action="" :auto-upload="false" :on-change="setLargeImg" :on-remove="setLargeImg" list-type="picture" :limit="1" accept="image/gif,image/jpeg,image/jpg,image/bmp,image/png">
+                <el-button size="small" type="primary">点击上传</el-button>
+                <div slot="tip" class="el-upload__tip">图片大小不超过500kb,限制为一张</div>
+              </el-upload>
+            </el-col>
+          </el-form-item>
+          <el-form-item label="展示图" label-width="80px">
+            <el-col :span="15">
+              <el-upload ref="upload" action="" :auto-upload="false" :on-change="setSmallImg" :on-remove="setSmallImg" list-type="picture" :limit="5" accept="image/gif,image/jpeg,image/jpg,image/bmp,image/png">
+                <el-button size="small" type="primary">点击上传</el-button>
+                <div slot="tip" class="el-upload__tip">图片大小不超过500kb,不超过5张</div>
+              </el-upload>
+            </el-col>
+          </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="onoff = false">取 消</el-button>
+          <el-button type="primary" @click="addOneGood">确 定</el-button>
+        </span>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -90,11 +141,22 @@ export default {
       types: [],
       current: 1,
       size: 5,
+      onoff: false,
       searchArr: {
         goodsName: "",
         goodsType: "全部",
         goodSvg: "",
         time: null
+      },
+      addGoods: {
+        goodsName: "",
+        goodsType: "",
+        goodSvg: "",
+        goodLargeImg: [],
+        goodsImg: [], //展示图
+        goodsDesc: "", //描述
+        goodStock: "", //库存
+        isHot: "" //是否热销
       }
     };
   },
@@ -117,6 +179,7 @@ export default {
     this.getTypes();
   },
   watch: {
+    //搜索
     searchArr: {
       handler() {
         let time = this.searchArr.time || null; //开始时间
@@ -168,11 +231,6 @@ export default {
       this.$http
         .get("/goodsList")
         .then(res => {
-          res.data.data.forEach(item => {
-            item.isSale = item.isSale == 1 ? true : false;
-            item.isHot = item.isHot == 1 ? true : false;
-            item.isNew = item.isNew == 1 ? true : false;
-          });
           this.data = res.data.data;
           this.data2 = [...this.data];
         })
@@ -184,6 +242,71 @@ export default {
       this.$http.get("goodsTypeList").then(res => {
         this.types = res.data.data;
       });
+    },
+    modfiyState(row) {
+      let goodsId = row.goodsId;
+      let isSale = row.isSale;
+      let isHot = row.isHot;
+      this.$http
+        .post("/goodsModify", qs.stringify({ goodsId, isSale, isHot }))
+        .then(res => {
+          if (res.data.code == 2) {
+            this.$message.success("修改成功");
+          } else {
+            this.$message.error("修改失败");
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    addOneGood() {
+      this.onoff = false;
+      var fd = new FormData();
+      var largImg = this.addGoods.goodLargeImg;
+      var smallImg = this.addGoods.goodsImg;
+      for (let [key, val] of Object.entries(this.addGoods)) {
+        if (!(val instanceof Array)) fd.append(key, val);
+      }
+      largImg.forEach(item => {
+        fd.append("goodLargeImg", item);
+      });
+      smallImg.forEach((item, i) => {
+        fd.append("goodsImg" + i, item);
+      });
+      this.$http.post("/uploadImg", fd);
+    },
+    //封面图
+    setLargeImg(file, files) {
+      const isImg = file.raw.type.startsWith("image");
+      const is05k = file.size / 1024 / 500 <= 1;
+      if (!isImg) this.$message.error("不是图片!");
+      if (!is05k) this.$message.error("图片不能超过500k");
+      if (isImg && is05k) {
+        var arr = [];
+        for (var i in files) {
+          arr.push(files[i].raw);
+        }
+        this.addGoods.goodLargeImg = arr;
+      } else {
+      }
+      return false;
+    },
+    //展示图
+    setSmallImg(file, files) {
+      const isImg = file.raw.type.startsWith("image");
+      const is05k = file.size / 1024 / 500 <= 1;
+      if (!isImg) this.$message.error("不是图片!");
+      if (!is05k) this.$message.error("图片不能超过500k");
+      if (isImg && is05k) {
+        var arr = [];
+        for (var i in files) {
+          arr.push(files[i].raw);
+        }
+        this.addGoods.goodsImg = arr;
+      } else {
+      }
+      return false;
     }
   }
 };
