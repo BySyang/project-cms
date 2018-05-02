@@ -38,11 +38,11 @@
             </template>
           </el-table-column>
 
-          <!-- <el-table-column width="100px" align="center" header-align="center" label="商品图片" show-overflow-tooltip>
+          <el-table-column width="100px" align="center" header-align="center" label="商品图片" show-overflow-tooltip>
             <template slot-scope="scope">
               <img style="width:60px;height:60px" :src="'../static/series/'+scope.row.imgSrc" alt="">
             </template>
-          </el-table-column> -->
+          </el-table-column>
           <!-- <el-table-column prop="goodsInfo[0].goodsPrice" align="center" header-align="center" label="商品价格" show-overflow-tooltip>
           </el-table-column> -->
           <!-- <el-table-column prop="goodsInfo[0].goodsPrice" align="center" header-align="center" label="退款金额" show-overflow-tooltip>
@@ -96,7 +96,6 @@
             </el-form-item>
           </el-form>
           <span slot="footer" class="dialog-footer">
-           
             <el-button type="primary" size='mini' @click="confirm">确 定</el-button>
           </span>
         </el-dialog>
