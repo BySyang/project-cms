@@ -27,7 +27,7 @@
               </el-table-column>
               <el-table-column prop="isOn" label="状态" width='140' align="center">
                 <template slot-scope="scope">
-                  <el-switch v-model="scope.row.isOn" active-text="启用" inactive-text="禁用" :active-value="1" :sinactive-value="0">
+                  <el-switch v-model="scope.row.isOn"  active-text="启用" inactive-text="禁用" :active-value="1" :sinactive-value="0" @change="openJudge" on-value="1" off-value="0" >
                   </el-switch>
                 </template>
               </el-table-column>
@@ -37,32 +37,32 @@
               </el-pagination>
             </div>
           </div>
-
+          <!-- 弹框进行添加 -->
           <div class="addPays">
             <el-dialog title="添加支付方式" :visible.sync="dialogFormVisible" width="420px">
-              <el-form :model="form">
+              <el-form :model="addPays">
                 <el-form-item label="支付名称" :label-width="formLabelWidth">
-                  <el-input v-model="form.name" auto-complete="off"></el-input>
+                  <el-input v-model="addPays.payName" auto-complete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="图片" :label-width="formLabelWidth">
-                  <el-upload class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+                  <el-upload class="avatar-uploader" ref="upload" :auto-upload="false" action="" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
                     <img v-if="imageUrl" :src="imageUrl" class="avatar">
                     <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                   </el-upload>
                 </el-form-item>
                 <el-form-item label="简介" :label-width="formLabelWidth">
-                  <el-input v-model="form.name" auto-complete="off"></el-input>
+                  <el-input v-model="addPays.payInfo" auto-complete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="状态" :label-width="formLabelWidth">
-                  <el-select v-model="form.region" placeholder="请选择状态">
-                    <el-option label="启用" value="shanghai"></el-option>
-                    <el-option label="禁用" value="beijing"></el-option>
+                  <el-select v-model="addPays.isOn" placeholder="请选择状态">
+                    <el-option label="启用" v-bind="value"></el-option>
+                    <el-option label="禁用" v-bind="value" ></el-option>
                   </el-select>
                 </el-form-item>
               </el-form>
               <div slot="footer" class="dialog-footer">
                 <el-button @click="dialogFormVisible = false">取 消</el-button>
-                <el-button type="primary" @click="dialogFormVisible = true">确 定</el-button>
+                <el-button type="primary" @click="addNewPays">确 定</el-button>
               </div>
             </el-dialog>
           </div>
@@ -76,21 +76,19 @@
 export default {
   data() {
     return {
+     value:'1',
       current: 1,
       size: 5,
       multipleSelection: [],
       tableData: [],
       dialogFormVisible: false,
-      form: {
-        name: "",
-        region: "",
-        date1: "",
-        date2: "",
-        delivery: false,
-        type: [],
-        resource: "",
-        desc: "",
-        imageUrl: ""
+      imageUrl: "",
+
+      addPays: {
+        id:"",
+        payName: "",
+        payInfo: "",
+        isOn: ''
       },
       formLabelWidth: "80px"
     };
@@ -139,28 +137,51 @@ export default {
     setCurrent(val) {
       this.current = val;
     },
+    //添加支付，上传图片
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);
     },
+    //判断上传图片大小不能超过2MB，规定格式
     beforeAvatarUpload(file) {
+      const isJPEG = file.type === "image/jpeg";
+      const isJPG = file.type === "image/jpg";
+      const isPNG = file.type === "image/png";
+      const isBMP = file.type === "image/bmp";
       const isLt2M = file.size / 1024 / 1024 < 2;
+      if (!isJPEG && !isJPG && !isPNG && !isBMP) {
+        this.$message.error("上传图片必须是JPG/PNG/BMP 格式!");
+      }
       if (!isLt2M) {
         this.$message.error("上传头像图片大小不能超过 2MB!");
       }
-      return isLt2M;
+      return (isJPEG || isJPG || isBMP || isPNG) && isLt2M;
+    },
+    addNewPays() {
+      this.tableData.push(this.addPays);
+      console.log(this.addPays)
+      this.addPays = '';
+      this.dialogFormVisible = false;
+    },
+    // switch提示弹框
+    openJudge() {
+      this.$confirm("是否确定改变状态", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.$message({
+            type: "success",
+            message: "改变成功!"
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消改变"
+          });
+        });
     }
-    //提示弹框
-    // open() {
-    //   this.$alert("这是一段内容", "标题名称", {
-    //     confirmButtonText: "确定",
-    //     callback: action => {
-    //       this.$message({
-    //         type: "info",
-    //         message: `action: ${action}`
-    //       });
-    //     }
-    //   });
-    // }
   }
 };
 </script>
@@ -226,8 +247,6 @@ export default {
       }
       .addPays {
         .avatar-uploader .el-upload {
-          border: 1px dashed #d9d9d9;
-          border-radius: 6px;
           cursor: pointer;
           position: relative;
           overflow: hidden;
