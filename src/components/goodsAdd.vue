@@ -329,6 +329,7 @@ export default {
           } else {
             scope.row.isHot = 0;
           }
+          this.$message.info("取消修改");
         });
     },
     addOneGood() {

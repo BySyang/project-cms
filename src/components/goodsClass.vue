@@ -260,11 +260,11 @@ export default {
       return isLt5K && isImg;
     },
     getImg(data, event, col) {
-      if (col.id.endsWith("5")) {
+      if (col.label.indexOf('轮播')>-1) {
         this.imgSrc = ["/static/series/" + data.typeBannerImg];
         this.className = true;
         this.title = col.label;
-      } else if (col.id.endsWith("6")) {
+      } else if (col.label.indexOf('小图')>-1) {
         let arr = [];
         let prev = data.typeImg.split("?")[0];
         let str = data.typeImg.split("?")[1];
