@@ -20,14 +20,14 @@
               </el-table-column>
               <el-table-column prop="payImg" label="图片" width="180" align="center">
                 <template slot-scope="scope">
-                  <img :src="'../static/'+scope.row.payImg" height="60" />
+                  <img :src="scope.row.payImg.startsWith('blob')?scope.row.payImg:'../static/'+scope.row.payImg" height="60" />
                 </template>
               </el-table-column>
               <el-table-column prop="payInfo" label="简介" align="center">
               </el-table-column>
               <el-table-column prop="isOn" label="状态" width='140' align="center">
                 <template slot-scope="scope">
-                  <el-switch v-model="scope.row.isOn"  active-text="启用" inactive-text="禁用" :active-value="1" :sinactive-value="0" @change="openJudge" on-value="1" off-value="0" >
+                  <el-switch v-model="scope.row.isOn" active-text="启用" inactive-text="禁用" :active-value="1" :sinactive-value="0" @change="openJudge(scope.row)">
                   </el-switch>
                 </template>
               </el-table-column>
@@ -45,8 +45,8 @@
                   <el-input v-model="addPays.payName" auto-complete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="图片" :label-width="formLabelWidth">
-                  <el-upload class="avatar-uploader" ref="upload" :auto-upload="false" action="" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
-                    <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                  <el-upload ref="upload" :auto-upload="false" action="/aaa" :show-file-list="false" :on-change="setImg">
+                    <img class="uploadImg" v-if="imageUrl" :src="imageUrl">
                     <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                   </el-upload>
                 </el-form-item>
@@ -54,9 +54,9 @@
                   <el-input v-model="addPays.payInfo" auto-complete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="状态" :label-width="formLabelWidth">
-                  <el-select v-model="addPays.isOn" placeholder="请选择状态">
-                    <el-option label="启用" v-bind="value"></el-option>
-                    <el-option label="禁用" v-bind="value" ></el-option>
+                  <el-select v-model="addPays.isOn">
+                    <el-option label="启用" :value="1"></el-option>
+                    <el-option label="禁用" :value="0"></el-option>
                   </el-select>
                 </el-form-item>
               </el-form>
@@ -76,20 +76,19 @@
 export default {
   data() {
     return {
-     value:'1',
       current: 1,
       size: 5,
       multipleSelection: [],
       tableData: [],
       dialogFormVisible: false,
       imageUrl: "",
-
       addPays: {
-        id:"",
+        id: "",
         payName: "",
         payInfo: "",
-        isOn: ''
+        isOn: 1
       },
+      flag: true,
       formLabelWidth: "80px"
     };
   },
@@ -138,8 +137,9 @@ export default {
       this.current = val;
     },
     //添加支付，上传图片
-    handleAvatarSuccess(res, file) {
+    setImg(file) {
       this.imageUrl = URL.createObjectURL(file.raw);
+      console.log(this.imageUrl);
     },
     //判断上传图片大小不能超过2MB，规定格式
     beforeAvatarUpload(file) {
@@ -157,13 +157,19 @@ export default {
       return (isJPEG || isJPG || isBMP || isPNG) && isLt2M;
     },
     addNewPays() {
+      this.addPays.payImg = this.imageUrl;
       this.tableData.push(this.addPays);
-      console.log(this.addPays)
-      this.addPays = '';
+      this.addPays = {
+        id: "",
+        payName: "",
+        payInfo: "",
+        isOn: 1
+      };
       this.dialogFormVisible = false;
     },
     // switch提示弹框
-    openJudge() {
+    openJudge(row) {
+      let isOn = row.isOn;
       this.$confirm("是否确定改变状态", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -176,6 +182,7 @@ export default {
           });
         })
         .catch(() => {
+          row.isOn = isOn == 1 ? 0 : 1;
           this.$message({
             type: "info",
             message: "已取消改变"
@@ -269,6 +276,10 @@ export default {
         }
       }
     }
+  }
+  .uploadImg {
+    width: 100%;
+    height: 100%;
   }
 }
 </style>
