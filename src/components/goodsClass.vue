@@ -280,6 +280,7 @@ export default {
       this.dialogVisible = false;
       // this.$refs["upload0"].submit();
     },
+    //添加分类
     addClass() {
       this.onoff = false;
       var fd = new FormData();
@@ -333,6 +334,9 @@ export default {
       } else {
       }
       return false;
+    },
+    handleDelete(index,row){
+      
     }
   }
 };
