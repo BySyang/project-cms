@@ -77,7 +77,7 @@
           </el-pagination>
         </el-col>
       </el-row>
-      <el-dialog title="添加商品" :visible.sync="onoff" width="30%" center>
+      <el-dialog title="添加商品" :visible.sync="onoff" width="50%" center>
         <el-form ref="form" :model="addGoods" label-position="right">
           <el-form-item label="商品名称" label-width="80px">
             <el-col :span="15">
@@ -274,7 +274,7 @@ export default {
       smallImg.forEach((item, i) => {
         fd.append("goodsImg" + i, item);
       });
-      this.$http.post("/uploadImg", fd);
+      this.$http.post("/addGoods", fd);
     },
     //封面图
     setLargeImg(file, files) {

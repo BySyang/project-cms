@@ -18,7 +18,7 @@
             </el-select>
           </el-col>
           <el-col :span="2" :push="10">
-            <el-button size="small" type="primary">添加系列</el-button>
+            <el-button size="small" type="primary" @click="onoff=true">添加系列</el-button>
           </el-col>
         </el-row>
       </div>
@@ -88,6 +88,40 @@
           <el-button type="primary" @click="uploadImg" size="small">确 定</el-button>
         </span>
       </el-dialog>
+      <el-dialog title="添加系列" :visible.sync="onoff" width="50%">
+        <el-form ref="form" label-position="right">
+          <el-form-item label="系列名称" label-width="100px">
+            <el-col :span="15">
+              <el-input auto-complete="on" v-model="formData.typeName" autofocus></el-input>
+            </el-col>
+          </el-form-item>
+          <el-form-item label="系列描述" label-width="100px">
+            <el-col :span="15">
+              <el-input type="textarea" v-model="formData.typeDes" auto-complete="on"></el-input>
+            </el-col>
+          </el-form-item>
+          <el-form-item label="系列轮播图" label-width="100px">
+            <el-col :span="15">
+              <el-upload ref="upload" action="" :auto-upload="false" :on-change="setLargeImg" :on-remove="setLargeImg" list-type="picture" :limit="1" accept="image/gif,image/jpeg,image/jpg,image/bmp,image/png">
+                <el-button size="small" type="primary">点击上传</el-button>
+                <div slot="tip" class="el-upload__tip">图片大小不超过500kb,限制为一张</div>
+              </el-upload>
+            </el-col>
+          </el-form-item>
+          <el-form-item label="系列展示图" label-width="100px">
+            <el-col :span="15">
+              <el-upload ref="upload" action="" :auto-upload="false" :on-change="setSmallImg" :on-remove="setSmallImg" list-type="picture" :limit="5" accept="image/gif,image/jpeg,image/jpg,image/bmp,image/png">
+                <el-button size="small" type="primary">点击上传</el-button>
+                <div slot="tip" class="el-upload__tip">图片大小不超过500kb,固定4张</div>
+              </el-upload>
+            </el-col>
+          </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="onoff=false">取 消</el-button>
+          <el-button type="primary" @click="addClass">确 定</el-button>
+        </span>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -100,6 +134,7 @@ export default {
       size: 3,
       data2: [],
       current: 1,
+      onoff: false,
       autoUpload: true,
       imgSrc: [],
       dialogVisible: false,
@@ -108,28 +143,27 @@ export default {
       className: true,
       index: 0,
       time: null,
-      types: "全部"
+      types: "全部",
+      formData: {
+        typeName: "",
+        typeDes: "",
+        typeImg: [],
+        typeBannerImg: []
+      }
     };
   },
   computed: {
     total() {
       return this.data2.length;
     },
-    data1: {
-      get() {
-        var arr = [];
-        var current = this.current;
-        var size = this.size;
-        for (
-          var i = (current - 1) * size;
-          i < (current - 1) * size + size;
-          i++
-        ) {
-          if (this.data2[i]) arr.push(this.data2[i]);
-        }
-        console.log(1);
-        return arr;
+    data1() {
+      var arr = [];
+      var current = this.current;
+      var size = this.size;
+      for (var i = (current - 1) * size; i < (current - 1) * size + size; i++) {
+        if (this.data2[i]) arr.push(this.data2[i]);
       }
+      return arr;
     }
   },
   watch: {
@@ -245,6 +279,60 @@ export default {
     uploadImg() {
       this.dialogVisible = false;
       // this.$refs["upload0"].submit();
+    },
+    addClass() {
+      this.onoff = false;
+      var fd = new FormData();
+      var largImg =  this.formData.typeBannerImg;
+      var smallImg = this.formData.typeImg ;
+      for (let [key, val] of Object.entries(this.formData)) {
+        if (!(val instanceof Array)) fd.append(key, val);
+      }
+      largImg.forEach(item => {
+        fd.append("typeBannerImg", item);
+      });
+      smallImg.forEach((item, i) => {
+        fd.append("typeImg" + i, item);
+      });
+      this.$http.post("/addGoodsType", fd).then(res=>{
+        if(res.data.code==2){
+          this.$message.success('添加成功');
+        }else{
+          this.$message.error('添加失败');
+        }
+      });
+    },
+    //封面图
+    setLargeImg(file, files) {
+      const isImg = file.raw.type.startsWith("image");
+      const is05k = file.size / 1024 / 500 <= 1;
+      if (!isImg) this.$message.error("不是图片!");
+      if (!is05k) this.$message.error("图片不能超过500k");
+      if (isImg && is05k) {
+        var arr = [];
+        for (var i in files) {
+          arr.push(files[i].raw);
+        }
+        this.formData.typeBannerImg = arr;
+      } else {
+      }
+      return false;
+    },
+    //展示图
+    setSmallImg(file, files) {
+      const isImg = file.raw.type.startsWith("image");
+      const is05k = file.size / 1024 / 500 <= 1;
+      if (!isImg) this.$message.error("不是图片!");
+      if (!is05k) this.$message.error("图片不能超过500k");
+      if (isImg && is05k) {
+        var arr = [];
+        for (var i in files) {
+          arr.push(files[i].raw);
+        }
+        this.formData.typeImg = arr;
+      } else {
+      }
+      return false;
     }
   }
 };
