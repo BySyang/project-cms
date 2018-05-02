@@ -67,9 +67,12 @@
           </el-table-column>
           <el-table-column prop="orderAddress" align="center" header-align="center" label="地址" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column label="快递单号" prop="" align="center" header-align="center">
+          <el-table-column label="快递单号" prop="Courier" align="center" header-align="center">
           </el-table-column>
-          <el-table-column label="快递方式" prop="" align="center" header-align="center">
+          <el-table-column label="快递方式" align="center" header-align="center">
+            <template slot-scope="scope">
+              <div>{{wuliuStatus(scope.row.selectCourier)}}</div>
+            </template>
           </el-table-column>
           <el-table-column label="操作" align="center" header-align="center">
             <template slot-scope="scope">
@@ -85,29 +88,28 @@
     </div>
 
     <!-- 编辑弹出框 -->
-    <!--         <el-dialog title="发货" :visible.sync="editVisible" width="30%">
-            <el-form ref="form" :model="form" label-width="100px">
-                <el-form-item label="快递单号">
-                    <el-input v-model="kuaididanhao"></el-input>
-                </el-form-item>
-                <el-form-item label="选择快递">
-                    <!-- <el-input v-model="form.newstatus"></el-input>
-                    <el-select v-model="fahuos" filterable placeholder="请选择快递">
-                        <el-option v-for="item in fahuo" :key="item.value" :label="item.label" :value="item.value">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-
-            </el-form>
-            <span slot="footer" class="dialog-footer">
-                <el-button @click="editVisible = false">取 消</el-button>
-                <el-button type="primary" @click="saveEdit">确 定</el-button>
-            </span>
-        </el-dialog> -->
+    <el-dialog title="发货" :visible.sync="editVisible" width="30%">
+      <el-form ref="form" :model="form" label-width="100px">
+        <el-form-item label="快递单号">
+          <el-input v-model="form.Courier"></el-input>
+        </el-form-item>
+        <el-form-item label="选择快递">
+          <el-select v-model="form.selectCourier" filterable placeholder="请选择快递">
+            <el-option v-for="item in fahuo" :key="item.value" :label="item.label" :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="editVisible = false">取 消</el-button>
+        <el-button type="primary" @click="saveEdit">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
+import qs from "qs";
 export default {
   data() {
     return {
@@ -117,6 +119,7 @@ export default {
       fahuos: "",
       wuliuTable: [],
       data: [],
+      form:{},
       fahuo: [
         {
           value: 0,
@@ -228,9 +231,6 @@ export default {
             this.data = resp.data.data;
             this.wuliuTable = [...this.data];
           }
-          // this.data = resp.data.data;
-          // this.wuliuTable = [...this.data];
-          // console.log(this.data)
         },
         err => {
           consolo.log(err);
@@ -255,11 +255,67 @@ export default {
       );
     },
     handleEdit(index, row) {
+      this.form = {
+        Courier:row.Courier,
+        selectCourier:row.selectCourier,
+        orderId: row.orderId
+      };
       this.editVisible = true;
     },
     saveEdit() {
+      this.wuliuTable.forEach((item, index) => {
+        if (item.orderId === this.form.orderId) {
+          for (let [key, val] of Object.entries(this.form)) {
+            item[key] = val;
+          }
+        }
+      });
       this.editVisible = false;
-      this.$message.success(`保存快递信息成功`);
+      this.$http.post("orderModify", qs.stringify(this.form)).then(res => {
+        if (res.data.code == 2) {
+          this.$message.success(`发货成功`);
+        } else {
+          this.$message.error(`编辑错误，请重新尝试`);
+        }
+      });
+    },
+    wuliuStatus(status) {
+      var newst = "";
+      switch (parseInt(status)) {
+        case 0:
+          newst = "邮政EMS";
+          break;
+        case 1:
+          newst = "邮政小包";
+          break;
+        case 2:
+          newst = "申通快递";
+          break;
+        case 3:
+          newst = "圆通快递";
+          break;
+        case 4:
+          newst = "中通快递";
+          break;
+        case 5:
+          newst = "韵达快递";
+          break;
+        case 6:
+          newst = "天天快递";
+          break;
+        case 7:
+          newst = "顺丰快递";
+          break;
+        case 8:
+          newst = "百世汇通快递";
+          break;
+        case 9:
+          newst = "德邦快递";
+          break;
+        default:
+          break;
+      }
+      return newst;
     }
   }
 };
