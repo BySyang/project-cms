@@ -331,37 +331,6 @@ export default {
           }
         });
     },
-    modfiyState2(nv) {
-      let goodsId = row.goodsId;
-      let isSale = row.isSale;
-      let isHot = row.isHot;
-      this.$confirm(
-        `${
-          isHot == 1 ? "请确认把此商品设为热销商品?" : "请确认取消此商品的热销"
-        }`,
-        "提示",
-        {
-          confirmButtonText: "确认",
-          cancelButtonText: "取消",
-          type: "warning"
-        }
-      )
-        .then(() => {
-          this.$http
-            .post("/goodsModify", qs.stringify({ goodsId, isSale, isHot }))
-            .then(res => {
-              if (res.data.code == 2) {
-                this.$message.success("修改成功");
-              } else {
-                this.$message.error("修改失败");
-              }
-            })
-            .catch(err => {
-              console.log(err);
-            });
-        })
-        .catch(() => {});
-    },
     addOneGood() {
       this.onoff = false;
       var fd = new FormData();
