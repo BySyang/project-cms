@@ -38,11 +38,11 @@
             </template>
           </el-table-column>
 
-          <el-table-column width="100px" align="center" header-align="center" label="商品图片" show-overflow-tooltip>
+          <!-- <el-table-column width="100px" align="center" header-align="center" label="商品图片" show-overflow-tooltip>
             <template slot-scope="scope">
               <img style="width:60px;height:60px" :src="'../static/series/'+scope.row.imgSrc" alt="">
             </template>
-          </el-table-column>
+          </el-table-column> -->
           <!-- <el-table-column prop="goodsInfo[0].goodsPrice" align="center" header-align="center" label="商品价格" show-overflow-tooltip>
           </el-table-column> -->
           <!-- <el-table-column prop="goodsInfo[0].goodsPrice" align="center" header-align="center" label="退款金额" show-overflow-tooltip>
@@ -228,7 +228,6 @@ export default {
           .then(res => {
             this.$set(item, "goodsInfo", res.data.data);
             this.$set(item, "imgSrc", res.data.data[0].goodLargeImg);
-            // console.log(item.imgSrc)
           })
           .catch(err => {
             console.log(err);
@@ -287,8 +286,7 @@ export default {
         goodsPrice: row.goodsInfo[0].goodsPrice,
         orderStatus: row.orderStatus,
         goodsName:row.goodsInfo[0].goodsName,
-        goodLargeImg:row.goodLargeImg,
-       
+        goodLargeImg:row.imgSrc,
       };
       this.editVisible = true;
     },
