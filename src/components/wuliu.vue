@@ -29,8 +29,8 @@
                 <el-form-item label="订单号：">
                   <span>{{ props.row.orderunique }}</span>
                 </el-form-item>
-                <el-form-item label="用户ID：">
-                  <span>{{ props.row.userId }}</span>
+                <el-form-item label="用户名：">
+                  <span>{{ props.row.userName }}</span>
                 </el-form-item>
                 <el-form-item label="订单总价：">
                   <span>{{ props.row.totalMoney }}</span>
@@ -58,7 +58,7 @@
           </el-table-column>
           <el-table-column label="订单号" prop="orderunique" align="center" header-align="center">
           </el-table-column>
-          <el-table-column label="用户" prop="userId" align="center" header-align="center">
+          <el-table-column label="用户" prop="userName" align="center" header-align="center">
           </el-table-column>
           <el-table-column label="下单日期" align="center" header-align="center">
             <template slot-scope="scope">
@@ -119,7 +119,7 @@ export default {
       fahuos: "",
       wuliuTable: [],
       data: [],
-      form:{},
+      form: {},
       fahuo: [
         {
           value: 0,
@@ -197,7 +197,7 @@ export default {
           arr.push(...this.data);
         } else {
           this.data.forEach(item => {
-            if (item.userId == username) arr.push(item);
+            if (item.userName.indexOf(username) > -1) arr.push(item);
           });
         }
         if (ordersId !== "") {
@@ -213,7 +213,7 @@ export default {
           let end = new Date(time[1]);
           arr = [];
           i.forEach(item => {
-            let inow = new Date(item.newTime);
+            let inow = new Date(item.createTime);
             if (inow >= start && inow <= end) arr.push(item);
           });
         }
@@ -256,8 +256,8 @@ export default {
     },
     handleEdit(index, row) {
       this.form = {
-        Courier:row.Courier,
-        selectCourier:row.selectCourier,
+        Courier: row.Courier,
+        selectCourier: row.selectCourier,
         orderId: row.orderId
       };
       this.editVisible = true;
