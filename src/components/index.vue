@@ -50,6 +50,9 @@
                 <div class="menu">
                     <ul>
                         <li class="iconfont icon-fahuotixing"></li>
+                        <!-- <el-submenu index="/home/wuliu">
+                           <li>待发货</li>
+                        </el-submenu> -->
                         <li>待发货</li>
                         <li>906</li>
                     </ul>
@@ -125,10 +128,21 @@
 </template>
 
 <script>
+// import qs from "qs";
 var echarts = require("echarts");
 export default {
   data() {
-    return {};
+    return {
+      // ruleForm: {
+      // name: ""
+      // }
+    };
+   
+  },
+   created() {
+    if (this.$route.name == "home") {
+      this.$router.replace("/home/index");
+    }
   },
   mounted() {
     /*ECharts图表*/
@@ -437,6 +451,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// .el-submenu{
+//   position: absolute;
+//   width: 100px;
+//   height: 100px;
+//   background: red;
+// }
 #index {
   border: none;
   outline: none;
