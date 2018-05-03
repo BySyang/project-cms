@@ -227,7 +227,7 @@ export default {
     },
     getImg(data, event, col) {
       if (col.id.endsWith("5")) {
-        this.imgSrc = ["/static/series/" + data.typeBannerImg];
+        this.imgSrc = ["/static/images/series/" + data.typeBannerImg];
         this.className = true;
         this.title = col.label;
       } else if (col.id.endsWith("6")) {
@@ -235,7 +235,7 @@ export default {
         let prev = data.typeImg.split("?")[0];
         let str = data.typeImg.split("?")[1];
         str.split("|").forEach(item => {
-          arr.push("/static/series/" + prev + item);
+          arr.push("/static/images/series/" + prev + item);
         });
         this.imgSrc = arr;
         this.title = col.label;
