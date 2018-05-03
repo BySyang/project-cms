@@ -31,13 +31,19 @@
                   </el-switch>
                 </template>
               </el-table-column>
+              <el-table-column label="操作" align="center" width="100px">
+                <template slot-scope="scope">
+                  <el-button type="primary" size="mini" @click="paysEdit(scope.$index, scope.row)">编辑</el-button>
+                  <!-- <el-button type="danger" size="mini">删除</el-button> -->
+                </template>
+              </el-table-column>
             </el-table>
             <div class="pagination">
               <el-pagination ref="pages" layout="prev, pager, next" :total="total" :page-size="size" @current-change="setCurrent">
               </el-pagination>
             </div>
           </div>
-          <!-- 弹框进行添加 -->
+          <!-- 弹框进行添加pays -->
           <div class="addPays">
             <el-dialog title="添加支付方式" :visible.sync="dialogFormVisible" width="420px">
               <el-form :model="addPays">
@@ -66,6 +72,29 @@
               </div>
             </el-dialog>
           </div>
+
+          <!-- ***************************************************************************** -->
+          <!-- 编辑弹出框 -->
+          <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
+            <el-form ref="form" :model="editPays" label-width="100px">
+              <el-form-item label="修改名称">
+                <el-input v-model="editPays.payName"></el-input>
+              </el-form-item>
+              <el-form-item label="修改图片">
+                <el-upload ref="upload" v-model="editPays.payImg" :auto-upload="false" action="/aaa" :show-file-list="false" :on-change="setImg">
+                    <img class="uploadImg" v-if="imageUrl" :src="imageUrl">
+                  </el-upload>
+              </el-form-item>
+              <el-form-item label="修改简介">
+                <el-input v-model="editPays.payInfo"></el-input>
+              </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+              <el-button @click="editVisible = false">取 消</el-button>
+              <el-button type="primary" @click="saveEdit">确 定</el-button>
+            </span>
+          </el-dialog>
+
         </div>
       </div>
     </div>
@@ -81,7 +110,10 @@ export default {
       multipleSelection: [],
       tableData: [],
       dialogFormVisible: false,
+      //*************************************************************
+      editVisible: false,
       imageUrl: "",
+      editPays:{},
       addPays: {
         id: "",
         payName: "",
@@ -188,6 +220,35 @@ export default {
             message: "已取消改变"
           });
         });
+    },
+
+    // ******************************************************************
+    paysEdit(index, row) {
+      // console.log(index)
+      this.editPays = {
+        payName: row.payName,
+        payImg: row.payImg,
+        payInfo: row.payInfo
+      };
+      this.editVisible = true;
+    },
+    // //保存编辑
+    saveEdit() {
+      this.tableData.forEach((item, index) => {
+        if (item.id === this.editPays.id) {
+          for (let [key, val] of Object.entries(this.editPays)) {
+            item[key] = val;
+          }
+        }
+      });
+      this.editVisible = false;
+      this.$http.post("orderModify", qs.stringify(this.editPays)).then(res => {
+        if (res.data.code == 2) {
+          this.$message.success(`编辑成功`);
+        } else {
+          this.$message.error(`编辑错误，请重新尝试`);
+        }
+      });
     }
   }
 };
@@ -238,7 +299,6 @@ export default {
           }
           .el-button {
             width: 10%;
-            display: inline-block;
             float: right;
           }
         }
