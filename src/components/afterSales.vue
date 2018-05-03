@@ -77,11 +77,14 @@
             <el-form-item label="商品名称:">
               <span>{{form.goodsName}}</span>
             </el-form-item>
-            <el-form-item label="商品价格:">
+            <el-form-item label="商品总价:">
               <span>{{form.totalMoney}}</span>
             </el-form-item>
+            <el-form-item label="实际金额:">
+              <span>{{form.realTotalMoney}}</span>
+            </el-form-item>
             <el-form-item label="退款金额:">
-              <span>{{form.totalMoney}}</span>
+              <span>{{form.realTotalMoney}}</span>
             </el-form-item>
             <el-form-item label="订单状态:">
               <span>{{form.orderStatus}}</span>
@@ -151,6 +154,7 @@ export default {
                 newArr.push(item);
               }
             });
+           
             this.tableData = newArr;
             this.data = newArr;
             resolve("ok");
@@ -234,7 +238,6 @@ export default {
           .get(`/orderGoods?orderId=${item.orderId}`)
           .then(res => {
             this.$set(item, "goodsInfo", res.data.data);
-            console.log(res.data.data);
             this.$set(item, "imgSrc", res.data.data[0].goodLargeImg);
           })
           .catch(err => {
@@ -281,9 +284,12 @@ export default {
           type: "success",
           message: "退款成功"
         });
-        this.$http.post("orderModify", qs.stringify(this.form)).then(res => {
-          row.refundState = 1;
-        });
+        row.refundState = "1";
+        console.log(this.data)
+        this.$http.post("orderModify", qs.stringify({
+          orderId:row.orderId,//传入订单id
+          refundState:row.refundState //传入索要更改的字段
+        }));
 
         row.disabled = true;
       });
@@ -295,6 +301,7 @@ export default {
         newTime: row.newTime,
         totalMoney: row.totalMoney,
         orderStatus: row.orderStatus,
+        realTotalMoney:row.realTotalMoney,
         goodsName: row.goodsInfo[0].goodsName,
         goodLargeImg: row.imgSrc
       };
