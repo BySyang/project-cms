@@ -81,9 +81,9 @@
                 <el-input v-model="editPays.payName"></el-input>
               </el-form-item>
               <el-form-item label="修改图片">
-                <el-upload ref="upload" v-model="editPays.payImg" :auto-upload="false" action="/aaa" :show-file-list="false" :on-change="setImg">
-                    <img class="uploadImg" v-if="imageUrl" :src="imageUrl">
-                  </el-upload>
+                <el-upload ref="upload" v-model="editPays.payImg" :auto-upload="false" action="/aaa" :show-file-list="false" :on-change="setChangeImg">
+                  <img class="uploadImg" :src="'../static/images/'+editPays.payImg">
+                </el-upload>
               </el-form-item>
               <el-form-item label="修改简介">
                 <el-input v-model="editPays.payInfo"></el-input>
@@ -102,6 +102,7 @@
 </template>
 
 <script>
+import qs from "qs";
 export default {
   data() {
     return {
@@ -113,7 +114,7 @@ export default {
       //*************************************************************
       editVisible: false,
       imageUrl: "",
-      editPays:{},
+      editPays: {},
       addPays: {
         id: "",
         payName: "",
@@ -171,7 +172,23 @@ export default {
     //添加支付，上传图片
     setImg(file) {
       this.imageUrl = URL.createObjectURL(file.raw);
-      console.log(this.imageUrl);
+      // console.log(this.imageUrl);
+    },
+    setChangeImg(file, files){      
+      const isJPEG = file.type === "image/jpeg";
+      const isJPG = file.type === "image/jpg";
+      const isPNG = file.type === "image/png";
+      const isBMP = file.type === "image/bmp";
+      const isLt2M = file.size / 1024 / 1024 < 2;
+       if ((isJPEG ||isJPG ||isPNG ||isBMP)&&isLt2M) {
+        var arr = [];
+        for (var i in files) {
+          arr.push(files[i].raw);
+        }
+        this.formData.typeBannerImg = arr;
+      } else {
+      }
+      return false;
     },
     //判断上传图片大小不能超过2MB，规定格式
     beforeAvatarUpload(file) {
@@ -242,7 +259,7 @@ export default {
         }
       });
       this.editVisible = false;
-      this.$http.post("orderModify", qs.stringify(this.editPays)).then(res => {
+      this.$http.post("/payModify", qs.stringify(this.editPays)).then(res => {
         if (res.data.code == 2) {
           this.$message.success(`编辑成功`);
         } else {
