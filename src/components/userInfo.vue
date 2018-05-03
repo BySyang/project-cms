@@ -31,7 +31,11 @@
           </el-table-column>
           <el-table-column align="center" header-align="center" label="头像"  width="120" show-overflow-tooltip>
             <template slot-scope="scope">
+<<<<<<< HEAD
               <img style="width:35%;height:35%" :src="'../static/'+scope.row.imgsrc" alt="" />
+=======
+              <img style="width:80%;height:80%" :src="'../static/images/'+scope.row.imgsrc" alt="" />
+>>>>>>> 0ef18251a2a2cfa9ccedcc0f084729805797dbd8
             </template>
           </el-table-column>
           <el-table-column prop="userSex" align="center" header-align="center" label="性别" width="65" show-overflow-tooltip>
