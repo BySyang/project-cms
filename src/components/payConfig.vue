@@ -11,9 +11,9 @@
           </el-table-column>
           <el-table-column prop="introduce" label="介绍" align="center">
           </el-table-column>
-          <el-table-column prop="judge" label="状态" width='140' align="center">
+          <el-table-column prop="isOn" label="状态" width='140' align="center">
             <template slot-scope="scope">
-              <el-switch v-model="scope.row.judge" active-text="启用" inactive-text="禁用" :active-value="1" :inactive-value="0" @change="openJudge(scope.row)">              
+              <el-switch v-model="scope.row.isOn" active-text="启用" inactive-text="禁用" :active-value="1" :inactive-value="0" @change="openJudge(scope.row)">              
               <!-- <el-switch v-model="scope.row.judge" active-text="启用" inactive-text="禁用"> -->
               </el-switch>
             </template>
@@ -77,9 +77,8 @@ export default {
   methods:{
     setCurrent(val) {
       this.current = val;
-    }
-  },
-  // switch提示弹框
+    },
+    // switch提示弹框
     openJudge(row) {
       let isOn = row.isOn;
       this.$confirm("是否确定改变状态", "提示", {
@@ -101,6 +100,8 @@ export default {
           });
         });
     }
+  },
+  
 };
 </script>
 
