@@ -20,7 +20,7 @@
               </el-table-column>
               <el-table-column prop="payImg" label="图片" width="180" align="center">
                 <template slot-scope="scope">
-                  <img :src="scope.row.payImg.startsWith('blob')?scope.row.payImg:'../static/'+scope.row.payImg" height="60" />
+                  <img :src="scope.row.payImg.startsWith('blob')?scope.row.payImg:'../static/images/'+scope.row.payImg" height="60" />
                 </template>
               </el-table-column>
               <el-table-column prop="payInfo" label="简介" align="center">

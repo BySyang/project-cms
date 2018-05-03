@@ -51,12 +51,13 @@
           </el-table-column>
           <el-table-column label="是否展示" align="center">
             <template slot-scope="scope">
-              <el-switch v-model="scope.row.idShow" active-color="#409eff" inactive-color="#dcdfe6"></el-switch>
+              <el-switch v-model="scope.row.idShow" :active-value="1" :inactive-value="0" active-color="#409eff" inactive-color="#dcdfe6" @change="modfiyState(scope)"></el-switch>
             </template>
           </el-table-column>
           <el-table-column prop="newTime" label="创建时间" align="center"></el-table-column>
           <el-table-column label="操作" align="center">
             <template slot-scope="scope">
+              <el-button size="mini" type="primary" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
               <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
             </template>
           </el-table-column>
@@ -122,6 +123,26 @@
           <el-button type="primary" @click="addClass">确 定</el-button>
         </span>
       </el-dialog>
+      <el-dialog title="编辑商品系列" :visible.sync="editVisible" width="30%">
+        <el-form ref="form" label-width="100px">
+          <el-form-item label="系列名">
+            <el-input v-model="editData.typeName"></el-input>
+          </el-form-item>
+          <el-form-item label="系列描述">
+            <el-input v-model="editData.typeDes[0]"></el-input>
+            <el-input v-model="editData.typeDes[1]"></el-input>
+            <el-input v-model="editData.typeDes[2]"></el-input>
+          </el-form-item>
+          <el-form-item label="是否展示">
+            <el-radio v-model="editData.idShow" :label="1">是</el-radio>
+            <el-radio v-model="editData.idShow" :label="0">否</el-radio>
+          </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="editVisible=false" size="small">取 消</el-button>
+          <el-button type="primary" size="small" @click="saveEdit">确 定</el-button>
+        </span>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -135,11 +156,11 @@ export default {
       data2: [],
       current: 1,
       onoff: false,
-      autoUpload: true,
+      editVisible: false,
       imgSrc: {
         oldSrc: [],
         newSrc: [],
-        typeId:''
+        typeId: ""
       },
       dialogVisible: false,
       modalOpt: true,
@@ -153,6 +174,11 @@ export default {
         typeDes: "",
         typeImg: [],
         typeBannerImg: []
+      },
+      editData: {
+        typeName: "",
+        typeDes: [],
+        idShow: ""
       }
     };
   },
@@ -214,7 +240,6 @@ export default {
             item.newDesc = this.editDes(item.typeDes);
             item.newDesc.name = "查看描述";
             item.newTime = this.formatDate(item.createime);
-            item.idShow = item.idShow == 1 ? true : false;
           });
           this.data = res.data.data;
           this.data2 = [...this.data];
@@ -264,10 +289,9 @@ export default {
     },
     getImg(data, event, col) {
       this.imgSrc.newSrc = [];
-      console.log(data)
       this.imgSrc.typeId = data.typeId;
       if (col.label.indexOf("轮播") > -1) {
-        this.imgSrc.oldSrc = ['/static/images/series/'+data.typeBannerImg];
+        this.imgSrc.oldSrc = ["/static/images/series/" + data.typeBannerImg];
         this.className = true;
         this.title = col.label;
       } else if (col.label.indexOf("小图") > -1) {
@@ -275,7 +299,7 @@ export default {
         let prev = data.typeImg.split("?")[0];
         let str = data.typeImg.split("?")[1];
         str.split("|").forEach(item => {
-          arr.push('/static/images/series/'+prev + item);
+          arr.push("/static/images/series/" + prev + item);
         });
         this.imgSrc.oldSrc = arr;
         this.title = col.label;
@@ -289,12 +313,12 @@ export default {
           fd.append("newImg" + i, item.raw);
         }
       });
-      fd.append('tableName','goods_types');
-      fd.append('typeId',this.imgSrc.typeId);
-      fd.append("oldImg",this.imgSrc.oldSrc.join('|'))
-      this.$http.post('/imgModify',fd).then(res=>{
-        console.log(res.data)
-      })
+      fd.append("tableName", "goods_types");
+      fd.append("typeId", this.imgSrc.typeId);
+      fd.append("oldImg", this.imgSrc.oldSrc.join("|"));
+      this.$http.post("/imgModify", fd).then(res => {
+        console.log(res.data);
+      });
       this.dialogVisible = false;
     },
     //添加分类
@@ -353,7 +377,102 @@ export default {
       }
       return false;
     },
-    handleDelete(index, row) {}
+    handleEdit(index, row) {
+      this.editVisible = true;
+      this.editData.typeId = row.typeId;
+      this.editData.typeName = row.typeName;
+      this.editData.typeDes = row.typeDes.split("<br/>");
+      this.editData.idShow = row.idShow;
+    },
+    saveEdit() {
+      let sendData = {};
+      sendData.typeId = this.editData.typeId;
+      sendData.typeDes = this.editData.typeDes.join("<br/>");
+      sendData.typeName = this.editData.typeName;
+      sendData.idShow = this.editData.idShow;
+      this.$http
+        .post("/typeModify", qs.stringify(sendData))
+        .then(res => {
+          if (res.data.code == 2) {
+            this.getData();
+            this.$message.success("修改成功");
+            this.editData = {
+              typeName: "",
+              typeDes: [],
+              idShow: ""
+            };
+            this.editVisible = false;
+          }
+        })
+        .catch(err => {
+          // console.log(err)
+          this.$message.error("修改失败");
+        });
+    },
+    handleDelete(index, row) {
+      this.$confirm("此操作将永久删除该系列, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.$http
+            .post(
+              "/delete",
+              qs.stringify({
+                tableName: "goods_types",
+                typeId: row.typeId
+              })
+            )
+            .then(res => {
+              if (res.data.code == 2) {
+                this.$message.success("删除成功");
+                this.getData();
+              }
+            });
+        })
+        .catch(() => {
+          this.$message.info("删除取消");
+        });
+    },
+    //是否上架
+    modfiyState(scope) {
+      let idShow = scope.row.idShow;
+      let typeId = scope.row.typeId;
+      let str = "";
+      if (idShow == 1) {
+        str = "确认显示此系列商品?";
+      } else {
+        str = "确认不显示此系列商品?";
+      }
+      this.$confirm(str, "提示", {
+        confirmButtonText: "确认",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.$http
+            .post("/typeModify", qs.stringify({ idShow, typeId }))
+            .then(res => {
+              if (res.data.code == 2) {
+                this.$message.success("修改成功");
+              } else {
+                this.$message.error("修改失败");
+              }
+            })
+            .catch(err => {
+              console.log(err);
+            });
+        })
+        .catch(() => {
+          if (scope.column.label == "是否上架") {
+            scope.row.isSale = 0;
+          } else {
+            scope.row.isHot = 0;
+          }
+          this.$message.info("取消修改");
+        });
+    }
   }
 };
 </script>

@@ -115,7 +115,6 @@ export default {
           item.isShow = item.isShow==1?true:false;
         })
         this.data = res.data.data;
-        // console.log(this.data)
       });
     },
     //设置选中
