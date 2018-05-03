@@ -3,7 +3,7 @@
     <el-container class="section1">
         <!-- 头部 -->
         <el-header>
-            <div class="log"><i class="iconfont icon-lifangtilitiduomiantifangkuai2"></i> <span>内衣管理系统</span></div>
+            <div class="log"><i class="iconfont icon-lifangtilitiduomiantifangkuai2"></i> <span>Fashion Girl</span>&nbsp;<span>管理系统</span></div>
             <!-- 头像 -->
             <div class="log_item">
                 <img :src='img'>
@@ -400,14 +400,20 @@ export default {
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    width: 199px;
+    width: 330px;
     height: 60px;
     color: white;
     z-index: 99;
     cursor: pointer;
   }
-  span {
-    font-size: 20px;
+  .log>span:nth-child(2){
+    font-family: Calisto MT;
+    font-size: 28px;
+    color: #000;
+  }
+  .log>span:nth-child(3){
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 24px;
     color: #000;
   }
   .log:hover span {

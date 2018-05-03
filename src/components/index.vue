@@ -472,6 +472,13 @@ export default {
   flex-direction: row;
   justify-content: space-between;
   align-content: center;
+  .list_item>div{
+    transition: all 0.3s;
+  }
+  .list_item>div:hover{
+    cursor: pointer;
+    transform: scale(1.4)
+  }
   .list_item:nth-child(1) {
     background: #17d57e;
   }
@@ -548,6 +555,7 @@ export default {
   align-items: center;
   justify-content: space-between;
   ul {
+    cursor: pointer;
     float: left;
     margin: 25.8px 25px 20px 25px;
     li {
@@ -558,6 +566,10 @@ export default {
     li:nth-child(1) {
       font-size: 30px;
       color: #3399ff;
+       transition: all 0.3s;  
+    }
+    li:nth-child(1):hover{
+      transform: scale(1.6);  
     }
     li:nth-child(2) {
       font-size: 14px;
