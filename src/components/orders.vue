@@ -31,24 +31,24 @@
       </div>
       <div class="table">
         <el-table border ref="multipleTable" :data="orsersTable1" tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange">
-          <el-table-column prop="orderunique" header-align="center" align="center" label="订单号" width="150">
+          <el-table-column prop="orderunique" header-align="center" align="center" label="订单号" width="160">
           </el-table-column>
-          <el-table-column prop="userName" align="center" header-align="center" label="用户名" width="150" show-overflow-tooltip>
+          <el-table-column prop="userName" align="center" header-align="center" label="用户名" width="120" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column prop="totalMoney" align="center" header-align="center" label="订单总价" width="100" show-overflow-tooltip>
+          <el-table-column prop="totalMoney" align="center" header-align="center" label="订单总价" width="80" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column prop="orderRemarks" align="center" header-align="center" label="用户备注" show-overflow-tooltip>
+          <el-table-column prop="orderRemarks" align="center" header-align="center" label="用户备注" width="120" show-overflow-tooltip>
           </el-table-column>
           <el-table-column prop="adminRemarks" align="center" header-align="center" label="修改备注" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column align="center" header-align="center" label="订单状态" width="100" show-overflow-tooltip>
+          <el-table-column align="center" header-align="center" label="订单状态" width="80" show-overflow-tooltip>
             <template slot-scope="scope">
               <div>{{ordersStatus(scope.row.orderStatus)}}</div>
             </template>
           </el-table-column>
-          <el-table-column prop="orderScore" align="center" header-align="center" label="获得积分" width="100" show-overflow-tooltip>
+          <el-table-column prop="orderScore" align="center" header-align="center" label="获得积分" width="80" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column prop="orderAddress" align="center" header-align="center" label="地址" show-overflow-tooltip>
+          <el-table-column prop="orderAddress" align="center" header-align="center" label="地址" width="120" show-overflow-tooltip>
           </el-table-column>
           <el-table-column label="下单日期" align="center" header-align="center" width="120" show-overflow-tooltip>
             <template slot-scope="scope">
@@ -301,6 +301,7 @@ export default {
   .orders_main {
     margin: 1% auto;
     width: 98%;
+    height: 95%;
     background-color: white;
     box-shadow: 0 -3px 0 0 #59ace2;
     .main_top {
