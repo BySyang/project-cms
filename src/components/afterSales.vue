@@ -28,7 +28,9 @@
         <el-table border ref="multipleTable" :data="data1" tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange">
           <el-table-column prop="orderId" header-align="center" align="center" label="订单id" width="100">
           </el-table-column>
-          <el-table-column prop="orderunique" header-align="center" align="center" label="订单号" width="170">
+          <el-table-column prop="orderunique" header-align="center" align="center" label="订单号" width="150">
+          </el-table-column>
+          <el-table-column prop="goodsInfo[0].goodsName" align="center" header-align="center" label="商品名称" show-overflow-tooltip>
           </el-table-column>
           <el-table-column label="商品详情" header-align="center" align="center">
             <template slot-scope="scope">
@@ -41,14 +43,18 @@
               <img style="width:60px;height:60px" :src="'../static/series/'+scope.row.imgSrc" alt="">
             </template>
           </el-table-column> -->
-          <el-table-column prop="refundInfo" align="center" header-align="center" label="退款说明" show-overflow-tooltip>
+          <!-- <el-table-column prop="goodsInfo[0].goodsPrice" align="center" header-align="center" label="商品价格" show-overflow-tooltip>
+          </el-table-column> -->
+          <!-- <el-table-column prop="goodsInfo[0].goodsPrice" align="center" header-align="center" label="退款金额" show-overflow-tooltip>
+          </el-table-column> -->
+          <!-- <el-table-column prop="goodsInfo[0].goodsNum" align="center" header-align="center" label="数量" show-overflow-tooltip>
+          </el-table-column> -->
+          <el-table-column prop="refunInstruction" align="center" header-align="center" label="退款说明" show-overflow-tooltip>
           </el-table-column>
           <!-- <el-table-column prop="orderStatus" align="center" header-align="center" label="订单状态" show-overflow-tooltip>
           </el-table-column> -->
-          <el-table-column align="center" header-align="center" label="退款状态" show-overflow-tooltip>
-            <template slot-scope="scope">
-              <div>{{refundState(scope.row.refundState)}}</div>
-            </template>
+          <el-table-column prop="refunState1" align="center" header-align="center" label="退款状态" show-overflow-tooltip>
+
           </el-table-column>
           <el-table-column prop="newTime" label="下单日期" align="center" header-align="center" width="120">
           </el-table-column>
@@ -56,7 +62,6 @@
             <template slot-scope="scope">
               <el-row>
                 <el-button size="mini" type="primary" @click="refund(scope.row)" :disabled="scope.row.disabled">退款</el-button>
-
               </el-row>
             </template>
           </el-table-column>
@@ -72,7 +77,7 @@
         <el-dialog title="订单详情" :visible.sync="editVisible" width="30%">
           <el-form ref="form" :model="form" label-width="100px">
             <el-form-item label="商品图片:">
-              <img style="width:60px;height:60px" :src="'../static/images/series/'+form.goodLargeImg" alt="">
+              <img style="width:60px;height:60px" :src="'../static/series/'+form.goodLargeImg" alt="">
             </el-form-item>
             <el-form-item label="商品名称:">
               <span>{{form.goodsName}}</span>
@@ -105,7 +110,6 @@
 </template>
 
 <script>
-import qs from "qs";
 export default {
   data() {
     return {
@@ -143,13 +147,10 @@ export default {
           if (resp.data.data) {
             var newArr = [];
             resp.data.data.forEach(item => {
-              if (
-                (item.orderStatus == 1 || item.orderStatus == 2) &&
-                item.refundState == 0
-              ) {
+              if (item.orderStatus == 1 || item.orderStatus == 2) {
                 item.newTime = that.formatDate(item.createTime);
                 item.orderStatus = that.orderStatus(item.orderStatus);
-                // item.refundState = that.refundState(item.refundState);
+                item.refunState1 = that.refunState(0);
                 item.disabled = false;
                 newArr.push(item);
               }
@@ -181,21 +182,15 @@ export default {
       );
     },
     // 退款状态
-    refundState(state) {
-      var newState = "";
-      switch (parseInt(state)) {
-        case 0:
-          newState = "未退款";
-          break;
-        case 1:
-          newState = "已退款";
-          break;
-        default:
-          break;
+    refunState(refst) {
+      var refunStatetext = " ";
+      if (refst) {
+        refunStatetext = "已退款";
+      } else {
+        refunStatetext = "未退款";
       }
-      return newState;
+      return refunStatetext;
     },
-
     //订单状态-------------
     orderStatus(status) {
       var newst = "";
@@ -284,6 +279,7 @@ export default {
           type: "success",
           message: "退款成功"
         });
+<<<<<<< HEAD
         row.refundState = "1";
         console.log(this.data)
         this.$http.post("orderModify", qs.stringify({
@@ -291,6 +287,9 @@ export default {
           refundState:row.refundState //传入索要更改的字段
         }));
 
+=======
+        row.refunState1 = "已退款";
+>>>>>>> bd5091d96424939d8e179ab49ffea86b273ddac5
         row.disabled = true;
       });
     },
@@ -327,7 +326,6 @@ export default {
       return this.tableData.length;
     }
   },
-  // 搜索
   watch: {
     searshArr: {
       handler() {
@@ -357,8 +355,8 @@ export default {
           let end = new Date(xiadanTime[1]);
           newArr = [];
           i.forEach(item => {
-            let now = new Date(item.createTime);
-            if (now >= start && now <= end) newArr.push(item);
+            let now = new Date(item.newTime);
+            if (start >= now && now <= end) newArr.push(item);
           });
         }
         this.tableData = newArr;

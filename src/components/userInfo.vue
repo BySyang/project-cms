@@ -14,40 +14,60 @@
           用户名:
           <el-input placeholder="请输入用户名" prefix-icon="el-icon-search" v-model="select_word">
           </el-input>
+          <!--<el-col :span="2" :push="1" style="left:2.16666%">-->
+            <!--<el-button size="small" type="primary" @click="onoff = true">添加商品</el-button>-->
+          <!--</el-col>-->
+
         </div>
         <!--<div>-->
         <!--<el-button type="primary" icon="el-icon-search">搜索</el-button>-->
         <!--</div>-->
       </div>
       <div class="table">
-        <el-table border ref="multipleTable" :data="data1" tooltip-effect="dark" style="width: 100%">
+        <el-table border ref="multipleTable" :data="tables" tooltip-effect="dark" style="width: 100%">
           <el-table-column prop="userId" header-align="center" align="center" label="用户id" width="65">
           </el-table-column>
-          <el-table-column prop="userName" align="center" header-align="center" label="用户名" width="150" show-overflow-tooltip>
+          <el-table-column prop="userName" align="center" header-align="center" label="用户名" width="120" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column align="center" header-align="center" label="头像" show-overflow-tooltip>
+          <el-table-column align="center" header-align="center" label="头像"  width="120" show-overflow-tooltip>
             <template slot-scope="scope">
+<<<<<<< HEAD
+              <img style="width:35%;height:35%" :src="'../static/'+scope.row.imgsrc" alt="" />
+=======
               <img style="width:80%;height:80%" :src="'../static/images/'+scope.row.imgsrc" alt="" />
+>>>>>>> 0ef18251a2a2cfa9ccedcc0f084729805797dbd8
             </template>
           </el-table-column>
           <el-table-column prop="userSex" align="center" header-align="center" label="性别" width="65" show-overflow-tooltip>
+            <template slot-scope="scope">
+              <div>{{userSex(scope.row.userSex)}}</div>
+            </template>
           </el-table-column>
-          <el-table-column prop="userPhone" align="center" header-align="center" label="联系号码" show-overflow-tooltip>
+          <el-table-column prop="userPhone" align="center" header-align="center" label="联系号码" width="125" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column prop="userEmail" align="center" header-align="center" label="邮箱" width="170" show-overflow-tooltip>
+          <el-table-column prop="rankId" label="会员等级" align="center" header-align="center" width="80" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column align="center" header-align="center" label="生日" width="190" show-overflow-tooltip>
+          <el-table-column prop="userEmail" align="center" header-align="center" label="邮箱" width="120" show-overflow-tooltip>
+          </el-table-column>
+          <el-table-column align="center" header-align="center" label="生日" width="140" show-overflow-tooltip>
             <template slot-scope="scope">
               {{(scope.row.userBirthday.substr(0,10))+"---"+(scope.row.userBirthday.substr(11,8))}}
             </template>
           </el-table-column>
-          <el-table-column prop="rankId" label="会员等级" align="center" header-align="center" width="120" show-overflow-tooltip>
+
+          <!--</el-table-column>-->
+          <el-table-column prop="refunState1" align="center" header-align="center" label="会员状态"  width="80" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column label="操作" header-align="center" align="center">
+          <el-table-column label="管理" header-align="center" align="center">
             <template slot-scope="scope">
               <el-row>
-                <el-button size="mini" type="primary" @click="refund(scope.row)">禁用</el-button>
+                <el-button size="mini" type="primary" @click="refund(scope.row)" :disabled="scope.row.disabled">禁用</el-button>
               </el-row>
+            </template>
+          </el-table-column>
+          <el-table-column label="操作" align="center">
+            <template slot-scope="scope">
+              <el-button size="mini" type="primary" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -56,13 +76,48 @@
           </el-pagination>
         </div>
       </div>
+      <el-dialog title="编辑用户" :visible.sync="editVisible" width="30%">
+        <el-form ref="form" label-width="100px">
+          <el-form-item label="用户名">
+            <el-input v-model="editData.userName"></el-input>
+          </el-form-item>
+          <el-form-item label="性别">
+            <el-input v-model="editData.userSex"></el-input>
+          </el-form-item>
+          <el-form-item label="联系号码">
+            <el-input v-model="editData.userPhone"></el-input>
+          </el-form-item>
+          <el-form-item label="会员等级">
+            <el-input v-model="editData.rankId"></el-input>
+          </el-form-item>
+          <el-form-item label="邮箱">
+            <el-input v-model="editData.userEmail"></el-input>
+          </el-form-item>
+          <!--<el-form-item label="生日">-->
+            <!--<el-input v-model="editData.userBirthday"></el-input>-->
+          <!--</el-form-item>-->
+          <!--<el-form-item label="是否上架">-->
+            <!--<el-radio v-model="editData.isSale" :label="1">上架</el-radio>-->
+            <!--<el-radio v-model="editData.isSale" :label="0">下架</el-radio>-->
+          <!--</el-form-item>-->
+          <!--<el-form-item label="是否热销">-->
+            <!--<el-radio v-model="editData.isHot" :label="1">热销</el-radio>-->
+            <!--<el-radio v-model="editData.isHot" :label="0">普销</el-radio>-->
+          <!--</el-form-item>-->
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="editVisible=false" size="small">取 消</el-button>
+          <el-button type="primary" size="small" @click="saveEdit">确 定</el-button>
+        </span>
+      </el-dialog>
     </div>
 
   </div>
 
 </template>
 <script>
-export default {
+  import qs from "qs";
+  export default {
   data() {
     return {
       multipleSelection: [],
@@ -74,10 +129,29 @@ export default {
       xiadandata: "",
       current: 1,
       size: 5,
+      editVisible: false,
       is_search: false,
-      data: []
+      data: [],
+      editData: {
+       userName: "",
+        userSex: "",
+        userPhone: "",
+        rankId:"",
+        userEmail:"",
+
+      }
     };
-  },
+ },
+// 会员状态
+refunState(refst) {
+  var refunStatetext = " ";
+  if (refst) {
+    refunStatetext = "已禁用";
+  } else {
+    refunStatetext = "未禁用";
+  }
+  return refunStatetext;
+},
   //分页
   computed: {
     data1() {
@@ -89,6 +163,13 @@ export default {
       }
       return arr;
     },
+//    userSex:function(e){
+//      if(e===0){
+//        return "男"
+//      }else if(e===1){
+//        return "女"
+//      }
+//    },
     //搜索
     tables: function() {
       if (this.select_word == "") {
@@ -112,6 +193,13 @@ export default {
   },
   //获取数据
   methods: {
+    userSex:function(e){
+      if(e===0){
+        return "女"
+      }else if(e===1){
+        return "男"
+      }
+    },
     getData() {
       var that = this;
       this.$http
@@ -129,12 +217,51 @@ export default {
           console.log(err);
         });
     },
+    handleEdit(index, row) {
+      this.editVisible = true;
+      this.editData.userId = row.userId;
+      this.editData.userName = row.userName;
+      this.editData.userSex = row.userSex;
+      this.editData.userPhone = row.userPhone;
+      this.editData.rankId = row.rankId;
+      this.editData.userEmail = row.userEmail;
+
+    },
+    saveEdit() {
+      this.$http
+        .post("/userModify", qs.stringify(this.editData))
+        .then(res => {
+        if (res.data.code == 2) {
+          this.data.forEach(item => {
+            if (item.userId == this.editData.userId) {
+              for (let [key, val] of Object.entries(this.editData)) {
+                item[key] = val;
+              }
+            }
+          });
+          this.$message.success("修改成功");
+          this.editData = {
+            userName: "",
+            userSex: "",
+            userPhone: "",
+            rankId: "",
+            userEmail: "",
+
+          };
+          this.editVisible = false;
+        }
+      })
+    .catch(err => {
+        // console.log(err)
+        this.$message.error("修改失败");
+      });
+    },
     setCurrent(val) {
       this.current = val;
     },
     slic(str) {
-      var long = str.slice(9);
-      return long;
+      var cc = str.slice(9);
+      return cc;
     },
     refund(row) {
       this.open4(row);
@@ -173,6 +300,7 @@ export default {
           message: "禁用成功"
         });
         row.refunState1 = "已禁用";
+        row.disabled=true;
       });
     }
     //    getName() {
@@ -235,17 +363,11 @@ export default {
       margin: 10px auto;
     }
   }
-  .block {
-    width: 17%;
-    margin-top: 30px;
-    position: absolute;
-    right: 7%;
-  }
-  .pagination {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    margin: 20px 0;
-  }
+.pagination {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  margin: 20px 0;
+}
 }
 </style>

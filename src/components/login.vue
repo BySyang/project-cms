@@ -36,7 +36,7 @@ export default {
     name: "login",
     data() {
         return {
-            img:("/static/images/login/566ae08210a96.jpg"),
+            img:("/static/login/566ae08210a96.jpg"),
             _dom: "",
             isRemeber: "",
             username: "",

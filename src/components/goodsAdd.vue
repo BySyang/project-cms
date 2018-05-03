@@ -34,38 +34,38 @@
         <el-table :data="data1" border style="width: 100%" stripe show-header tooltip-effect="dark" align="center">
           <el-table-column type="selection" width="30" label="批量删除"></el-table-column>
           <el-table-column prop="goodsId" sortable label="商品ID" show-overflow-tooltip width="90" align="center"> </el-table-column>
-          <el-table-column prop="goodsName" label="商品名" show-overflow-tooltip align="center" width="100"> </el-table-column>
+          <el-table-column prop="goodsName" label="商品名" show-overflow-tooltip align="center" width="120"> </el-table-column>
           <el-table-column prop="typeName" label="商品系列" show-overflow-tooltip align="center" width="90"> </el-table-column>
           <el-table-column prop="goodsDesc" label="商品描述" show-overflow-tooltip align="center" width="90"></el-table-column>
-          <el-table-column prop="goodSvg" label="商品价格" align="center" width="80">
+          <el-table-column prop="goodSvg" label="商品价格" show-overflow-tooltip align="center" width="80">
             <template slot-scope="scope">
               <p>{{'¥'+scope.row.goodSvg}}</p>
             </template>
           </el-table-column>
-          <el-table-column prop="goodStock" label="商品库存" align="center" width="80"></el-table-column>
-          <el-table-column prop="goodscore" label="商品评价" align="center" width="130">
+          <el-table-column prop="goodStock" label="商品库存" show-overflow-tooltip align="center" width="80"></el-table-column>
+          <el-table-column prop="goodscore" label="商品评价" show-overflow-tooltip align="center" width="130">
             <template slot-scope="scope">
-              <el-rate size="small" v-model="scope.row.goodscore" disabled text-color="#ff9900"></el-rate>
+              <el-rate size="small" v-model="scope.row.goodscore" disabled text-color="#ff9900">
+              </el-rate>
             </template>
           </el-table-column>
-          <el-table-column prop="isSale" label="是否上架" show-overflow-tooltip align="center" width="80">
+          <el-table-column prop="isSale" label="是否上架" show-overflow-tooltip align="center" width="100">
             <template slot-scope="scope">
-              <el-switch v-model="scope.row.isSale" :active-value="1" :inactive-value="0" active-color="#409eff" inactive-color="#dcdfe6" @change="modfiyState(scope)"></el-switch>
+              <el-switch v-model="scope.row.isSale" :active-value="1" :inactive-value="0" active-color="#409eff" inactive-color="#dcdfe6" @change="modfiyState(scope.row)"></el-switch>
             </template>
           </el-table-column>
-          <el-table-column prop="isHot" label="是否热销" align="center" width="80">
+          <el-table-column prop="isHot" label="是否热销" align="center" width="100">
             <template slot-scope="scope">
-              <el-switch v-model="scope.row.isHot" :active-value="1" :inactive-value="0" active-color="#409eff" inactive-color="#dcdfe6" @change="modfiyState(scope)"></el-switch>
+              <el-switch v-model="scope.row.isHot" :active-value="1" :inactive-value="0" active-color="#409eff" inactive-color="#dcdfe6" @change="modfiyState(scope.row)"></el-switch>
             </template>
           </el-table-column>
-          <el-table-column label="上架时间" align="center" width="100">
+          <el-table-column label="上架时间" align="center">
             <template slot-scope="scope">
               {{scope.row.createTime.substr(0,10)}}
             </template>
           </el-table-column>
           <el-table-column label="操作" align="center">
             <template slot-scope="scope">
-              <el-button size="mini" type="primary" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
               <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
             </template>
           </el-table-column>
@@ -77,7 +77,7 @@
           </el-pagination>
         </el-col>
       </el-row>
-      <el-dialog title="添加商品" :visible.sync="onoff" width="50%" center>
+      <el-dialog title="添加商品" :visible.sync="onoff" width="30%" center>
         <el-form ref="form" :model="addGoods" label-position="right">
           <el-form-item label="商品名称" label-width="80px">
             <el-col :span="15">
@@ -128,44 +128,7 @@
           <el-button type="primary" @click="addOneGood">确 定</el-button>
         </span>
       </el-dialog>
-      <el-dialog title="编辑商品" :visible.sync="editVisible" width="30%">
-        <el-form ref="form" label-width="100px">
-          <el-form-item label="商品名">
-            <el-input v-model="editData.goodsName"></el-input>
-          </el-form-item>
-          <el-form-item label="商品类型">
-            <el-select v-model="editData.typeId">
-              <el-option v-for="item in types" :key="item.typeId" :label="item.typeName" :value="item.typeId"></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="商品描述">
-            <el-input v-model="editData.goodsDesc"></el-input>
-          </el-form-item>
-          <el-form-item label="商品价格">
-            <el-input v-model="editData.goodSvg"></el-input>
-          </el-form-item>
-          <el-form-item label="商品库存">
-            <el-input v-model="editData.goodStock"></el-input>
-          </el-form-item>
-          <el-form-item label="商品评价">
-            <el-rate class="score" v-model="editData.goodscore" show-score text-color="#ff9900"></el-rate>
-          </el-form-item>
-          <el-form-item label="是否上架">
-            <el-radio v-model="editData.isSale" :label="1">上架</el-radio>
-            <el-radio v-model="editData.isSale" :label="0">下架</el-radio>
-          </el-form-item>
-          <el-form-item label="是否热销">
-            <el-radio v-model="editData.isHot" :label="1">热销</el-radio>
-            <el-radio v-model="editData.isHot" :label="0">普销</el-radio>
-          </el-form-item>
-        </el-form>
-        <span slot="footer" class="dialog-footer">
-          <el-button @click="editVisible=false" size="small">取 消</el-button>
-          <el-button type="primary" size="small" @click="saveEdit">确 定</el-button>
-        </span>
-      </el-dialog>
     </div>
-
   </div>
 </template>
 <script>
@@ -179,7 +142,6 @@ export default {
       current: 1,
       size: 5,
       onoff: false,
-      editVisible: false,
       searchArr: {
         goodsName: "",
         goodsType: "全部",
@@ -195,16 +157,6 @@ export default {
         goodsDesc: "", //描述
         goodStock: "", //库存
         isHot: "" //是否热销
-      },
-      editData: {
-        goodsName: "",
-        typeId: "",
-        goodsDesc: "",
-        goodStock: "",
-        goodSvg: "",
-        goodscore: 0,
-        isSale: "",
-        isHot: ""
       }
     };
   },
@@ -291,45 +243,21 @@ export default {
         this.types = res.data.data;
       });
     },
-    //是否上架
-    modfiyState(scope) {
-      let goodsId = scope.row.goodsId;
-      let isSale = scope.row.isSale;
-      let isHot = scope.row.isHot;
-      let str = "";
-      if (scope.column.label == "是否上架") {
-        str = `确认${isSale == 1 ? "上" : "下"}架此商品?`;
-      } else {
-        str = `${
-          isHot == 1 ? "请确认把此商品设为热销商品?" : "请确认取消此商品的热销"
-        }`;
-      }
-      this.$confirm(str, "提示", {
-        confirmButtonText: "确认",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          this.$http
-            .post("/goodsModify", qs.stringify({ goodsId, isSale, isHot }))
-            .then(res => {
-              if (res.data.code == 2) {
-                this.$message.success("修改成功");
-              } else {
-                this.$message.error("修改失败");
-              }
-            })
-            .catch(err => {
-              console.log(err);
-            });
-        })
-        .catch(() => {
-          if (scope.column.label == "是否上架") {
-            scope.row.isSale = 0;
+    modfiyState(row) {
+      let goodsId = row.goodsId;
+      let isSale = row.isSale;
+      let isHot = row.isHot;
+      this.$http
+        .post("/goodsModify", qs.stringify({ goodsId, isSale, isHot }))
+        .then(res => {
+          if (res.data.code == 2) {
+            this.$message.success("修改成功");
           } else {
-            scope.row.isHot = 0;
+            this.$message.error("修改失败");
           }
-          this.$message.info("取消修改");
+        })
+        .catch(err => {
+          console.log(err);
         });
     },
     addOneGood() {
@@ -346,18 +274,7 @@ export default {
       smallImg.forEach((item, i) => {
         fd.append("goodsImg" + i, item);
       });
-      this.$http
-        .post("/addGoods", fd)
-        .then(res => {
-          if (res.data.code == 2) {
-            this.$message.success("添加成功");
-            this.getData();
-          }
-        })
-        .catch(err => {
-          this.$message.error("添加失败");
-          console.log(err);
-        });
+      this.$http.post("/uploadImg", fd);
     },
     //封面图
     setLargeImg(file, files) {
@@ -390,75 +307,6 @@ export default {
       } else {
       }
       return false;
-    },
-    handleEdit(index, row) {
-      this.editVisible = true;
-      this.editData.goodsId = row.goodsId;
-      this.editData.goodsName = row.goodsName;
-      this.editData.typeId = row.typeId;
-      this.editData.goodsDesc = row.goodsDesc;
-      this.editData.goodStock = row.goodStock;
-      this.editData.goodSvg = row.goodSvg;
-      this.editData.goodscore = row.goodscore;
-      this.editData.isSale = row.isSale;
-      this.editData.isHot = row.isHot;
-    },
-    saveEdit() {
-      this.$http
-        .post("/goodsModify", qs.stringify(this.editData))
-        .then(res => {
-          if (res.data.code == 2) {
-            this.data.forEach(item => {
-              if (item.goodsId == this.editData.goodsId) {
-                for (let [key, val] of Object.entries(this.editData)) {
-                  item[key] = val;
-                }
-              }
-            });
-            this.$message.success("修改成功");
-            this.editData = {
-              goodsName: "",
-              typeId: "",
-              goodsDesc: "",
-              goodStock: "",
-              goodSvg: "",
-              goodscore: 0,
-              isSale: "",
-              isHot: ""
-            };
-            this.editVisible = false;
-          }
-        })
-        .catch(err => {
-          // console.log(err)
-          this.$message.error("修改失败");
-        });
-    },
-    handleDelete(index, row) {
-      this.$confirm("此操作将永久删除该商品, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          this.$http
-            .post(
-              "/delete",
-              qs.stringify({
-                tableName: "goods",
-                goodsId: row.goodsId
-              })
-            )
-            .then(res => {
-              if (res.data.code == 2) {
-                this.$message.success("删除成功");
-                this.getData();
-              }
-            });
-        })
-        .catch(() => {
-          this.$message.info("删除取消");
-        });
     }
   }
 };
@@ -504,9 +352,6 @@ export default {
 .el-row {
   padding: 20px 0;
 }
-.el-select {
-  width: 100%;
-}
 .block {
   padding-left: 20px;
 }
@@ -517,9 +362,6 @@ export default {
 }
 .el-dialog__body {
   overflow: hidden;
-}
-.score {
-  line-height: 2.5;
 }
 .largImg {
   width: 600px;
