@@ -195,7 +195,7 @@ export default {
           let end = new Date(time[1]);
           arr = [];
           i.forEach(item => {
-            let inow = new Date(item.newTime);
+            let inow = new Date(item.createTime);
             if (inow >= start && inow <= end) arr.push(item);
           });
         }
