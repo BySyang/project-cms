@@ -43,18 +43,12 @@
               <img style="width:60px;height:60px" :src="'../static/series/'+scope.row.imgSrc" alt="">
             </template>
           </el-table-column> -->
-          <!-- <el-table-column prop="goodsInfo[0].goodsPrice" align="center" header-align="center" label="商品价格" show-overflow-tooltip>
-          </el-table-column> -->
-          <!-- <el-table-column prop="goodsInfo[0].goodsPrice" align="center" header-align="center" label="退款金额" show-overflow-tooltip>
-          </el-table-column> -->
-          <!-- <el-table-column prop="goodsInfo[0].goodsNum" align="center" header-align="center" label="数量" show-overflow-tooltip>
-          </el-table-column> -->
-          <el-table-column prop="refunInstruction" align="center" header-align="center" label="退款说明" show-overflow-tooltip>
+          <el-table-column prop="refundInfo" align="center" header-align="center" label="退款说明" show-overflow-tooltip>
           </el-table-column>
-          <!-- <el-table-column prop="orderStatus" align="center" header-align="center" label="订单状态" show-overflow-tooltip>
-          </el-table-column> -->
-          <el-table-column prop="refunState1" align="center" header-align="center" label="退款状态" show-overflow-tooltip>
-
+          <el-table-column align="center" header-align="center" label="退款状态" show-overflow-tooltip>
+            <template slot-scope="scope">
+              <div>{{refundState(scope.row.refundState)}}</div>
+            </template>
           </el-table-column>
           <el-table-column prop="newTime" label="下单日期" align="center" header-align="center" width="120">
           </el-table-column>
@@ -108,8 +102,9 @@
 
   </div>
 </template>
-import qs from "qs";
+
 <script>
+import qs from "qs";
 export default {
   data() {
     return {
@@ -147,19 +142,21 @@ export default {
           if (resp.data.data) {
             var newArr = [];
             resp.data.data.forEach(item => {
-              if (item.orderStatus == 1 || item.orderStatus == 2) {
+              if (
+                (item.orderStatus == 1 || item.orderStatus == 2) &&
+                item.refundState == 0
+              ) {
                 item.newTime = that.formatDate(item.createTime);
                 item.orderStatus = that.orderStatus(item.orderStatus);
-                item.refunState1 = that.refunState(0);
                 item.disabled = false;
                 newArr.push(item);
               }
             });
-           
+
             this.tableData = newArr;
             this.data = newArr;
             resolve("ok");
-            // console.log(resp.data.data);
+            console.log(resp.data.data);
           }
         },
         err => {
@@ -181,15 +178,21 @@ export default {
         addZreo(iDate.getDate())
       );
     },
-    // 退款状态
-    refunState(refst) {
-      var refunStatetext = " ";
-      if (refst) {
-        refunStatetext = "已退款";
-      } else {
-        refunStatetext = "未退款";
+
+    //退款状态
+    refundState(state) {
+      var newState = "";
+      switch (parseInt(state)) {
+        case 0:
+          newState = "未退款";
+          break;
+        case 1:
+          newState = "已退款";
+          break;
+        default:
+          break;
       }
-      return refunStatetext;
+      return newState;
     },
     //订单状态-------------
     orderStatus(status) {
@@ -263,7 +266,7 @@ export default {
         beforeClose: (action, instance, done) => {
           if (action === "confirm") {
             instance.confirmButtonLoading = true;
-            // instance.confirmButtonText = '执行中...';
+            
             setTimeout(() => {
               done();
               setTimeout(() => {
@@ -280,11 +283,13 @@ export default {
           message: "退款成功"
         });
         row.refundState = "1";
-        console.log(this.data)
-        this.$http.post("orderModify", qs.stringify({
-          orderId:row.orderId,//传入订单id
-          refundState:row.refundState //传入索要更改的字段
-        }));
+        this.$http.post(
+          "orderModify",
+          qs.stringify({
+            orderId: row.orderId, //传入订单id
+            refundState: row.refundState //传入所要更改的字段
+          })
+        );
 
         row.disabled = true;
       });
@@ -296,7 +301,7 @@ export default {
         newTime: row.newTime,
         totalMoney: row.totalMoney,
         orderStatus: row.orderStatus,
-        realTotalMoney:row.realTotalMoney,
+        realTotalMoney: row.realTotalMoney,
         goodsName: row.goodsInfo[0].goodsName,
         goodLargeImg: row.imgSrc
       };
@@ -306,7 +311,6 @@ export default {
       this.editVisible = false;
     }
   },
-
   //分页---------
   computed: {
     data1() {
@@ -329,8 +333,8 @@ export default {
         let goodsName = this.searshArr.goodsName.trim() || "";
         let ordersNum = this.searshArr.ordersNum.trim() || "";
         let newArr = [];
+       
         if (ordersNum === "") {
-          console.log(this);
           newArr.push(...this.data); //注意数据中转，不能陷入死循环
         } else {
           this.tableData.forEach(item => {
@@ -340,8 +344,9 @@ export default {
         if (goodsName !== "") {
           let i = newArr;
           newArr = [];
+          
           i.forEach(item => {
-            if (item.goodsInfo[0].goodsName.indexOf(goodsName) > -1)
+            if (item.goodsInfo[0] && item.goodsInfo[0].goodsName.indexOf(goodsName) > -1)
               newArr.push(item);
           });
         }
@@ -351,8 +356,8 @@ export default {
           let end = new Date(xiadanTime[1]);
           newArr = [];
           i.forEach(item => {
-            let now = new Date(item.newTime);
-            if (start >= now && now <= end) newArr.push(item);
+            let now = new Date(item.createTime);
+            if (start <= now && now <= end) newArr.push(item);
           });
         }
         this.tableData = newArr;
