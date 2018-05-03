@@ -161,8 +161,6 @@ export default {
     exit() {
       const h = this.$createElement;
       this.$msgbox({
-        // type: "success",
-        // duration: "1500",
         center: "true",
         message: h("p", {style:'margin-bottom:20px;font-size:16px;'}, [h("span", null, "您确定要退出登录系统吗")]),
         showCancelButton: true,
