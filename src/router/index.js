@@ -5,7 +5,7 @@ import home from '@/components/home'
 import children from './children'
 Vue.use(Router)
 const router = new Router({
-  mode: 'history',
+  mode: 'hash',
   routes: [{
       path: '/login',
       name: 'login',
