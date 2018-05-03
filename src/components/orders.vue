@@ -33,7 +33,7 @@
         <el-table border ref="multipleTable" :data="orsersTable1" tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange">
           <el-table-column prop="orderunique" header-align="center" align="center" label="订单号" width="150">
           </el-table-column>
-          <el-table-column prop="userId" align="center" header-align="center" label="用户ID" width="100" show-overflow-tooltip>
+          <el-table-column prop="userName" align="center" header-align="center" label="用户名" width="150" show-overflow-tooltip>
           </el-table-column>
           <el-table-column prop="totalMoney" align="center" header-align="center" label="订单总价" width="100" show-overflow-tooltip>
           </el-table-column>
@@ -167,7 +167,7 @@ export default {
         let ordersId = this.searchArr.ordersId.trim() || "";
         let username = this.searchArr.username.trim() || "";
         let arr = [];
-        console.log(username);
+        // console.log(username);
         if (jiaoyist === "全部") {
           arr.push(...this.data);
         } else {
@@ -179,7 +179,7 @@ export default {
           let i = arr;
           arr = [];
           i.forEach(item => {
-            if (item.userId == username) arr.push(item);
+            if (item.userName.indexOf(username) > -1) arr.push(item);
           });
         }
         if (ordersId !== "") {
@@ -195,7 +195,7 @@ export default {
           let end = new Date(time[1]);
           arr = [];
           i.forEach(item => {
-            let inow = new Date(item.newTime);
+            let inow = new Date(item.createTime);
             if (inow >= start && inow <= end) arr.push(item);
           });
         }
