@@ -72,16 +72,16 @@
       </el-row>
       <el-dialog :title="title" :visible.sync="dialogVisible" width="50%" :lock-scroll="false">
         <el-upload list-type="picture" ref="upload0" action="/uploadImg" :auto-upload="false" :on-change="imgChange" :show-file-list="false">
-          <img :src="imgSrc[0]" :class="[className?'largImg':'smallImg']">
+          <img :src="imgSrc.newSrc[0]&&imgSrc.newSrc[0].url||imgSrc.oldSrc[0]" :class="[className?'largImg':'smallImg']">
         </el-upload>
-        <el-upload ref="upload1" action="" v-if="imgSrc[1]" :on-change="imgChange" :auto-upload="false" :show-file-list="false">
-          <img :src="imgSrc[1]" :class="[className?'largImg':'smallImg']">
+        <el-upload ref="upload1" action="" v-if="imgSrc.oldSrc[1]" :on-change="imgChange" :auto-upload="false" :show-file-list="false">
+          <img :src="imgSrc.newSrc[1]&&imgSrc.newSrc[1].url||imgSrc.oldSrc[1]" :class="[className?'largImg':'smallImg']">
         </el-upload>
-        <el-upload ref="upload2" v-if="imgSrc[2]" action="" :on-change="imgChange" :auto-upload="false" :show-file-list="false">
-          <img :src="imgSrc[2]" :class="[className?'largImg':'smallImg']">
+        <el-upload ref="upload2" v-if="imgSrc.oldSrc[2]" action="" :on-change="imgChange" :auto-upload="false" :show-file-list="false">
+          <img :src="imgSrc.newSrc[2]&&imgSrc.newSrc[2].url||imgSrc.oldSrc[2]" :class="[className?'largImg':'smallImg']">
         </el-upload>
-        <el-upload ref="upload3" v-if="imgSrc[3]" action="" :on-change="imgChange" :auto-upload="false" :show-file-list="false">
-          <img :src="imgSrc[3]" :class="[className?'largImg':'smallImg']">
+        <el-upload ref="upload3" v-if="imgSrc.oldSrc[3]" action="" :on-change="imgChange" :auto-upload="false" :show-file-list="false">
+          <img :src="imgSrc.newSrc[3]&&imgSrc.newSrc[3].url||imgSrc.oldSrc[3]" :class="[className?'largImg':'smallImg']">
         </el-upload>
         <span slot="footer" class="dialog-footer">
           <el-button @click="dialogVisible = false" size="small">取 消</el-button>
@@ -136,7 +136,11 @@ export default {
       current: 1,
       onoff: false,
       autoUpload: true,
-      imgSrc: [],
+      imgSrc: {
+        oldSrc: [],
+        newSrc: [],
+        typeId:''
+      },
       dialogVisible: false,
       modalOpt: true,
       title: "",
@@ -224,7 +228,6 @@ export default {
     },
     formatDate(dateStr) {
       var iDate = new Date(dateStr);
-
       function addZreo(num) {
         return num < 10 ? "0" + num : num;
       }
@@ -251,7 +254,7 @@ export default {
             this.index = item.charAt(6);
           }
         }
-        that.imgSrc.splice(this.index, 1, file.url);
+        this.$set(this.imgSrc.newSrc, this.index, file);
         if (this.$refs["upload0"]) this.$refs["upload0"].clearFiles();
         if (this.$refs["upload1"]) this.$refs["upload1"].clearFiles();
         if (this.$refs["upload2"]) this.$refs["upload2"].clearFiles();
@@ -260,32 +263,46 @@ export default {
       return isLt5K && isImg;
     },
     getImg(data, event, col) {
-      if (col.label.indexOf('轮播')>-1) {
-        this.imgSrc = ["/static/series/" + data.typeBannerImg];
+      this.imgSrc.newSrc = [];
+      console.log(data)
+      this.imgSrc.typeId = data.typeId;
+      if (col.label.indexOf("轮播") > -1) {
+        this.imgSrc.oldSrc = ['/static/images/series/'+data.typeBannerImg];
         this.className = true;
         this.title = col.label;
-      } else if (col.label.indexOf('小图')>-1) {
+      } else if (col.label.indexOf("小图") > -1) {
         let arr = [];
         let prev = data.typeImg.split("?")[0];
         let str = data.typeImg.split("?")[1];
         str.split("|").forEach(item => {
-          arr.push("/static/series/" + prev + item);
+          arr.push('/static/images/series/'+prev + item);
         });
-        this.imgSrc = arr;
+        this.imgSrc.oldSrc = arr;
         this.title = col.label;
         this.className = false;
       }
     },
     uploadImg() {
+      var fd = new FormData();
+      this.imgSrc.newSrc.forEach((item, i) => {
+        if (item !== undefined) {
+          fd.append("newImg" + i, item.raw);
+        }
+      });
+      fd.append('tableName','goods_types');
+      fd.append('typeId',this.imgSrc.typeId);
+      fd.append("oldImg",this.imgSrc.oldSrc.join('|'))
+      this.$http.post('/imgModify',fd).then(res=>{
+        console.log(res.data)
+      })
       this.dialogVisible = false;
-      // this.$refs["upload0"].submit();
     },
     //添加分类
     addClass() {
       this.onoff = false;
       var fd = new FormData();
-      var largImg =  this.formData.typeBannerImg;
-      var smallImg = this.formData.typeImg ;
+      var largImg = this.formData.typeBannerImg;
+      var smallImg = this.formData.typeImg;
       for (let [key, val] of Object.entries(this.formData)) {
         if (!(val instanceof Array)) fd.append(key, val);
       }
@@ -295,11 +312,12 @@ export default {
       smallImg.forEach((item, i) => {
         fd.append("typeImg" + i, item);
       });
-      this.$http.post("/addGoodsType", fd).then(res=>{
-        if(res.data.code==2){
-          this.$message.success('添加成功');
-        }else{
-          this.$message.error('添加失败');
+      this.$http.post("/addGoodsType", fd).then(res => {
+        if (res.data.code == 2) {
+          this.$message.success("添加成功");
+          this.getData();
+        } else {
+          this.$message.error("添加失败");
         }
       });
     },
@@ -335,9 +353,7 @@ export default {
       }
       return false;
     },
-    handleDelete(index,row){
-      
-    }
+    handleDelete(index, row) {}
   }
 };
 </script>
