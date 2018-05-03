@@ -77,7 +77,7 @@
         <el-dialog title="订单详情" :visible.sync="editVisible" width="30%">
           <el-form ref="form" :model="form" label-width="100px">
             <el-form-item label="商品图片:">
-              <img style="width:60px;height:60px" :src="'../static/series/'+form.goodLargeImg" alt="">
+              <img style="width:60px;height:60px" :src="'../static/images/series/'+form.goodLargeImg" alt="">
             </el-form-item>
             <el-form-item label="商品名称:">
               <span>{{form.goodsName}}</span>
