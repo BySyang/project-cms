@@ -279,7 +279,6 @@ export default {
           type: "success",
           message: "退款成功"
         });
-<<<<<<< HEAD
         row.refundState = "1";
         console.log(this.data)
         this.$http.post("orderModify", qs.stringify({
@@ -287,9 +286,6 @@ export default {
           refundState:row.refundState //传入索要更改的字段
         }));
 
-=======
-        row.refunState1 = "已退款";
->>>>>>> bd5091d96424939d8e179ab49ffea86b273ddac5
         row.disabled = true;
       });
     },
