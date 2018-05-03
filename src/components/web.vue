@@ -31,30 +31,6 @@
                             </el-table-column>
                         </el-table>
                     </div>
-
-                    <!-- <table class="webTable">
-                    <tr >
-                        <th>ID</th>
-                        <th>栏目名称</th>
-                        <th>连接地址</th>
-                        <th>添加时间</th>
-                        <th>级别</th>
-                        <th>状态</th>
-                        <th>操作</th>
-                    </tr>
-                    <tr v-cloak v-for="(item, index) of slist " :key="item.id">
-                        <td>{{index+1}}</td>
-                        <td>{{item.columnName}}</td>
-                        <td>{{item.src}}</td>
-                        <td>{{item.addTime}}</td>
-                        <td>{{item.classes}}</td>
-                        <td>{{item.state}}</td>
-                        <td>
-                        <el-button type="primary" size="mini" @click="showOverlay(index)">编辑</el-button>
-                        <el-button size="mini" type="danger" @click="del(index)">删除</el-button>
-                        </td>
-                    </tr>
-                </table> -->
                 </div>
                 <model :list='selectedlist' :isactive="isActive" v-cloak @change="changeOverlay" @modify="modify"></model>
             </div>
@@ -119,52 +95,7 @@ import Vue from "vue";
 
 Vue.component("model", {
   props: ["list", "isactive"],
-  template: `<div class="overlay" v-show="isactive">
-                        <div class="con">
-                        <h2 class="title">新增 | 修改</h2>
-                        <div class="content">
-                        <table>
-                        <tr>
-                        <td>栏目名称</td>
-                        <td><input type="text" v-model="modifylist.columnName"></td>
-                        </tr>
-                        <tr>
-                        <td>连接地址</td>
-                        <td><input type="text" v-model="modifylist.src"></td>
-                        </tr>
-                        <tr>
-                        <td>添加时间</td>
-                        <td>
-                        <label><input type="radio" name="addTime" value="男" v-model="modifylist.addTime">男</label>
-                        <label><input type="radio" name="addTime" value="女" v-model="modifylist.addTime">女</label>
-                        </td>
-                        </tr>
-                        <tr>
-                        <td>级别</td>
-                        <td>
-                        <select name="" id="" v-model="modifylist.classes">
-                        <option value="一级">一级</option>
-                        <option value="二级">二级</option>
-                        <option value="三级">三级</option>
-                        <option value="四级">四级</option>
-                        </select>
-                        </td>
-                        </tr>
-                        <tr>
-                        <td>状态</td>
-                        <td>
-                        <label><input type="checkbox" v-model="modifylist.state" value="显示">显示</label>
-                        <label><input type="checkbox" v-model="modifylist.state" value="隐藏">隐藏</label>
-                        </td>
-                        </tr>
-                        </table>
-                        <p>
-                        <el-button @click="changeActive">取 消</el-button>
-                        <el-button type="primary" @click="modify">确 定</el-button>
-                        </p>
-                        </div>
-                        </div>
-                    </div>`,
+  template:"",
   computed: {
     modifylist() {
       return this.list;
