@@ -27,7 +27,7 @@
           </el-table-column>
           <el-table-column align="center" header-align="center" label="头像" show-overflow-tooltip>
             <template slot-scope="scope">
-              <img style="width:80%;height:80%" :src="'../static/'+scope.row.imgsrc" alt="" />
+              <img style="width:80%;height:80%" :src="'../static/images/'+scope.row.imgsrc" alt="" />
             </template>
           </el-table-column>
           <el-table-column prop="userSex" align="center" header-align="center" label="性别" width="65" show-overflow-tooltip>
