@@ -20,15 +20,21 @@
               </el-table-column>
               <el-table-column prop="payImg" label="图片" width="180" align="center">
                 <template slot-scope="scope">
-                  <img :src="'../static/'+scope.row.payImg" height="60" />
+                  <img :src="scope.row.payImg.startsWith('blob')?scope.row.payImg:'../static/images/'+scope.row.payImg" height="60" />
                 </template>
               </el-table-column>
               <el-table-column prop="payInfo" label="简介" align="center">
               </el-table-column>
               <el-table-column prop="isOn" label="状态" width='140' align="center">
                 <template slot-scope="scope">
-                  <el-switch v-model="scope.row.isOn"  active-text="启用" inactive-text="禁用" :active-value="1" :sinactive-value="0" @change="openJudge" on-value="1" off-value="0" >
+                  <el-switch v-model="scope.row.isOn" active-text="启用" inactive-text="禁用" :active-value="1" :sinactive-value="0" @change="openJudge(scope.row)">
                   </el-switch>
+                </template>
+              </el-table-column>
+              <el-table-column label="操作" align="center" width="100px">
+                <template slot-scope="scope">
+                  <el-button type="primary" size="mini" @click="paysEdit(scope.$index, scope.row)">编辑</el-button>
+                  <!-- <el-button type="danger" size="mini">删除</el-button> -->
                 </template>
               </el-table-column>
             </el-table>
@@ -37,7 +43,7 @@
               </el-pagination>
             </div>
           </div>
-          <!-- 弹框进行添加 -->
+          <!-- 弹框进行添加pays -->
           <div class="addPays">
             <el-dialog title="添加支付方式" :visible.sync="dialogFormVisible" width="420px">
               <el-form :model="addPays">
@@ -45,8 +51,8 @@
                   <el-input v-model="addPays.payName" auto-complete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="图片" :label-width="formLabelWidth">
-                  <el-upload class="avatar-uploader" ref="upload" :auto-upload="false" action="" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
-                    <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                  <el-upload ref="upload" :auto-upload="false" action="/aaa" :show-file-list="false" :on-change="setImg">
+                    <img class="uploadImg" v-if="imageUrl" :src="imageUrl">
                     <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                   </el-upload>
                 </el-form-item>
@@ -54,9 +60,9 @@
                   <el-input v-model="addPays.payInfo" auto-complete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="状态" :label-width="formLabelWidth">
-                  <el-select v-model="addPays.isOn" placeholder="请选择状态">
-                    <el-option label="启用" v-bind="value"></el-option>
-                    <el-option label="禁用" v-bind="value" ></el-option>
+                  <el-select v-model="addPays.isOn">
+                    <el-option label="启用" :value="1"></el-option>
+                    <el-option label="禁用" :value="0"></el-option>
                   </el-select>
                 </el-form-item>
               </el-form>
@@ -66,6 +72,29 @@
               </div>
             </el-dialog>
           </div>
+
+          <!-- ***************************************************************************** -->
+          <!-- 编辑弹出框 -->
+          <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
+            <el-form ref="form" :model="editPays" label-width="100px">
+              <el-form-item label="修改名称">
+                <el-input v-model="editPays.payName"></el-input>
+              </el-form-item>
+              <el-form-item label="修改图片">
+                <el-upload ref="upload" v-model="editPays.payImg" :auto-upload="false" action="/aaa" :show-file-list="false" :on-change="setImg">
+                    <img class="uploadImg" v-if="imageUrl" :src="imageUrl">
+                  </el-upload>
+              </el-form-item>
+              <el-form-item label="修改简介">
+                <el-input v-model="editPays.payInfo"></el-input>
+              </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+              <el-button @click="editVisible = false">取 消</el-button>
+              <el-button type="primary" @click="saveEdit">确 定</el-button>
+            </span>
+          </el-dialog>
+
         </div>
       </div>
     </div>
@@ -76,20 +105,22 @@
 export default {
   data() {
     return {
-     value:'1',
       current: 1,
       size: 5,
       multipleSelection: [],
       tableData: [],
       dialogFormVisible: false,
+      //*************************************************************
+      editVisible: false,
       imageUrl: "",
-
+      editPays:{},
       addPays: {
-        id:"",
+        id: "",
         payName: "",
         payInfo: "",
-        isOn: ''
+        isOn: 1
       },
+      flag: true,
       formLabelWidth: "80px"
     };
   },
@@ -138,8 +169,9 @@ export default {
       this.current = val;
     },
     //添加支付，上传图片
-    handleAvatarSuccess(res, file) {
+    setImg(file) {
       this.imageUrl = URL.createObjectURL(file.raw);
+      console.log(this.imageUrl);
     },
     //判断上传图片大小不能超过2MB，规定格式
     beforeAvatarUpload(file) {
@@ -157,13 +189,19 @@ export default {
       return (isJPEG || isJPG || isBMP || isPNG) && isLt2M;
     },
     addNewPays() {
+      this.addPays.payImg = this.imageUrl;
       this.tableData.push(this.addPays);
-      console.log(this.addPays)
-      this.addPays = '';
+      this.addPays = {
+        id: "",
+        payName: "",
+        payInfo: "",
+        isOn: 1
+      };
       this.dialogFormVisible = false;
     },
     // switch提示弹框
-    openJudge() {
+    openJudge(row) {
+      let isOn = row.isOn;
       this.$confirm("是否确定改变状态", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -176,11 +214,41 @@ export default {
           });
         })
         .catch(() => {
+          row.isOn = isOn == 1 ? 0 : 1;
           this.$message({
             type: "info",
             message: "已取消改变"
           });
         });
+    },
+
+    // ******************************************************************
+    paysEdit(index, row) {
+      // console.log(index)
+      this.editPays = {
+        payName: row.payName,
+        payImg: row.payImg,
+        payInfo: row.payInfo
+      };
+      this.editVisible = true;
+    },
+    // //保存编辑
+    saveEdit() {
+      this.tableData.forEach((item, index) => {
+        if (item.id === this.editPays.id) {
+          for (let [key, val] of Object.entries(this.editPays)) {
+            item[key] = val;
+          }
+        }
+      });
+      this.editVisible = false;
+      this.$http.post("orderModify", qs.stringify(this.editPays)).then(res => {
+        if (res.data.code == 2) {
+          this.$message.success(`编辑成功`);
+        } else {
+          this.$message.error(`编辑错误，请重新尝试`);
+        }
+      });
     }
   }
 };
@@ -231,7 +299,6 @@ export default {
           }
           .el-button {
             width: 10%;
-            display: inline-block;
             float: right;
           }
         }
@@ -269,6 +336,10 @@ export default {
         }
       }
     }
+  }
+  .uploadImg {
+    width: 100%;
+    height: 100%;
   }
 }
 </style>
