@@ -102,9 +102,8 @@ import qs from "qs";
 export default {
   data() {
     return {
-      show: true,
-      el: "#home",
       show: false,
+      el: "#home",
       img: require("../assets/personal.jpeg"),
       ruleForm: {
         name: ""
@@ -240,8 +239,7 @@ export default {
               h("span", null, "密码修改失败，请重新修改")
             ]),
             onClose: function() {
-            window.sessionStorage.removeItem("isLog")
-            this.$router.push("/login")
+                show: false
             },
           });
         }
@@ -307,7 +305,7 @@ export default {
   right: 0px;
   padding-top: 20px;
   background: white;
-  box-shadow: 0px 0px 3px 3px lightgrey;
+  box-shadow: 0px 0px 1px 1px lightgrey;
   width: 200px;
   height: 100%;
   z-index: 999;
