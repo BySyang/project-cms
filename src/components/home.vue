@@ -69,7 +69,7 @@
                             <span slot="title"><i class="iconfont icon-zhifu"></i>支付管理</span>
                             <el-menu-item-group>
                                 <el-menu-item index="/home/pays">支付管理</el-menu-item>
-                                <el-menu-item index="/home/payConfig">支付配置</el-menu-item>
+                                <el-menu-item index="/home/payConfig">其他配置</el-menu-item>
                             </el-menu-item-group>
                         </el-submenu>
 

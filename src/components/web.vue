@@ -1,103 +1,83 @@
 <template>
-    <div class="orders">
-        <div class="orders_main">
-            <div class="main_top">
-                <div>订单管理</div>
-            </div>
-            <div class="container" id="app">
-                <div id="mySearch">
-                    <input type="text" placeholder="请输入栏目名称" @input="search" list="cars" class="search">
-                    <datalist id="cars">
-                        <el-option v-for="item in searchlist" :value="item" :key="item.id"></el-option>
-                    </datalist>
+  <div class="orders">
+    <div class="orders_main">
+      <div class="main_top">
+        <div>栏目管理</div>
+      </div>
+      <div class="container">
+        <div id="mySearch">栏目名称:
+          <el-input list="cars" class="search" placeholder="请输入栏目名称" prefix-icon="el-icon-search" @input="search">
+          </el-input>
 
-                    <el-button size="small" type="primary" @click="dialogFormVisible = true" class="add">添加栏目</el-button>
-                </div>
-                <div>
-                    <div class="table">
-                        <el-table border ref="multipleTable" :data="slist" tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange">
-                            <el-table-column type="selection" width="30" label="批量删除" show-overflow-tooltip></el-table-column>
-                            <!-- <el-table-column prop="index" label="系列ID" align="center"  show-overflow-tooltip></el-table-column> -->
-                            <el-table-column prop="columnName" label="栏目名称" align="center" show-overflow-tooltip> </el-table-column>
-                            <el-table-column prop="src" label="连接地址" align="center" width="400px" show-overflow-tooltip> </el-table-column>
-                            <el-table-column prop="addTime" label="添加时间" align="center" show-overflow-tooltip> </el-table-column>
-                            <el-table-column prop="classes" label="级别" align="center" width="80px" show-overflow-tooltip> </el-table-column>
-                            <el-table-column prop="state" label="状态" align="center" width="80px" show-overflow-tooltip> </el-table-column>
-                            <el-table-column prop="" label="操作" align="center" show-overflow-tooltip>
-                                <template slot-scope="scope">
-                                    <el-button type="primary" size="mini" @click="showOverlay(index)">编辑</el-button>
-                                    <el-button size="mini" type="danger" @click="del(index)">删除</el-button>
-                                </template>
-                            </el-table-column>
-                        </el-table>
-                    </div>
-
-                    <!-- <table class="webTable">
-                    <tr >
-                        <th>ID</th>
-                        <th>栏目名称</th>
-                        <th>连接地址</th>
-                        <th>添加时间</th>
-                        <th>级别</th>
-                        <th>状态</th>
-                        <th>操作</th>
-                    </tr>
-                    <tr v-cloak v-for="(item, index) of slist " :key="item.id">
-                        <td>{{index+1}}</td>
-                        <td>{{item.columnName}}</td>
-                        <td>{{item.src}}</td>
-                        <td>{{item.addTime}}</td>
-                        <td>{{item.classes}}</td>
-                        <td>{{item.state}}</td>
-                        <td>
-                        <el-button type="primary" size="mini" @click="showOverlay(index)">编辑</el-button>
-                        <el-button size="mini" type="danger" @click="del(index)">删除</el-button>
-                        </td>
-                    </tr>
-                </table> -->
-                </div>
-                <model :list='selectedlist' :isactive="isActive" v-cloak @change="changeOverlay" @modify="modify"></model>
-            </div>
-
+          <!-- <input type="text" placeholder="请输入栏目名称" @input="search" list="cars" > -->
+          <!-- <datalist id="cars">
+            <el-option v-for="item in searchlist" :value="item" :key="item.id"></el-option>
+          </datalist> -->
+          <el-button size="small" type="primary" @click="dialogFormVisible = true" class="add">添加栏目</el-button>
         </div>
-
-        <!-- Form -->
-
-        <el-dialog title="添加栏目" :visible.sync="dialogFormVisible">
-            <el-form :model="form">
-                <el-form-item label="栏目名称：" :label-width="formLabelWidth">
-                    <el-input v-model="form.name" auto-complete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="连接地址：" :label-width="formLabelWidth">
-                    <el-input v-model="form.name" auto-complete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="添加时间：" :label-width="formLabelWidth">
-                    <div class="block">
-                        <span class="demonstration"></span>
-                        <el-date-picker v-model="value1" type="date" placeholder="选择日期">
-                        </el-date-picker>
-                    </div>
-                </el-form-item>
-                <el-form-item label="级别：" :label-width="formLabelWidth">
-                    <el-select v-model="form.region" placeholder="请选择页面级别">
-                        <el-option label="一级" value="shanghai"></el-option>
-                        <el-option label="二级" value="beijing"></el-option>
-                        <el-option label="三级" value="beijing"></el-option>
-                        <el-option label="四级" value="beijing"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="显示状态：" :label-width="formLabelWidth">
-                    <el-radio v-model="radio" label="1">显示</el-radio>
-                    <el-radio v-model="radio" label="2">隐藏</el-radio>
-                </el-form-item>
-            </el-form>
-            <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogFormVisible = false">取 消</el-button>
-                <el-button type="primary" @click=" modify">确 定</el-button>
-            </div>
-        </el-dialog>
+        <div class="table">
+          <el-table border ref="multipleTable" :data="slist" tooltip-effect="dark" style="width: 100%">
+            <el-table-column type="selection" width="30" label="批量删除" show-overflow-tooltip></el-table-column>
+            <!-- <el-table-column prop="index" label="系列ID" align="center"  show-overflow-tooltip></el-table-column> -->
+            <el-table-column prop="columnName" label="栏目名称" align="center" show-overflow-tooltip> </el-table-column>
+            <el-table-column prop="src" label="连接地址" align="center" width="400px" show-overflow-tooltip> </el-table-column>
+            <el-table-column prop="addTime" label="添加时间" align="center" show-overflow-tooltip> </el-table-column>
+            <el-table-column prop="classes" label="级别" align="center" width="80px" show-overflow-tooltip> </el-table-column>
+            <el-table-column prop="state" label="状态" align="center" width="80px" show-overflow-tooltip> </el-table-column>
+            <el-table-column prop="" label="操作" align="center" show-overflow-tooltip>
+              <template slot-scope="scope">
+                <el-button type="primary" size="mini" @click="showOverlay(index)">编辑</el-button>
+                <el-button size="mini" type="danger" @click="del(index)">删除</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+          <div class="pagination">
+            <el-pagination ref="pages" layout="prev, pager, next" :total="total" :page-size="size" @current-change="setCurrent">
+            </el-pagination>
+          </div>
+        </div>
+        <model :list='selectedlist' :isactive="isActive" v-cloak @change="changeOverlay" @modify="modify"></model>
+      </div>
 
     </div>
+
+    <!-- Form -->
+
+    <el-dialog title="添加栏目" :visible.sync="dialogFormVisible">
+      <el-form :model="form">
+        <el-form-item label="栏目名称：" :label-width="formLabelWidth">
+          <el-input v-model="form.name" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="连接地址：" :label-width="formLabelWidth">
+          <el-input v-model="form.name" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="添加时间：" :label-width="formLabelWidth">
+          <div class="block">
+            <span class="demonstration"></span>
+            <el-date-picker v-model="value1" type="date" placeholder="选择日期">
+            </el-date-picker>
+          </div>
+        </el-form-item>
+        <el-form-item label="级别：" :label-width="formLabelWidth">
+          <el-select v-model="form.region" placeholder="请选择页面级别">
+            <el-option label="一级" value="shanghai"></el-option>
+            <el-option label="二级" value="beijing"></el-option>
+            <el-option label="三级" value="beijing"></el-option>
+            <el-option label="四级" value="beijing"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="显示状态：" :label-width="formLabelWidth">
+          <el-radio v-model="radio" label="1">显示</el-radio>
+          <el-radio v-model="radio" label="2">隐藏</el-radio>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click=" modify">确 定</el-button>
+      </div>
+    </el-dialog>
+
+  </div>
 
 </template>
 
@@ -119,52 +99,7 @@ import Vue from "vue";
 
 Vue.component("model", {
   props: ["list", "isactive"],
-  template: `<div class="overlay" v-show="isactive">
-                        <div class="con">
-                        <h2 class="title">新增 | 修改</h2>
-                        <div class="content">
-                        <table>
-                        <tr>
-                        <td>栏目名称</td>
-                        <td><input type="text" v-model="modifylist.columnName"></td>
-                        </tr>
-                        <tr>
-                        <td>连接地址</td>
-                        <td><input type="text" v-model="modifylist.src"></td>
-                        </tr>
-                        <tr>
-                        <td>添加时间</td>
-                        <td>
-                        <label><input type="radio" name="addTime" value="男" v-model="modifylist.addTime">男</label>
-                        <label><input type="radio" name="addTime" value="女" v-model="modifylist.addTime">女</label>
-                        </td>
-                        </tr>
-                        <tr>
-                        <td>级别</td>
-                        <td>
-                        <select name="" id="" v-model="modifylist.classes">
-                        <option value="一级">一级</option>
-                        <option value="二级">二级</option>
-                        <option value="三级">三级</option>
-                        <option value="四级">四级</option>
-                        </select>
-                        </td>
-                        </tr>
-                        <tr>
-                        <td>状态</td>
-                        <td>
-                        <label><input type="checkbox" v-model="modifylist.state" value="显示">显示</label>
-                        <label><input type="checkbox" v-model="modifylist.state" value="隐藏">隐藏</label>
-                        </td>
-                        </tr>
-                        </table>
-                        <p>
-                        <el-button @click="changeActive">取 消</el-button>
-                        <el-button type="primary" @click="modify">确 定</el-button>
-                        </p>
-                        </div>
-                        </div>
-                    </div>`,
+  template: "",
   computed: {
     modifylist() {
       return this.list;
@@ -190,6 +125,8 @@ export default {
       selectedlist: {},
       slist: [],
       searchlist: [],
+      current: 1,
+      size: 5,
       list: [
         {
           columnName: "首页",
@@ -273,6 +210,9 @@ export default {
     this.setSlist(this.list);
   },
   methods: {
+    setCurrent(val) {
+      this.current = val;
+    },
     // 修改数据
     showOverlay(index) {
       this.selected = index;
@@ -340,6 +280,21 @@ export default {
       }
     }
   },
+  // 计算分页
+  computed: {
+    data1() {
+      var arr = [];
+      var current = this.current;
+      var size = this.size;
+      for (var i = (current - 1) * size; i < (current - 1) * size + size; i++) {
+        if (this.data[i]) arr.push(this.data[i]);
+      }
+      return arr;
+    },
+    total() {
+      return this.slist.length;
+    }
+  },
 
   watch: {}
 };
@@ -379,20 +334,26 @@ export default {
   background-color: #59ace2;
 }
 #mySearch {
-  padding: 10px 10px 10px 20px;
+  padding: 10px 22px 10px 22px;
   background-color: white;
 }
 #mySearch input {
   height: 32px;
 }
 .search {
-  border: 1px solid #dcdfe6;
-  box-sizing: border-box;
-  color: #909399;
-  border-radius: 5px;
-  font-size: inherit;
-  height: 40px;
-  line-height: 40px;
   width: 20%;
+}
+.table {
+  margin: 0 22px;
+}
+#mySearch > .el-button {
+  float: right;
+  margin-top: 4px;
+}
+.pagination {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  margin: 20px 0;
 }
 </style>

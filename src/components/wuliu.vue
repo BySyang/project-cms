@@ -56,9 +56,9 @@
               </el-form>
             </template>
           </el-table-column>
-          <el-table-column label="订单号" prop="orderunique" align="center" header-align="center">
+          <el-table-column label="订单号" prop="orderunique" align="center" width="160" header-align="center">
           </el-table-column>
-          <el-table-column label="用户" prop="userName" align="center" header-align="center">
+          <el-table-column label="用户" prop="userName" align="center" width="120" header-align="center">
           </el-table-column>
           <el-table-column label="下单日期" align="center" header-align="center">
             <template slot-scope="scope">
