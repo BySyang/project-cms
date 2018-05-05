@@ -42,8 +42,8 @@
           </el-table-column>
           <el-table-column prop="userPhone" align="center" header-align="center" label="联系号码" width="80" show-overflow-tooltip>
           </el-table-column>
-          <!--<el-table-column prop="rankId" label="会员等级" align="center" header-align="center" width="80" show-overflow-tooltip>-->
-          <!--</el-table-column>-->
+          <el-table-column prop="userLevel" label="会员等级" align="center" header-align="center" width="80" show-overflow-tooltip>
+          </el-table-column>
           <el-table-column prop="userEmail" align="center" header-align="center" label="邮箱" width="120" show-overflow-tooltip>
           </el-table-column>
           <el-table-column align="center" header-align="center" label="生日" width="100" show-overflow-tooltip>
@@ -53,13 +53,19 @@
           </el-table-column>
 
           <!--</el-table-column>-->
-          <el-table-column prop="refunState1" align="center" header-align="center" label="会员状态"  width="80" show-overflow-tooltip>
-          </el-table-column>
-          <el-table-column label="管理" header-align="center" align="center">
+          <!--<el-table-column prop="refunState1" align="center" header-align="center" label="会员状态"  width="80" show-overflow-tooltip>-->
+          <!--</el-table-column>-->
+          <!--<el-table-column label="管理" header-align="center" align="center">-->
+            <!--<template slot-scope="scope">-->
+              <!--<el-row>-->
+                <!--<el-button size="mini" type="primary" @click="refund(scope.row)" :disabled="scope.row.disabled">禁用</el-button>-->
+              <!--</el-row>-->
+            <!--</template>-->
+          <!--</el-table-column>-->
+          <el-table-column prop="isOn" label="会员状态" width='140' align="center">
             <template slot-scope="scope">
-              <el-row>
-                <el-button size="mini" type="primary" @click="refund(scope.row)" :disabled="scope.row.disabled">禁用</el-button>
-              </el-row>
+              <el-switch v-model="scope.row.isOn" active-text="启用" inactive-text="禁用" :active-value="1" :sinactive-value="0" @change="openJudge(scope.row)">
+              </el-switch>
             </template>
           </el-table-column>
           <el-table-column label="操作" align="center">
@@ -121,6 +127,7 @@
       xiadandata: "",
       current: 1,
       size: 5,
+      isOn: 1,
       editVisible: false,
       is_search: false,
       data: [],
@@ -135,16 +142,16 @@
       }
     };
  },
-// 会员状态
-refunState(refst) {
-  var refunStatetext = " ";
-  if (refst) {
-    refunStatetext = "已禁用";
-  } else {
-    refunStatetext = "未禁用";
-  }
-  return refunStatetext;
-},
+//// 会员状态
+//refunState(refst) {
+//  var refunStatetext = " ";
+//  if (refst) {
+//    refunStatetext = "已禁用";
+//  } else {
+//    refunStatetext = "未禁用";
+//  }
+//  return refunStatetext;
+//},
   //分页
   computed: {
     data1() {
@@ -156,13 +163,6 @@ refunState(refst) {
       }
       return arr;
     },
-//    userSex:function(e){
-//      if(e===0){
-//        return "男"
-//      }else if(e===1){
-//        return "女"
-//      }
-//    },
     //搜索
     tables: function() {
       if (this.select_word == "") {
@@ -209,6 +209,28 @@ refunState(refst) {
         .catch(err => {
           console.log(err);
         });
+    },
+    // switch提示弹框
+    openJudge(row) {
+      let isOn = row.isOn;
+      this.$confirm("是否确定改变状态", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+        this.$message({
+          type: "success",
+          message: "改变成功!"
+        });
+      })
+    .catch(() => {
+        row.isOn = isOn == 1 ? 0 : 1;
+        this.$message({
+          type: "info",
+          message: "已取消改变"
+        });
+      });
     },
     handleEdit(index, row) {
       this.editVisible = true;
@@ -263,40 +285,40 @@ refunState(refst) {
 
     // 模态框------------
 
-    open4(row) {
-      const h = this.$createElement;
-      this.$msgbox({
-        title: "禁用确认",
-        message: h("p", null, [
-          h("span", null, "是否确认"),
-          h("i", { style: "color: teal" }, "禁用")
-        ]),
-        showCancelButton: true,
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        beforeClose: (action, instance, done) => {
-          if (action === "confirm") {
-            instance.confirmButtonLoading = true;
-            // instance.confirmButtonText = '执行中...';
-            setTimeout(() => {
-              done();
-              setTimeout(() => {
-                instance.confirmButtonLoading = false;
-              }, 100);
-            }, 500);
-          } else {
-            done();
-          }
-        }
-      }).then(action => {
-        this.$message({
-          type: "success",
-          message: "禁用成功"
-        });
-        row.refunState1 = "已禁用";
-        row.disabled=true;
-      });
-    }
+//    open4(row) {
+//      const h = this.$createElement;
+//      this.$msgbox({
+//        title: "禁用确认",
+//        message: h("p", null, [
+//          h("span", null, "是否确认"),
+//          h("i", { style: "color: teal" }, "禁用")
+//        ]),
+//        showCancelButton: true,
+//        confirmButtonText: "确定",
+//        cancelButtonText: "取消",
+//        beforeClose: (action, instance, done) => {
+//          if (action === "confirm") {
+//            instance.confirmButtonLoading = true;
+//            // instance.confirmButtonText = '执行中...';
+//            setTimeout(() => {
+//              done();
+//              setTimeout(() => {
+//                instance.confirmButtonLoading = false;
+//              }, 100);
+//            }, 500);
+//          } else {
+//            done();
+//          }
+//        }
+//      }).then(action => {
+//        this.$message({
+//          type: "success",
+//          message: "禁用成功"
+//        });
+//        row.refunState1 = "已禁用";
+//        row.disabled=true;
+//      });
+//    }
   }
 
   //
