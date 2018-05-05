@@ -35,15 +35,15 @@
           <el-table-column type="selection" width="30" label="批量删除"></el-table-column>
           <el-table-column prop="goodsId" sortable label="商品ID" show-overflow-tooltip width="90" align="center"> </el-table-column>
           <el-table-column prop="goodsName" label="商品名" show-overflow-tooltip align="center" width="100"> </el-table-column>
-          <el-table-column prop="typeName" label="商品系列" show-overflow-tooltip align="center" width="90"> </el-table-column>
+          <el-table-column prop="typeName" label="商品系列" show-overflow-tooltip align="center" width="80"> </el-table-column>
           <el-table-column prop="goodsDesc" label="商品描述" show-overflow-tooltip align="center" width="90"></el-table-column>
-          <el-table-column prop="goodSvg" label="商品价格" align="center" width="80">
+          <el-table-column prop="goodSvg" label="商品价格" align="center" width="74">
             <template slot-scope="scope">
               <p>{{'¥'+scope.row.goodSvg}}</p>
             </template>
           </el-table-column>
           <el-table-column prop="goodStock" label="商品库存" align="center" width="80"></el-table-column>
-          <el-table-column prop="goodscore" label="商品评价" align="center" width="130">
+          <el-table-column prop="goodscore" label="商品评价" align="center" width="125">
             <template slot-scope="scope">
               <el-rate size="small" v-model="scope.row.goodscore" disabled text-color="#ff9900"></el-rate>
             </template>
@@ -72,7 +72,7 @@
         </el-table>
       </div>
       <el-row class="page">
-        <el-col :span="3" :push="16">
+        <el-col :span="8" :push="16">
           <el-pagination ref="pages" layout="prev, pager, next" :total="total" :page-size="size" @current-change="setCurrent">
           </el-pagination>
         </el-col>
@@ -476,7 +476,7 @@ export default {
     width: 100%;
   }
   .main_top {
-    padding-left: 2%;
+    padding:0 22px;
     border-top: 3px solid #59ace2;
     color: #fff;
     border-bottom: 1px solid #eee;
@@ -489,20 +489,21 @@ export default {
     }
   }
   .search {
+    padding:20px 22px;
     .span1 {
-      margin-left: 20px;
+      margin-left: 23px;
       height: 32px;
       width: 80px;
       line-height: 32px;
     }
+    .span1:first-child{
+      margin-left: 0;
+    }
   }
   .table-wrap {
-    padding-left: 2%;
+    padding:0 22px;
     height: 350px;
   }
-}
-.el-row {
-  padding: 20px 0;
 }
 .el-select {
   width: 100%;

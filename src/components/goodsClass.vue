@@ -7,17 +7,17 @@
       <div class="search">
         <el-row>
           <el-col :span="2" class="span1">上架时间:</el-col>
-          <el-col :span="4">
+          <el-col :span="5">
             <el-date-picker size="small" v-model="time" type="daterange" align="left" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
           </el-col>
-          <el-col :span="4" class="span1">系列名:</el-col>
-          <el-col :span="3">
+          <el-col :span="3" :push='1' class="span1">系列名:</el-col>
+          <el-col :span="3" :push='1'>
             <el-select size="small" placeholder="请选择系列" v-model="types">
               <el-option label="全部" value="全部"></el-option>
               <el-option v-for="item in data" :key="item.typeId" :label="item.typeName" :value="item.typeName"></el-option>
             </el-select>
           </el-col>
-          <el-col :span="2" :push="10">
+          <el-col :span="2" :push="10" class="addxl">
             <el-button size="small" type="primary" @click="onoff=true">添加系列</el-button>
           </el-col>
         </el-row>
@@ -55,7 +55,7 @@
             </template>
           </el-table-column>
           <el-table-column prop="newTime" label="创建时间" align="center"></el-table-column>
-          <el-table-column label="操作" align="center">
+          <el-table-column label="操作" align="center" width="160">
             <template slot-scope="scope">
               <el-button size="mini" type="primary" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
               <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
@@ -64,7 +64,7 @@
         </el-table>
       </div>
       <el-row class="page">
-        <el-col :span="3" :push="18">
+        <el-col :span="4" :push="19">
           <div class="block">
             <el-pagination layout="prev, pager, next" :total="total" :page-size="size" @current-change="setCurrent">
             </el-pagination>
@@ -506,21 +506,27 @@ export default {
   }
   .search {
     .span1 {
-      margin-left: 20px;
+      // margin-left: 20px;
       height: 32px;
       width: 80px;
       line-height: 32px;
     }
+    .addxl{
+      margin-left: 32px;
+    }
   }
   .table-wrap {
-    padding-left: 2%;
+    padding: 0 22px;
     .el-table {
       height: 264px;
     }
   }
+  .el-button el-button--primary{
+    margin-left:8px
+  }
 }
 .el-row {
-  padding: 20px 0;
+  padding: 20px 22px;
 }
 .block {
   padding-left: 20px;
@@ -528,6 +534,7 @@ export default {
 .page {
   background: #fff;
   padding: 10px 0;
+  margin-left: 60px;
   background-clip: padding-box;
 }
 .el-dialog__body {
