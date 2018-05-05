@@ -19,19 +19,20 @@
           <!--</el-col>-->
 
         </div>
-        <!--<div>-->
-        <!--<el-button type="primary" icon="el-icon-search">搜索</el-button>-->
-        <!--</div>-->
       </div>
       <div class="table">
         <el-table border ref="multipleTable" :data="tables" tooltip-effect="dark" style="width: 100%">
           <el-table-column prop="userId" header-align="center" align="center" label="用户id" width="65">
           </el-table-column>
-          <el-table-column prop="userName" align="center" header-align="center" label="用户名" width="120" show-overflow-tooltip>
+          <el-table-column prop="logName" align="center" header-align="center" label="登录名" width="80" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column align="center" header-align="center" label="头像"  width="120" show-overflow-tooltip>
+          <el-table-column prop="logPwd" align="center" header-align="center" label="登录密码" width="80" show-overflow-tooltip>
+          </el-table-column>
+          <el-table-column prop="userName" align="center" header-align="center" label="用户名" width="80" show-overflow-tooltip>
+          </el-table-column>
+          <el-table-column align="center" header-align="center" label="头像"  width="90" show-overflow-tooltip>
             <template slot-scope="scope">
-              <img style="width:80%;height:80%" :src="'../static/images/'+scope.row.imgsrc" alt="" />
+              <img style="width:35%;height:35%" :src="'../static/images/'+scope.row.imgsrc" alt="" />
             </template>
           </el-table-column>
           <el-table-column prop="userSex" align="center" header-align="center" label="性别" width="65" show-overflow-tooltip>
@@ -39,15 +40,15 @@
               <div>{{userSex(scope.row.userSex)}}</div>
             </template>
           </el-table-column>
-          <el-table-column prop="userPhone" align="center" header-align="center" label="联系号码" width="125" show-overflow-tooltip>
+          <el-table-column prop="userPhone" align="center" header-align="center" label="联系号码" width="80" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column prop="rankId" label="会员等级" align="center" header-align="center" width="80" show-overflow-tooltip>
-          </el-table-column>
+          <!--<el-table-column prop="rankId" label="会员等级" align="center" header-align="center" width="80" show-overflow-tooltip>-->
+          <!--</el-table-column>-->
           <el-table-column prop="userEmail" align="center" header-align="center" label="邮箱" width="120" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column align="center" header-align="center" label="生日" width="140" show-overflow-tooltip>
+          <el-table-column align="center" header-align="center" label="生日" width="100" show-overflow-tooltip>
             <template slot-scope="scope">
-              {{(scope.row.userBirthday.substr(0,10))+"---"+(scope.row.userBirthday.substr(11,8))}}
+              {{(scope.row.userBirthday.substr(0,10))}}
             </template>
           </el-table-column>
 
@@ -74,32 +75,26 @@
       </div>
       <el-dialog title="编辑用户" :visible.sync="editVisible" width="30%">
         <el-form ref="form" label-width="100px">
-          <el-form-item label="用户名">
-            <el-input v-model="editData.userName"></el-input>
+          <el-form-item label="登录名">
+            <el-input v-model="editData.logName"></el-input>
           </el-form-item>
-          <el-form-item label="性别">
-            <el-input v-model="editData.userSex"></el-input>
+          <!--<el-form-item label="性别">-->
+            <!--<el-input v-model="editData.userSex"></el-input>-->
+          <!--</el-form-item>-->
+          <!--<el-form-item label="用户名">-->
+            <!--<el-input v-model="editData.userName"></el-input>-->
+          <!--</el-form-item>-->
+          <el-form-item label="登录密码">
+            <el-input v-model="editData.logPwd"></el-input>
           </el-form-item>
-          <el-form-item label="联系号码">
+          <el-form-item label="手机号">
             <el-input v-model="editData.userPhone"></el-input>
-          </el-form-item>
-          <el-form-item label="会员等级">
-            <el-input v-model="editData.rankId"></el-input>
           </el-form-item>
           <el-form-item label="邮箱">
             <el-input v-model="editData.userEmail"></el-input>
           </el-form-item>
           <!--<el-form-item label="生日">-->
             <!--<el-input v-model="editData.userBirthday"></el-input>-->
-          <!--</el-form-item>-->
-          <!--<el-form-item label="是否上架">-->
-            <!--<el-radio v-model="editData.isSale" :label="1">上架</el-radio>-->
-            <!--<el-radio v-model="editData.isSale" :label="0">下架</el-radio>-->
-          <!--</el-form-item>-->
-          <!--<el-form-item label="是否热销">-->
-            <!--<el-radio v-model="editData.isHot" :label="1">热销</el-radio>-->
-            <!--<el-radio v-model="editData.isHot" :label="0">普销</el-radio>-->
-          <!--</el-form-item>-->
         </el-form>
         <span slot="footer" class="dialog-footer">
           <el-button @click="editVisible=false" size="small">取 消</el-button>
@@ -115,6 +110,7 @@
   import qs from "qs";
   export default {
   data() {
+
     return {
       multipleSelection: [],
       jiaoyistats: "",
@@ -129,8 +125,9 @@
       is_search: false,
       data: [],
       editData: {
-       userName: "",
-        userSex: "",
+        logName:"",
+//        userName: "",
+//        userSex: "",
         userPhone: "",
         rankId:"",
         userEmail:"",
@@ -216,10 +213,11 @@ refunState(refst) {
     handleEdit(index, row) {
       this.editVisible = true;
       this.editData.userId = row.userId;
-      this.editData.userName = row.userName;
-      this.editData.userSex = row.userSex;
+      this.editData.logName = row.logName;
+//      this.editData.userSex = row.userSex;
+//      this.ediData.userName = row.userName;
       this.editData.userPhone = row.userPhone;
-      this.editData.rankId = row.rankId;
+      this.editData.logPwd = row.logPwd;
       this.editData.userEmail = row.userEmail;
 
     },
@@ -237,11 +235,11 @@ refunState(refst) {
           });
           this.$message.success("修改成功");
           this.editData = {
-            userName: "",
-            userSex: "",
             userPhone: "",
-            rankId: "",
             userEmail: "",
+            logName:"",
+            logPwd:"",
+//            userName:"",
 
           };
           this.editVisible = false;
@@ -299,13 +297,6 @@ refunState(refst) {
         row.disabled=true;
       });
     }
-    //    getName() {
-    //      this.data.forEach(item => {
-    //        this.$http.get("/userInfo?" + "userId=" + item.userId).then(res => {
-    //          this.$set(item, "username", res.data.data[0].userName);
-    //        });
-    //      });
-    //    },
   }
 
   //
