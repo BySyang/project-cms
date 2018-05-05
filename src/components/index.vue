@@ -50,6 +50,9 @@
                 <div class="menu">
                     <ul>
                         <li class="iconfont icon-fahuotixing"></li>
+                        <!-- <el-submenu index="/home/wuliu">
+                           <li>待发货</li>
+                        </el-submenu> -->
                         <li>待发货</li>
                         <li>906</li>
                     </ul>
@@ -125,10 +128,21 @@
 </template>
 
 <script>
+// import qs from "qs";
 var echarts = require("echarts");
 export default {
   data() {
-    return {};
+    return {
+      // ruleForm: {
+      // name: ""
+      // }
+    };
+   
+  },
+   created() {
+    if (this.$route.name == "home") {
+      this.$router.replace("/home/index");
+    }
   },
   mounted() {
     /*ECharts图表*/
@@ -437,6 +451,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// .el-submenu{
+//   position: absolute;
+//   width: 100px;
+//   height: 100px;
+//   background: red;
+// }
 #index {
   border: none;
   outline: none;
@@ -472,6 +492,13 @@ export default {
   flex-direction: row;
   justify-content: space-between;
   align-content: center;
+  .list_item>div{
+    transition: all 0.3s;
+  }
+  .list_item>div:hover{
+    cursor: pointer;
+    transform: scale(1.4)
+  }
   .list_item:nth-child(1) {
     background: #17d57e;
   }
@@ -548,6 +575,7 @@ export default {
   align-items: center;
   justify-content: space-between;
   ul {
+    cursor: pointer;
     float: left;
     margin: 25.8px 25px 20px 25px;
     li {
@@ -558,6 +586,10 @@ export default {
     li:nth-child(1) {
       font-size: 30px;
       color: #3399ff;
+       transition: all 0.3s;  
+    }
+    li:nth-child(1):hover{
+      transform: scale(1.6);  
     }
     li:nth-child(2) {
       font-size: 14px;
