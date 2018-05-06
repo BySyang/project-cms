@@ -7,7 +7,7 @@
       <div class="search">
         <div>
           评论时间:
-          <el-date-picker v-model="comment_date" @change="dateFilter" format="yyyy-MM-dd" value-format="yyyy-MM-dd" 
+          <el-date-picker v-model="searchData.commentDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd" 
               type="daterange" align="left" unlink-panels range-separator="至" 
               start-placeholder="开始日期" end-placeholder="结束日期">
           </el-date-picker>
@@ -15,60 +15,55 @@
 
         <div>
           商品名称:
-          <el-input v-model="goodsName" @input="goodsNameFilter" placeholder="请输入商品名称" prefix-icon="el-icon-search">
+          <el-input v-model="searchData.goodsName" placeholder="请输入商品名称" prefix-icon="el-icon-search">
           </el-input>
         </div>
 
 
         <div>
-          评论人:
-          <el-input v-model="username" placeholder="请输入姓名" prefix-icon="el-icon-search">
+          用户名:
+          <el-input v-model="searchData.username" placeholder="请输入用户名" prefix-icon="el-icon-search">
           </el-input>
         </div>
 
-        <!-- <div>
-          <el-button type="primary" @click="searchpl" icon="el-icon-search">搜索</el-button>
-        </div> -->
       </div>
       <div class="table">
-        <el-table border ref="multipleTable" :data="tables" tooltip-effect="dark" style="width: 100%">
-          <!-- <el-table-column prop="userId" header-align="center" align="center" label="用户名" width="100">
-          </el-table-column> -->
+        <el-table border ref="multipleTable" :data="tableDate" tooltip-effect="dark" style="width: 100%">
 
-          <el-table-column prop="username" header-align="center" align="center" label="用户名" width="153">
-          </el-table-column>
+            <el-table-column prop="username" header-align="center" align="center" label="用户名" width="153">
+            </el-table-column>
 
-           <el-table-column prop="goodsName" align="center" header-align="center" label="商品名称" show-overflow-tooltip width="153">
-          </el-table-column>
+            <el-table-column prop="goodsName" align="center" header-align="center" label="商品名称" show-overflow-tooltip width="153">
+            </el-table-column>
 
-          <el-table-column prop="scoreText" align="center" header-align="center" label="评论内容" show-overflow-tooltip>
-          </el-table-column>
+            <el-table-column prop="scoreText" align="center" header-align="center" label="评论内容" show-overflow-tooltip>
+            </el-table-column>
 
-          <el-table-column align="center" header-align="center" label="评论时间" show-overflow-tooltip>
-            <template slot-scope="scope">
-              <span style="margin-left: 10px">{{ scope.row.createTime.substr(0,10) }}</span>
-            </template>
-          </el-table-column>
+            <el-table-column prop="createTime" align="center" header-align="center" label="评论时间" show-overflow-tooltip>
+            </el-table-column>
 
-          <el-table-column prop="orderScore" align="center" header-align="center" label="评分" show-overflow-tooltip>
-            <template slot-scope="scope">
-              <el-rate size="small" v-model="scope.row.orderScore" disabled text-color="#ff9900">
-              </el-rate>
-            </template>
-          </el-table-column>
+            <el-table-column prop="orderScore" align="center" header-align="center" label="评分" show-overflow-tooltip>
+              <template slot-scope="scope">
+                <el-rate size="small" v-model="scope.row.orderScore" disabled text-color="#ff9900">
+                </el-rate>
+              </template>
+            </el-table-column>
 
-           <!-- <el-table-column prop="orderScore" align="center" header-align="center" label="回复" show-overflow-tooltip>
-            <template slot-scope="scope">
-              <el-rate size="small" v-model="scope.row.orderScore" disabled text-color="#ff9900">
-              </el-rate>
-            </template>
-          </el-table-column> -->
+            <el-table-column prop="replyInfo" align="center" header-align="center" label="回复详情" show-overflow-tooltip>
+            </el-table-column>
 
-          <el-table-column prop="isShow" align="center" header-align="center" label="是否显示" show-overflow-tooltip>
-            <template slot-scope="scope">
-              <el-switch v-model="scope.row.isShow" active-color="#409eff" inactive-color="#dcdfe6"></el-switch>
-            </template>
-          </el-table-column>
+            <el-table-column prop="isShow" align="center" header-align="center" label="是否显示" show-overflow-tooltip>
+                <template slot-scope="scope">
+                    <el-switch v-model="scope.row.isShow" :active-value="1" :inactive-value="0" active-color="#409eff" inactive-color="#dcdfe6" @change="openJudge(scope.row)"></el-switch>
+                </template>
+            </el-table-column>
+          
+            <el-table-column align="center" header-align="center" label="操作" show-overflow-tooltip>
+              <template slot-scope="scope">
+                <el-button type="text" @click="huifu(scope.row)">回复</el-button>
+              </template>
+            </el-table-column>
+
         </el-table>
 
         <!-- 分页 -->
@@ -86,78 +81,157 @@
 export default {
   data() {
     return {
-      multipleSelection: [],
-      goodsName: "",
-      username: "",
-      ordersId: "",
-      userId: "",
-      comment_date: "",
+      data: [],
+      date2:[],
+      searchData : {
+        commentDate:[],
+        goodsName:"",
+        username:""
+
+      },
       current: 1,
-      size: 5,
-      is_search: false,
-      data: []
+      size: 5
     };
   },
   //获取用户名
   created() {
-    new Promise((a, b) => {
-      this.getData(a);
-    }).then(() => {
-      // this.getName();
-    });
+    this.getData();
+  },
+   watch: {
+    //搜索
+    searchData: {
+      handler(curVal, oldVal) {
+          // console.log(curVal);
+          var arr1 = [];
+          let commentDate = curVal.commentDate;
+          if(commentDate != null && commentDate.length > 0){
+            let beginDate = commentDate[0].replace(/-/g, "");
+            let endDate = commentDate[1].replace(/-/g, "");
+            // console.log("beginDate:" + beginDate + ",endDate:" + endDate);
+            this.data.forEach( item => { 
+              let createDate = item.createTime.replace(/-/g, "");
+              if(createDate >= beginDate && createDate <= endDate){
+                arr1.push(item);
+              }
+            })
+          }else{
+            arr1 = this.data;
+          }
+
+          var arr2 = [];
+          if(curVal.goodsName != null && curVal.goodsName != ""){
+            arr1.forEach( item => { 
+              if(item.goodsName.indexOf(curVal.goodsName) > -1){
+                arr2.push(item);
+              }
+            })
+          }else{
+            arr2 = arr1;
+          }
+
+          var arr3 = [];
+          if(curVal.username != null && curVal.username != ""){
+              arr2.forEach( item => { 
+                if(item.username.indexOf(curVal.username) > -1){
+                  arr3.push(item);
+                }
+              })
+          }else{
+            arr3 = arr2;
+          }
+
+          return this.date2 = arr3;
+      },
+      deep: true
+    }
   },
   //获取数据
   methods: {
     getData() {
       this.$http.get("/goodScoreList").then(res => {
-        //开关
+        //开关按钮
         res.data.data.forEach(item=>{
-          item.isShow = item.isShow==1?true:false;
+          item.createTime = item.createTime.substr(0,10);
         })
         this.data = res.data.data;
-        // console.log(this.data)
+        this.date2 = res.data.data;
+        // console.log(this.data);
       });
     },
+    //回复弹框
+    huifu(row) {
+        this.$prompt('请输入回复内容', '提示', {
+        }).then((ele) => {
+            let param = {
+              value : ele.value,
+              scoreId : row.scoreId
+            }
+            this.$http.post("/updateGoodScoreReplyInfo",param)
+            .then(res => {
+                // console.log(res);
+                row.replyInfo = param.value;
+                this.$message({
+                  type: 'success',
+                  message: '提交成功'
+                });
+            });
+        }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '取消输入'
+            });       
+        });
+      },
     //设置选中
     setCurrent(val) {
       this.current = val;
     },
-    dateFilter(val){
-      console.log(val)
-    },
-    goodsNameFilter(val){
-      debugger;
-      var data2 = [];
-      for(var i=0;i<this.data.length;i++){
-        if(val.indexOf(this.data[i].goodsName) == -1){
-          data2.push(this.data[i]);
-        }
+    //开关状态
+    openJudge(row) {
+      let isShow = row.isShow;
+      let param = {
+        isShow : isShow,
+        scoreId : row.scoreId
       }
-      console.log(data2);
-      return data2;
+      this.$confirm("是否确定改变状态", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          console.log(param);
+          this.$http.post("/updateGoodScoreIsShow",param)
+          .then(res => {
+            console.log(res);
+            this.$message({
+              type: "success",
+              message: "改变成功!"
+            });
+          });
+        })
+        .catch(() => {
+          row.isShow = isShow == 1 ? 0 : 1;
+          this.$message({
+            type: "info",
+            message: "已取消改变"
+          });
+        });
     }
   },
   //分页
   computed: {
-    data1() {
+    tableDate() {
       var arr = [];
       var current = this.current;
       var size = this.size;
       for (var i = (current - 1) * size; i < (current - 1) * size + size; i++) {
-        if (this.data[i]) arr.push(this.data[i]);
+        if (this.date2[i]) arr.push(this.date2[i]);
       }
       return arr;
     },
-    //搜索
-    tables: function() {
-      return this.data1;
-    },
     total() {
-      return this.data.length;
+      return this.date2.length;
     }
-  },
-  created() {
-    this.getData();
   }
 };
 </script>
