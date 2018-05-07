@@ -49,7 +49,7 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="replyInfo" align="center" header-align="center" label="回复详情" show-overflow-tooltip>
+            <el-table-column prop="reply" align="center" header-align="center" label="回复详情" show-overflow-tooltip>
             </el-table-column>
 
             <el-table-column prop="isShow" align="center" header-align="center" label="是否显示" show-overflow-tooltip>
@@ -78,15 +78,16 @@
 </template>
 
 <script>
+import qs from "qs";
 export default {
   data() {
     return {
       data: [],
-      date2:[],
-      searchData : {
-        commentDate:[],
-        goodsName:"",
-        username:""
+      date2: [],
+      searchData: {
+        commentDate: [],
+        goodsName: "",
+        username: ""
       },
       current: 1,
       size: 5
@@ -96,47 +97,47 @@ export default {
   created() {
     this.getData();
   },
-   watch: {
+  watch: {
     //搜索
     searchData: {
       handler(curVal, oldVal) {
-          // console.log(curVal);
-          var arr1 = [];
-          let commentDate = curVal.commentDate;
-          if(commentDate != null && commentDate.length > 0){
-            let beginDate = commentDate[0].replace(/-/g, "");
-            let endDate = commentDate[1].replace(/-/g, "");
-            // console.log("beginDate:" + beginDate + ",endDate:" + endDate);
-            this.data.forEach( item => { 
-              let createDate = item.createTime.replace(/-/g, "");
-              if(createDate >= beginDate && createDate <= endDate){
-                arr1.push(item);
-              }
-            })
-          }else{
-            arr1 = this.data;
-          }
-          var arr2 = [];
-          if(curVal.goodsName != null && curVal.goodsName != ""){
-            arr1.forEach( item => { 
-              if(item.goodsName.indexOf(curVal.goodsName) > -1){
-                arr2.push(item);
-              }
-            })
-          }else{
-            arr2 = arr1;
-          }
-          var arr3 = [];
-          if(curVal.username != null && curVal.username != ""){
-              arr2.forEach( item => { 
-                if(item.username.indexOf(curVal.username) > -1){
-                  arr3.push(item);
-                }
-              })
-          }else{
-            arr3 = arr2;
-          }
-          return this.date2 = arr3;
+        // console.log(curVal);
+        var arr1 = [];
+        let commentDate = curVal.commentDate;
+        if (commentDate != null && commentDate.length > 0) {
+          let beginDate = commentDate[0].replace(/-/g, "");
+          let endDate = commentDate[1].replace(/-/g, "");
+          // console.log("beginDate:" + beginDate + ",endDate:" + endDate);
+          this.data.forEach(item => {
+            let createDate = item.createTime.replace(/-/g, "");
+            if (createDate >= beginDate && createDate <= endDate) {
+              arr1.push(item);
+            }
+          });
+        } else {
+          arr1 = this.data;
+        }
+        var arr2 = [];
+        if (curVal.goodsName != null && curVal.goodsName != "") {
+          arr1.forEach(item => {
+            if (item.goodsName.indexOf(curVal.goodsName) > -1) {
+              arr2.push(item);
+            }
+          });
+        } else {
+          arr2 = arr1;
+        }
+        var arr3 = [];
+        if (curVal.username != null && curVal.username != "") {
+          arr2.forEach(item => {
+            if (item.username.indexOf(curVal.username) > -1) {
+              arr3.push(item);
+            }
+          });
+        } else {
+          arr3 = arr2;
+        }
+        return (this.date2 = arr3);
       },
       deep: true
     }
@@ -146,38 +147,40 @@ export default {
     getData() {
       this.$http.get("/goodScoreList").then(res => {
         //开关按钮
-        res.data.data.forEach(item=>{
-          item.createTime = item.createTime.substr(0,10);
-        })
+        res.data.data.forEach(item => {
+          item.createTime = item.createTime.substr(0, 10);
+        });
         this.data = res.data.data;
         this.date2 = res.data.data;
-        // console.log(this.data);
       });
     },
     //回复弹框
     huifu(row) {
-        this.$prompt('请输入回复内容', '提示', {
-        }).then((ele) => {
-            let param = {
-              value : ele.value,
-              scoreId : row.scoreId
-            }
-            this.$http.post("/updateGoodScoreReplyInfo",param)
+      this.$prompt("请输入回复内容", "提示", {})
+        .then(ele => {
+          let param = {
+            value: ele.value,
+            scoreId: row.scoreId
+          };
+          this.$http
+            .post("/updateGoodScoreReplyInfo", qs.stringify(param))
             .then(res => {
-                // console.log(res);
-                row.replyInfo = param.value;
-                this.$message({
-                  type: 'success',
-                  message: '提交成功'
-                });
+              // console.log(res);
+              row.reply = param.value;
+              this.getData();
+              this.$message({
+                type: "success",
+                message: "提交成功"
+              });
             });
-        }).catch(() => {
-            this.$message({
-              type: 'info',
-              message: '取消输入'
-            });       
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "取消输入"
+          });
         });
-      },
+    },
     //设置选中
     setCurrent(val) {
       this.current = val;
@@ -186,9 +189,9 @@ export default {
     openJudge(row) {
       let isShow = row.isShow;
       let param = {
-        isShow : isShow,
-        scoreId : row.scoreId
-      }
+        isShow: isShow,
+        scoreId: row.scoreId
+      };
       this.$confirm("是否确定改变状态", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -196,8 +199,7 @@ export default {
       })
         .then(() => {
           console.log(param);
-          this.$http.post("/updateGoodScoreIsShow",param)
-          .then(res => {
+          this.$http.post("/updateGoodScoreIsShow", param).then(res => {
             console.log(res);
             this.$message({
               type: "success",
@@ -245,7 +247,7 @@ export default {
     .main_top {
       position: relative;
       height: 30px;
-      color:white;
+      color: white;
       border-bottom: 1px solid #e5e6e6;
       div {
         position: absolute;
@@ -286,5 +288,6 @@ export default {
       justify-content: flex-end;
       margin: 20px 0;
     }
-  }}
+  }
+}
 </style>
