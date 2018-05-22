@@ -224,7 +224,7 @@ export default {
           name: "销售额", //这点显示名称
           type: "line", //图标类型：line:线装，bar：条形
           areaStyle: {
-            color: "rgba(0,0,0,0.1)"
+          color: "rgba(0,0,0,0.1)"
           }, //图形面积背景
           data: [
             "120",

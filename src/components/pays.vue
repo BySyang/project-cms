@@ -20,7 +20,7 @@
               </el-table-column>
               <el-table-column prop="payImg" label="图片" width="180" align="center">
                 <template slot-scope="scope">
-                  <img :src="scope.row.payImg.startsWith('blob')?scope.row.payImg:'../static/images/'+scope.row.payImg" height="60" />
+                  <img :src="scope.row.payImg.startsWith('blob')?scope.row.payImg:'images/'+scope.row.payImg" height="60" />
                 </template>
               </el-table-column>
               <el-table-column prop="payInfo" label="简介" align="center">
@@ -82,7 +82,7 @@
               </el-form-item>
               <el-form-item label="修改图片">
                 <el-upload ref="upload" v-model="editPays.payImg" :auto-upload="false" action="/aaa" :show-file-list="false" :on-change="setChangeImg">
-                  <img class="uploadImg" :src="'../static/images/'+editPays.payImg">
+                  <img class="uploadImg" :src="'images/'+editPays.payImg">
                 </el-upload>
               </el-form-item>
               <el-form-item label="修改简介">

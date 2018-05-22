@@ -42,7 +42,7 @@ router.beforeEach(function (to, from, next) {
         }
       })
     } else {
-      next()
+      next() 
     }
   } else {
     next()

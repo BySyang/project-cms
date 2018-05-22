@@ -13,7 +13,7 @@
                 <!-- 密码修改按钮 -->
                 <i class="iconfont icon-xiugai" @click="show = !show"></i>
                 <!-- 前台链接 -->
-                <a class="iconfont icon-liulanqi-IE" href="http://172.16.13.7:8080"></a>
+                <a class="iconfont icon-liulanqi-IE" href="http://localhost:8080"></a>
                 <!-- 登录退出 -->
                 <i class="iconfont icon-swticontuichu1" @click="exit()"></i>
             </div>

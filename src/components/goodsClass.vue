@@ -291,7 +291,7 @@ export default {
       this.imgSrc.newSrc = [];
       this.imgSrc.typeId = data.typeId;
       if (col.label.indexOf("轮播") > -1) {
-        this.imgSrc.oldSrc = ["/static/images/series/" + data.typeBannerImg];
+        this.imgSrc.oldSrc = ["images/series/" + data.typeBannerImg];
         this.className = true;
         this.title = col.label;
       } else if (col.label.indexOf("小图") > -1) {
@@ -299,7 +299,7 @@ export default {
         let prev = data.typeImg.split("?")[0];
         let str = data.typeImg.split("?")[1];
         str.split("|").forEach(item => {
-          arr.push("/static/images/series/" + prev + item);
+          arr.push("images/series/" + prev + item);
         });
         this.imgSrc.oldSrc = arr;
         this.title = col.label;
@@ -401,6 +401,7 @@ export default {
               typeDes: [],
               idShow: ""
             };
+            this.getData();
             this.editVisible = false;
           }
         })
@@ -466,9 +467,9 @@ export default {
         })
         .catch(() => {
           if (scope.column.label == "是否上架") {
-            scope.row.isSale = 0;
+            scope.row.isSale = !scope.row.isSale;
           } else {
-            scope.row.isHot = 0;
+            scope.row.isHot = !scope.row.isHot;
           }
           this.$message.info("取消修改");
         });
